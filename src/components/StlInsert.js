@@ -1,15 +1,20 @@
 import {StlViewer} from "react-stl-viewer";
 import React, { useState } from "react";
 
+
 //I probably need to ditch stlviewer-react or whatever and go with three.js
 //it is what github uses to display stl models on their shit and has way many more things than react-stl-viewer
 //https://sbcode.net/threejs/loaders-stl/
+//https://github.com/CreativeTools/3DBenchy/blob/master/Single-part/3DBenchy.stl
 
 function StlInsert() {
     //https://www.npmjs.com/package/react-stl-viewer
     const [STL, setSTL] = useState("https://storage.googleapis.com/ucloud-v3/ccab50f18fb14c91ccca300a.stl");
+    const [STLPresent, setSTLPresent] = useState(false);
 
     const url = "https://storage.googleapis.com/ucloud-v3/ccab50f18fb14c91ccca300a.stl"
+    const url1 = './Neptune_4_drawer.stl'
+    
     const style = {
       top: 0,
       left: 0,
@@ -20,6 +25,7 @@ function StlInsert() {
   function fileInputted(e){
     const file = e.target.files[0];
     if(file) {
+      setSTLPresent(true)
 
     }
     console.log('result' + e.target.result)
@@ -34,12 +40,14 @@ function StlInsert() {
         <p>Enter your .stl file here</p>
         <form>
             <input type="file" onChange={fileInputted} accept=".stl"></input>
+            <br/>{STLPresent ? <label><input type="submit"></input>Submit this file</label> : <p>click the button above to select an stl file</p>}
         </form>
         <StlViewer
             modelProps={{color: "rgb(199,255,255)"}}
             style={style}
             orbitControls
-            url={"https://github.com/CreativeTools/3DBenchy/blob/master/Single-part/3DBenchy.stl"}
+            url= {url}
+            //file={url}
           />
           {STL ? <>{STL}</> : <></>}
       </div>
