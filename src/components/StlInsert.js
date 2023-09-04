@@ -1,5 +1,6 @@
 import {StlViewer} from "react-stl-viewer";
 import React, { useState } from "react";
+import axios from 'axios';
 
 
 //I probably need to ditch stlviewer-react or whatever and go with three.js
@@ -34,11 +35,16 @@ function StlInsert() {
     console.log(STL);
   }
 
+  function formSubmit(e){
+    e.preventDefault();
+
+  }
+
   
     return (
       <div>
         <p>Enter your .stl file here</p>
-        <form>
+        <form onSubmit={formSubmit}>
             <input type="file" onChange={fileInputted} accept=".stl"></input>
             <br/>{STLPresent ? <label><input type="submit"></input>Submit this file</label> : <p>click the button above to select an stl file</p>}
         </form>
