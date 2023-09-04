@@ -10,7 +10,7 @@ import axios from 'axios';
 
 function StlInsert() {
     //https://www.npmjs.com/package/react-stl-viewer
-    const [STL, setSTL] = useState("https://storage.googleapis.com/ucloud-v3/ccab50f18fb14c91ccca300a.stl");
+    const [userFile, setUserFile] = useState("https://storage.googleapis.com/ucloud-v3/ccab50f18fb14c91ccca300a.stl");
     const [STLPresent, setSTLPresent] = useState(false);
 
     const url = "https://storage.googleapis.com/ucloud-v3/ccab50f18fb14c91ccca300a.stl"
@@ -31,12 +31,15 @@ function StlInsert() {
     }
     console.log('result' + e.target.result)
     console.log(e.target.files[0]);
-    setSTL(e.target.files[0].value);
+    setUserFile(e.target.files[0].value);
     console.log(STL);
   }
 
-  function formSubmit(e){
+  function uploadFile(e){
     e.preventDefault();
+
+    const formData = new FormData();
+    formData.append('file', userFile)
 
   }
 
@@ -44,7 +47,7 @@ function StlInsert() {
     return (
       <div>
         <p>Enter your .stl file here</p>
-        <form onSubmit={formSubmit}>
+        <form onSubmit={uploadFile}>
             <input type="file" onChange={fileInputted} accept=".stl"></input>
             <br/>{STLPresent ? <label><input type="submit"></input>Submit this file</label> : <p>click the button above to select an stl file</p>}
         </form>
