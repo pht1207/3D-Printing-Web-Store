@@ -7,7 +7,7 @@ function App() {
 
   return (
     <div className="App">
-      <h1>Parker's Prints</h1>
+      <h1>Print App</h1>
       <StlInsert/>
     </div>
   );

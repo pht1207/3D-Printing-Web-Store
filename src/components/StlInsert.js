@@ -27,28 +27,32 @@ function StlInsert() {
     const file = e.target.files[0];
     if(file) {
       setSTLPresent(true)
-
     }
     console.log('result' + e.target.result)
     console.log(e.target.files[0]);
     setUserFile(e.target.files[0].value);
-    console.log(STL);
+    console.log(userFile);
   }
 
-  function uploadFile(e){
+  async function uploadFile(e){
     e.preventDefault();
-
     const formData = new FormData();
     formData.append('file', userFile)
-
+    const resolve = axios.post('http://localhost:5000/upload', formData)
+    console.log(resolve);
   }
+
+  function exampleClick(){
+    axios.get('http://localhost:5000/hi')
+  }
+
 
   
     return (
       <div>
         <p>Enter your .stl file here</p>
         <form onSubmit={uploadFile}>
-            <input type="file" onChange={fileInputted} accept=".stl"></input>
+            <input type="file" onChange={fileInputted} name="input"></input>
             <br/>{STLPresent ? <label><input type="submit"></input>Submit this file</label> : <p>click the button above to select an stl file</p>}
         </form>
         <StlViewer
@@ -58,7 +62,8 @@ function StlInsert() {
             url= {url}
             //file={url}
           />
-          {STL ? <>{STL}</> : <></>}
+          <button onClick={exampleClick}></button>
+          {userFile ? <>{userFile}</> : <></>}
       </div>
     );
   }
