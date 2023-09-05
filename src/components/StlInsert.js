@@ -36,8 +36,9 @@ function StlInsert() {
 
   async function uploadFile(e){
     e.preventDefault();
-    const formData = new FormData();
-    formData.append('file', userFile)
+    const formData = new FormData(e.target);
+    //formData.append('file', userFile)
+    //changed to e instead of formData
     const resolve = axios.post('http://localhost:5000/upload', formData)
     console.log(resolve);
   }
@@ -52,7 +53,7 @@ function StlInsert() {
       <div>
         <p>Enter your .stl file here</p>
         <form onSubmit={uploadFile}>
-            <input type="file" onChange={fileInputted} name="input"></input>
+            <input type="file" onChange={fileInputted} name="file"></input>
             <br/>{STLPresent ? <label><input type="submit"></input>Submit this file</label> : <p>click the button above to select an stl file</p>}
         </form>
         <StlViewer
