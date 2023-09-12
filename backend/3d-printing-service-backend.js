@@ -15,7 +15,7 @@ app.get('/hi', (req, res) => {
 
 
 app.post('/upload', upload.single('file'), function (req, res, next) {
-    console.log(req.file.filename)
+    console.log("filename: "+req.file.originalname)
   // req.file is the `file` file
   // req.body will hold the text fields, if there were any
 })
