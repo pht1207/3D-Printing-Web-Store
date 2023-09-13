@@ -1,5 +1,6 @@
 import './App.css';
 import StlInsert from './components/StlInsert';
+import GCodeViewerComponent from './components/GCodeViewer';
 import {GCodeViewer} from "react-gcode-viewer";
 
 
