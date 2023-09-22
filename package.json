@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@react-three/drei": "^9.84.2",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -17,7 +18,9 @@
     "react-gcode-viewer": "^2.2.4",
     "react-scripts": "5.0.1",
     "react-stl-viewer": "^2.2.5",
-    "three": "^0.156.0",
+    "react-three-fiber": "^6.0.13",
+    "three": "^0.156.1",
+    "three-stl-loader": "^1.0.6",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

@@ -1,6 +1,10 @@
 import {StlViewer} from "react-stl-viewer";
 import React, { useState } from "react";
 import axios from 'axios';
+import * as THREE from 'three'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+import { STLLoader } from 'three/examples/jsm/loaders/STLLoader'
+import Stats from 'three/examples/jsm/libs/stats.module'
 
 
 //I probably need to ditch stlviewer-react or whatever and go with three.js
@@ -48,6 +52,15 @@ function StlInsert() {
   }
 
 
+
+
+
+
+
+
+
+
+
   
     return (
       <div>
@@ -60,7 +73,8 @@ function StlInsert() {
             modelProps={{color: "rgb(199,255,255)"}}
             style={style}
             orbitControls
-            url= {url}
+            //url= {url}
+            src={userFile}
             //file={url}
           />
           <button onClick={exampleClick}></button>
