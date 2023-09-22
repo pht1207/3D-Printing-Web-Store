@@ -51,6 +51,11 @@ app.listen(port, () => {
 async function parseSTL(stlFile){
   return new Promise (resolve => {
 
+    //Need to open a cli socket. CuraEngine is stored via "C:\Program Files\UltiMaker Cura 5.4.0"
+    //This command kind of got me somewhere
+    //CuraEngine  slice -j "C:\Program Files\UltiMaker Cura 5.4.0\share\cura\resources\definitions\elegoo_neptune_3pro.def.json" -l "C:\Users\pht12\Downloads\dad prints\Wrench_organizer_9-19_5475962\files\Wrench-organizer_9-19.stl"
+    //Doing this worked but i have no idea where it outputted to:
+    //CuraEngine  slice -j "C:\Program Files\UltiMaker Cura 5.4.0\share\cura\resources\definitions\elegoo_neptune_3pro.def.json" -l "C:\Users\pht12\Downloads\dad prints\Wrench_organizer_9-19_5475962\files\Wrench-organizer_9-19.stl" -s min_wall_line_width=3 -s roofing_layer_count=2 -s roofing_monotonic=1
       //else, continue program
     })
 
