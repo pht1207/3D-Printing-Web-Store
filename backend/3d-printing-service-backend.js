@@ -16,6 +16,9 @@ app.get('/hi', (req, res) => {
 
 app.post('/upload', upload.single('file'), function (req, res, next) {
     console.log("filename: "+req.file.originalname)
+    res.setHeader('Content-Disposition', 'inline; filename="file.ext"'); // Change the filename as needed
+    res.setHeader('Content-Type', 'application/octet-stream'); // Change the content type as needed
+    res.send(data);
   // req.file is the `file` file
   // req.body will hold the text fields, if there were any
 })
