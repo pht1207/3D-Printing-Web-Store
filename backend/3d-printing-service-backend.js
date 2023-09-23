@@ -11,7 +11,6 @@ const { parse } = require('path');
 app.use(cors());
 app.use(express.json());
 
-const directoryPath = "./gcodes/"
 
 
 app.post('/upload', upload.single('file'), async function (req, res, next) {
@@ -35,10 +34,11 @@ app.post('/upload', upload.single('file'), async function (req, res, next) {
     
 })
 
+//Sets the open directory for file downloads
+const directoryPath = "./data/"
 //Hosts the gcode files to the users (used in the gcodeviewer component)
-//Accessed simply by doing http://localhost:5000/filename, that's it. It hosts the directory with all the gcodes with directoryPath
+//Accessed simply by doing http://localhost:5000/foldername/filename, that's it. It hosts the directory with all the .stls and .gcodes with directoryPath
 app.use(express.static(directoryPath));
-
 
 
 app.listen(port, () => {
