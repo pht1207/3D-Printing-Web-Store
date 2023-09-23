@@ -10,6 +10,8 @@ let cors = require('cors');
 const { parse } = require('path');
 app.use(cors());
 app.use(express.json());
+//Used in executing commands on the server
+const { exec } = require('child_process');
 
 
 
@@ -31,8 +33,21 @@ app.post('/upload/stl', upload.single('file'), async function (req, res, next) {
 
     //Sends filename to the host after parsing it so it can be displayed in their browser
     res.send(req.file.filename);
+    execTester();
     
 })
+
+
+function execTester(){
+  const command = 'dir';
+  exec(command, (error, stdout, stderr) => {
+    if (error) {
+      console.error(`Error executing command: ${error}`);
+      return;
+    }
+    console.log(`Command output: ${stdout}`);
+  });
+}
 
 //Sets the open directory for file downloads
 const directoryPath = "./data/"
