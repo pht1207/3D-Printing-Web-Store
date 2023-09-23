@@ -2,7 +2,7 @@ const express = require('express')
 const multer  = require('multer')
 const app = express()
 const port = 5000;
-const upload = multer({ dest: 'uploads/' })
+const upload = multer({ dest: 'data/stl' })
 const fs = require('fs');
 
 
@@ -13,12 +13,12 @@ app.use(express.json());
 
 
 
-app.post('/upload', upload.single('file'), async function (req, res, next) {
+app.post('/upload/stl', upload.single('file'), async function (req, res, next) {
     console.log("filename: "+req.file.originalname)
     console.log(req.file.filename)
     //changes the file extension of what was uploaded to a .stl
-    const currentPath = './uploads/'+req.file.filename;
-    const newPath = './uploads/'+req.file.filename+".stl";
+    const currentPath = './data/stl/'+req.file.filename;
+    const newPath = './data/stl/'+req.file.filename+".stl";
     fs.rename(currentPath, newPath, err =>{
       if(err){
         console.error("error converting file extension")
