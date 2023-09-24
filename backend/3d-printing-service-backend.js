@@ -1,7 +1,7 @@
 const express = require('express')
 const multer  = require('multer')
 const app = express()
-const port = 5000;
+const port = 5005;
 const upload = multer({ dest: 'data/stl' })
 const fs = require('fs');
 
