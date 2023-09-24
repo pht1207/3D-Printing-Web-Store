@@ -1,7 +1,7 @@
 import {GCodeViewer} from "react-gcode-viewer";
 import React, { useState } from 'react';
 
-function GCodeViewerComponent() {
+function GCodeViewerComponent(props) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [sliderValue, setSliderValue] = useState(100);
   const [visiblePercentage, setVisiblePercentage] = useState(1)
@@ -9,7 +9,7 @@ function GCodeViewerComponent() {
   //https://craftcloud3d.com/
   //https://www.npmjs.com/package/react-gcode-viewer
 
-  const url = "http://localhost:5000/wrench.gcode"
+  const url = "http://localhost:5005/"+props.id+".gcode"
 
   function GCodeLoadedFunction(){
     setIsLoaded(true);

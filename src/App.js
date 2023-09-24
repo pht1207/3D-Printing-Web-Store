@@ -19,7 +19,6 @@ const url = "https://storage.googleapis.com/ucloud-v3/6127a7f9aa32f718b8c1ab4f.g
     <div className="App">
       <h1>Print App</h1>
       <StlInsert/>
-      <GCodeViewerComponent/>
     </div>
   );
 }

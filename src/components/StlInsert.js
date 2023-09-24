@@ -1,7 +1,7 @@
 import {StlViewer} from "react-stl-viewer";
 import React, { useState } from "react";
 import axios from 'axios';
-
+import GCodeViewerComponent from "./GCodeViewerComponent";
 
 //https://sbcode.net/threejs/loaders-stl/
 
@@ -19,7 +19,7 @@ function StlInsert() {
 
 
     //const url = "https://storage.googleapis.com/ucloud-v3/ccab50f18fb14c91ccca300a.stl"
-    const url = "http://localhost:5005/stl/"+serverFileID;
+    const url = "http://localhost:5005/stl/"+serverFileID+".stl";
     
     const style = {
       top: 0,
@@ -98,6 +98,7 @@ function StlInsert() {
             url= {url}
           />: <>Placeholder</>}
           {isUploaded ? GCodeForm : <></>}
+          <GCodeViewerComponent id={serverFileID}/>
       </div>
     );
   }

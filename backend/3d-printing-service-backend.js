@@ -16,6 +16,7 @@ const { exec } = require('child_process');
 
 
 app.post('/upload/stl', upload.single('file'), async function (req, res, next) {
+    console.log("app.post called!")
     console.log("filename: "+req.file.originalname)
     console.log(req.file.filename)
     //changes the file extension of what was uploaded to a .stl
