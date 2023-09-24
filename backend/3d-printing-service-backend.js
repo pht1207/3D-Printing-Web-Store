@@ -69,14 +69,14 @@ app.listen(port, () => {
 
 //Parses the stl file into a gcode file
 async function parseSTL(multerID){
+  console.log("parseSTL running...")
   return new Promise (resolve => {
     let supportType;
     let materialType;
     //if(materialType === 'PETG'){--load ./resources/profiles/Neptune4-Config-JayoPETG-0.3Height.ini}
     const commandReal = './prusaslicer/prusa-slicer --center 112,112 --ensure-on-bed --support-material  --support-material-auto  --support-material-style organic --load ./prusaslicer/resources/profiles/Neptune4-Config-JayoPETG-0.3Height.ini -s ./data/stl/'+{multerID}+'.stl --info --output ./data/gcode';
-    const command = './prusaslicer/prusa-slicer --center 112,112 --ensure-on-bed --support-material  --support-material-auto  --support-material-style organic --load ./prusaslicer/resources/profiles/Neptune4-Config-JayoPETG-0.3Height.ini -s ./data/stl/Wrench-organizer-clip_9-19.stl --info --output ./data/gcode';
 
-    exec(command, (error, stdout, stderr) => {
+    exec(commandReal, (error, stdout, stderr) => {
       if (error) {
         console.error(`Error executing command: ${error}`);
         return;
@@ -96,6 +96,7 @@ async function parseSTL(multerID){
     //THIS WORKS!!!!!!!!!!!!!!
     //./prusa-slicer --center 112,112 --ensure-on-bed --support-material  --support-material-auto  --support-material-style organic --load ./resources/profiles/Neptune4-Config-JayoPETG-0.3Height.ini -s ./stl/*.stl --info
 
+    resolve(1)
 
     //else, continue program
     })
