@@ -34,23 +34,9 @@ app.post('/upload/stl', upload.single('file'), async function (req, res, next) {
 
     //Sends filename to the host after parsing it so it can be displayed in their browser
     res.send(req.file.filename);
-    execTester();
     parseSTL(req.file.filename)
     
 })
-
-
-function execTester(){
-  const command = 'dir';
-  exec(command, (error, stdout, stderr) => {
-    if (error) {
-      console.error(`Error executing command: ${error}`);
-      return;
-    }
-    console.log(`Command output: ${stdout}`);
-  });
-}
-
 
 
 
