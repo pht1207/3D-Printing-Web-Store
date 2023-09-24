@@ -19,7 +19,7 @@ function StlInsert() {
 
 
     //const url = "https://storage.googleapis.com/ucloud-v3/ccab50f18fb14c91ccca300a.stl"
-    const url = "http://localhost:5005/stl/"+serverFileID+".stl";
+    const url = "http://192.168.1.127:5005/stl/"+serverFileID+".stl";
     
     const style = {
       top: 0,
@@ -45,7 +45,7 @@ function StlInsert() {
     const formData = new FormData(e.target);
     //formData.append('file', userFile)
     //changed to e instead of formData
-    const resolve = await axios.post('http://localhost:5005/upload/stl', formData)
+    const resolve = await axios.post('http://192.168.1.127:5005/upload/stl', formData)
     console.log(resolve);
     console.log(resolve.data);
     await setServerFileID(resolve.data);
