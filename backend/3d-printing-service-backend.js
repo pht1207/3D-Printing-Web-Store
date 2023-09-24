@@ -34,6 +34,7 @@ app.post('/upload/stl', upload.single('file'), async function (req, res, next) {
     //Sends filename to the host after parsing it so it can be displayed in their browser
     res.send(req.file.filename);
     execTester();
+    parseSTL(req.file.filename)
     
 })
 
@@ -49,6 +50,10 @@ function execTester(){
   });
 }
 
+
+
+
+
 //Sets the open directory for file downloads
 const directoryPath = "./data/"
 //Hosts the gcode files to the users (used in the gcodeviewer component)
@@ -63,8 +68,24 @@ app.listen(port, () => {
 
 
 //Parses the stl file into a gcode file
-async function parseSTL(stlFile){
+async function parseSTL(multerID){
   return new Promise (resolve => {
+    let supportType;
+    let materialType;
+    //if(materialType === 'PETG'){--load ./resources/profiles/Neptune4-Config-JayoPETG-0.3Height.ini}
+    const commandReal = './prusaslicer/prusa-slicer --center 112,112 --ensure-on-bed --support-material  --support-material-auto  --support-material-style organic --load ./prusaslicer/resources/profiles/Neptune4-Config-JayoPETG-0.3Height.ini -s ./data/stl/'+{multerID}+'.stl --info --output ./data/gcode';
+    const command = './prusaslicer/prusa-slicer --center 112,112 --ensure-on-bed --support-material  --support-material-auto  --support-material-style organic --load ./prusaslicer/resources/profiles/Neptune4-Config-JayoPETG-0.3Height.ini -s ./data/stl/Wrench-organizer-clip_9-19.stl --info --output ./data/gcode';
+
+    exec(command, (error, stdout, stderr) => {
+      if (error) {
+        console.error(`Error executing command: ${error}`);
+        return;
+      }
+      console.log(`Command output: ${stdout}`);
+    });
+
+
+
 
     //Need to open a cli socket. CuraEngine is stored via "C:\Program Files\UltiMaker Cura 5.4.0"
     //This command kind of got me somewhere
