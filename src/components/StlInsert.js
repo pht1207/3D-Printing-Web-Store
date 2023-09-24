@@ -14,6 +14,8 @@ function StlInsert() {
     const [serverFileID, setServerFileID] = useState(false);
     const [hideUpload, setHideUpload] = useState(false);
     const [isUploaded, setIsUploaded] = useState(false);
+    const [isCorrectSTL, setIsCorrectSTL] = useState(false);
+
     
 
 
@@ -75,6 +77,9 @@ function StlInsert() {
 
     )
 
+    function showGCode(){
+      setIsCorrectSTL(true); 
+    }
 
 
   
@@ -98,7 +103,9 @@ function StlInsert() {
             url= {url}
           />: <>Placeholder</>}
           {isUploaded ? GCodeForm : <></>}
-          {isUploaded ? <GCodeViewerComponent id={serverFileID}/> : <></>}
+          
+          {isUploaded ? <button onClick={showGCode}>Is this the correct STL?</button> : <></>}
+          {isCorrectSTL ?  <GCodeViewerComponent id={serverFileID}/>: <></>}
           <GCodeViewerComponent id={'a246abcd1c606a77581cb58109c8b1ba'}/>
       </div>
     );

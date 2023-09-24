@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 function GCodeViewerComponent(props) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [sliderValue, setSliderValue] = useState(100);
-  const [visiblePercentage, setVisiblePercentage] = useState(1)
+  const [visiblePercentage, setVisiblePercentage] = useState(1);
 
   //https://craftcloud3d.com/
   //https://www.npmjs.com/package/react-gcode-viewer
