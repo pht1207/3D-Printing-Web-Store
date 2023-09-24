@@ -1,24 +1,25 @@
 import {StlViewer} from "react-stl-viewer";
 import React, { useState } from "react";
 import axios from 'axios';
-import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
-import { STLLoader } from 'three/examples/jsm/loaders/STLLoader'
-import Stats from 'three/examples/jsm/libs/stats.module'
 
 
-//I probably need to ditch stlviewer-react or whatever and go with three.js
-//it is what github uses to display stl models on their shit and has way many more things than react-stl-viewer
 //https://sbcode.net/threejs/loaders-stl/
-//https://github.com/CreativeTools/3DBenchy/blob/master/Single-part/3DBenchy.stl
+
+//Eventualy use react-three-fiber to show the stl and maybe gcode too.
 
 function StlInsert() {
     //https://www.npmjs.com/package/react-stl-viewer
-    const [userFile, setUserFile] = useState("https://storage.googleapis.com/ucloud-v3/ccab50f18fb14c91ccca300a.stl");
+    const [userFile, setUserFile] = useState();
     const [STLPresent, setSTLPresent] = useState(false);
+    const [serverFileID, setServerFileID] = useState(false);
+    const [hideUpload, setHideUpload] = useState(false);
+    const [isUploaded, setIsUploaded] = useState(false);
+    
 
-    const url = "https://storage.googleapis.com/ucloud-v3/ccab50f18fb14c91ccca300a.stl"
-    const url1 = './Neptune_4_drawer.stl'
+
+
+    //const url = "https://storage.googleapis.com/ucloud-v3/ccab50f18fb14c91ccca300a.stl"
+    const url = "http://localhost:5005/stl/"+serverFileID;
     
     const style = {
       top: 0,
@@ -40,45 +41,63 @@ function StlInsert() {
 
   async function uploadFile(e){
     e.preventDefault();
+    setHideUpload(true);
     const formData = new FormData(e.target);
     //formData.append('file', userFile)
     //changed to e instead of formData
-    const resolve = axios.post('http://localhost:5000/upload', formData)
+    const resolve = await axios.post('http://localhost:5005/upload/stl', formData)
     console.log(resolve);
+    console.log(resolve.data);
+    await setServerFileID(resolve.data);
+    setIsUploaded(true);
+
+    //This is where we send data to the server telling it to turn the .stl into gcode. Some sort of form with parameters regarding quality, node server will pick somehow, probably just have a bunch of if statements for simplicity.
+    
   }
 
-  function exampleClick(){
-    axios.get('http://localhost:5000/hi')
+  function handleOptionChange(){
+
   }
 
+  const GCodeForm = (
+    <div className="GCodeForm">
+      <form>
+      <select id="dropdown" onChange={handleOptionChange}>
+        <option value="">Select an option...</option>
+        <option value="option1">Option 1</option>
+        <option value="option2">Option 2</option>
+        <option value="option3">Option 3</option>
+        <option value="option4">Option 4</option>
+      </select>
 
+      <button type="submit">Submit</button>      </form>
+    </div>
 
-
-
-
-
-
+    )
 
 
 
   
     return (
       <div>
+      {!hideUpload ? <div className="uploadField">
         <p>Enter your .stl file here</p>
+
         <form onSubmit={uploadFile}>
             <input type="file" onChange={fileInputted} name="file"></input>
             <br/>{STLPresent ? <label><input type="submit"></input>Submit this file</label> : <p>click the button above to select an stl file</p>}
-        </form>
-        <StlViewer
+        </form> 
+        </div>
+        :
+        <div className="uploadField"></div>
+      }
+        {serverFileID?<StlViewer
             modelProps={{color: "rgb(199,255,255)"}}
             style={style}
             orbitControls
-            //url= {url}
-            src={userFile}
-            //file={url}
-          />
-          <button onClick={exampleClick}></button>
-          {userFile ? <>{userFile}</> : <></>}
+            url= {url}
+          />: <>Placeholder</>}
+          {isUploaded ? GCodeForm : <></>}
       </div>
     );
   }
