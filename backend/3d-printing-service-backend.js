@@ -32,9 +32,9 @@ app.post('/upload/stl', upload.single('file'), async function (req, res, next) {
 
 
     //Sends filename to the host after parsing it so it can be displayed in their browser
-    res.send(req.file.filename);
+    res.send(req.file.filename+'.stl');
     execTester();
-    parseSTL(req.file.filename)
+    parseSTL(req.file.filename+'.stl')
     
 })
 
