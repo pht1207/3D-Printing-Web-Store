@@ -98,7 +98,8 @@ function StlInsert() {
             url= {url}
           />: <>Placeholder</>}
           {isUploaded ? GCodeForm : <></>}
-          <GCodeViewerComponent id={serverFileID}/>
+          {isUploaded ? <GCodeViewerComponent id={serverFileID}/> : <></>}
+          <GCodeViewerComponent />
       </div>
     );
   }

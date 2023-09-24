@@ -19,9 +19,10 @@ app.post('/upload/stl', upload.single('file'), async function (req, res, next) {
     console.log("app.post called!")
     console.log("filename: "+req.file.originalname)
     console.log(req.file.filename)
+    let id = req.file.filename
     //changes the file extension of what was uploaded to a .stl
-    const currentPath = './data/stl/'+req.file.filename;
-    const newPath = './data/stl/'+req.file.filename+".stl";
+    const currentPath = './data/stl/'+id;
+    const newPath = './data/stl/'+id+".stl";
     fs.rename(currentPath, newPath, err =>{
       if(err){
         console.error("error converting file extension")
@@ -33,8 +34,8 @@ app.post('/upload/stl', upload.single('file'), async function (req, res, next) {
 
 
     //Sends filename to the host after parsing it so it can be displayed in their browser
-    res.send(req.file.filename);
-    parseSTL(req.file.filename)
+    res.send(id);
+    parseSTL(id)
     
 })
 
@@ -56,12 +57,13 @@ app.listen(port, () => {
 
 //Parses the stl file into a gcode file
 async function parseSTL(multerID){
+  let id = multerID
   console.log("parseSTL running...")
   return new Promise (resolve => {
     let supportType;
     let materialType;
     //if(materialType === 'PETG'){--load ./resources/profiles/Neptune4-Config-JayoPETG-0.3Height.ini}
-    const commandReal = './prusaslicer/prusa-slicer --center 112,112 --ensure-on-bed --support-material  --support-material-auto  --support-material-style organic --load ./prusaslicer/resources/profiles/Neptune4-Config-JayoPETG-0.3Height.ini -s ./data/stl/'+{multerID}+'.stl --info --output ./data/gcode';
+    const commandReal = './prusaslicer/prusa-slicer --center 112,112 --ensure-on-bed --support-material  --support-material-auto  --support-material-style organic --load ./prusaslicer/resources/profiles/Neptune4-Config-JayoPETG-0.3Height.ini -s ./data/stl/'+id+'.stl --info --output ./data/gcode';
 
     exec(commandReal, (error, stdout, stderr) => {
       if (error) {
