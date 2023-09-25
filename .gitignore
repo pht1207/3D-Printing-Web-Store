@@ -9,6 +9,7 @@
 /backend/node_modules
 /backend/data/*
 /backend/data
+/backend/prusaslicer
 
 # testing
 /coverage
