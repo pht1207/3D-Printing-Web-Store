@@ -14,13 +14,12 @@ function StlInsert() {
     const [serverFileID, setServerFileID] = useState(false);
     const [hideUpload, setHideUpload] = useState(false);
     const [isUploaded, setIsUploaded] = useState(false);
-    const [isCorrectSTL, setIsCorrectSTL] = useState(false);
+    const [GCodeParsed, setGCodeParsed] = useState(false);
 
     
 
 
 
-    //const url = "https://storage.googleapis.com/ucloud-v3/ccab50f18fb14c91ccca300a.stl"
     const url = "http://192.168.1.127:5005/"+serverFileID+"/"+serverFileID+".stl";
     
     const style = {
@@ -78,8 +77,21 @@ function StlInsert() {
 
     )
 
-    function parseGCode(){
-      setIsCorrectSTL(true); 
+    async function parseGCode(){
+
+      const myString = serverFileID;
+      const resolve = await axios.post('http://192.168.1.127:5005/gcode', myString, {
+        headers: {
+          'Content-Type': 'text/plain', // Set the content type to plain text
+        },
+      })
+      console.log(resolve);
+      if(resolve.body === "Finished"){
+        console.log("wahdskjhaldkjfhadskljfhalkjdshllkhlhk")
+      }
+
+      
+      setGCodeParsed(true); 
     }
 
 
@@ -107,8 +119,7 @@ function StlInsert() {
           {isUploaded ? GCodeForm : <></>}
           
           {isUploaded ? <button onClick={parseGCode}>Is this the correct STL?</button> : <></>}
-          {isCorrectSTL ?  <GCodeViewerComponent id={serverFileID}/>: <></>}
-          <GCodeViewerComponent id={'a246abcd1c606a77581cb58109c8b1ba'}/>
+          {GCodeParsed ?  <GCodeViewerComponent id={serverFileID}/>: <></>}
       </div>
     );
   }
