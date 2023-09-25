@@ -21,7 +21,7 @@ function StlInsert() {
 
 
     //const url = "https://storage.googleapis.com/ucloud-v3/ccab50f18fb14c91ccca300a.stl"
-    const url = "http://192.168.1.127:5005/stl/"+serverFileID+".stl";
+    const url = "http://192.168.1.127:5005/"+serverFileID+"/"+serverFileID+".stl";
     
     const style = {
       top: 0,
@@ -64,6 +64,7 @@ function StlInsert() {
   const GCodeForm = (
     <div className="GCodeForm">
       <form>
+        <h4>Change defualt settings for your print: </h4>
       <select id="dropdown" onChange={handleOptionChange}>
         <option value="">Select an option...</option>
         <option value="option1">Option 1</option>
@@ -77,25 +78,26 @@ function StlInsert() {
 
     )
 
-    function showGCode(){
+    function parseGCode(){
       setIsCorrectSTL(true); 
     }
 
 
   
     return (
-      <div>
+      <div className="interactionWindow">
       {!hideUpload ? <div className="uploadField">
         <p>Enter your .stl file here</p>
-
         <form onSubmit={uploadFile}>
             <input type="file" onChange={fileInputted} name="file"></input>
-            <br/>{STLPresent ? <label><input type="submit"></input>Submit this file</label> : <p>click the button above to select an stl file</p>}
+            <br/>{STLPresent ? <label><button type="submit"></button>Submit this file</label> : <p>click the button above to select an stl file</p>}
         </form> 
         </div>
         :
         <div className="uploadField"></div>
       }
+
+
         {serverFileID?<StlViewer
             modelProps={{color: "rgb(199,255,255)"}}
             style={style}
@@ -104,7 +106,7 @@ function StlInsert() {
           />: <>Placeholder</>}
           {isUploaded ? GCodeForm : <></>}
           
-          {isUploaded ? <button onClick={showGCode}>Is this the correct STL?</button> : <></>}
+          {isUploaded ? <button onClick={parseGCode}>Is this the correct STL?</button> : <></>}
           {isCorrectSTL ?  <GCodeViewerComponent id={serverFileID}/>: <></>}
           <GCodeViewerComponent id={'a246abcd1c606a77581cb58109c8b1ba'}/>
       </div>

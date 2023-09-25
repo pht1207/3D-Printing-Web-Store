@@ -9,7 +9,7 @@ function GCodeViewerComponent(props) {
   //https://craftcloud3d.com/
   //https://www.npmjs.com/package/react-gcode-viewer
 
-  const url = "http://192.168.1.127:5005/gcode/"+props.id+".gcode"
+  const url = "http://192.168.1.127:5005/"+props.id+"/"+props.id+".gcode"
 
   function GCodeLoadedFunction(){
     setIsLoaded(true);

@@ -14,15 +14,45 @@ app.use(express.json());
 const { exec } = require('child_process');
 
 
+const folders = [];
+
+//Constructor for creating user objects for the users[] array.
+function Folder(id, file, progress, index, paid){
+  this.id = id;
+  this.file = file;
+  this.progress = progress;
+  this.index = index;
+  this.paid = paid;
+}
+
 
 app.post('/upload/stl', upload.single('file'), async function (req, res, next) {
     console.log("app.post called!")
     console.log("filename: "+req.file.originalname)
     console.log(req.file.filename)
+    
+    //Creates a user object when stls are sent
     let id = req.file.filename
+    let fileName = req.file.originalname;
+    let gcodeProgress = 0;
+    let foldersIndex = folders.length;
+    let paid = false;
+    const newFolder = new Folder(id, fileName, gcodeProgress, foldersIndex, paid)
+    folders.push(newFolder)
+
+
+    fs.mkdir('./data/'+newFolder.id, (err) => {
+      if(err) {
+        console.error("Error creating folder: ${err}");
+      }
+      else{
+        console.log("Folder '${foldername}', made")
+      }
+    })
+
     //changes the file extension of what was uploaded to a .stl
     const currentPath = './data/stl/'+id;
-    const newPath = './data/stl/'+id+".stl";
+    const newPath = './data/'+newFolder.id+"/"+id+".stl";    
     fs.rename(currentPath, newPath, err =>{
       if(err){
         console.error("error converting file extension")
@@ -35,10 +65,18 @@ app.post('/upload/stl', upload.single('file'), async function (req, res, next) {
 
     //Sends filename to the host after parsing it so it can be displayed in their browser
     res.send(id);
-    parseSTL(id)
+    parseSTL(id);
     
 })
 
+
+app.post('/gcode', async function(req, res){
+
+  let id = req.body.id;
+  let gcodeOptions;
+  parseSTL(id);
+
+})
 
 
 
@@ -63,7 +101,7 @@ async function parseSTL(multerID){
     let supportType;
     let materialType;
     //if(materialType === 'PETG'){--load ./resources/profiles/Neptune4-Config-JayoPETG-0.3Height.ini}
-    const commandReal = './prusaslicer/prusa-slicer --center 112,112 --ensure-on-bed --support-material  --support-material-auto  --support-material-style organic --load ./prusaslicer/resources/profiles/Neptune4-Config-JayoPETG-0.3Height.ini -s ./data/stl/'+id+'.stl --info --output ./data/gcode';
+    const commandReal = './prusaslicer/prusa-slicer --center 112,112 --ensure-on-bed --support-material  --support-material-auto  --support-material-style organic --load ./prusaslicer/resources/profiles/Neptune4-Config-JayoPETG-0.3Height.ini -s ./data/'+id+'/'+id+'.stl --info --output ./data/'+id;
 
     exec(commandReal, (error, stdout, stderr) => {
       if (error) {
@@ -72,18 +110,6 @@ async function parseSTL(multerID){
       }
       console.log(`Command output: ${stdout}`);
     });
-
-
-
-
-    //Need to open a cli socket. CuraEngine is stored via "C:\Program Files\UltiMaker Cura 5.4.0"
-    //This command kind of got me somewhere
-    //CuraEngine  slice -j "C:\Program Files\UltiMaker Cura 5.4.0\share\cura\resources\definitions\elegoo_neptune_3pro.def.json" -l "C:\Users\pht12\Downloads\dad prints\Wrench_organizer_9-19_5475962\files\Wrench-organizer_9-19.stl"
-    //Doing this worked but i have no idea where it outputted to:
-    //CuraEngine  slice -j "C:\Program Files\UltiMaker Cura 5.4.0\share\cura\resources\definitions\elegoo_neptune_3pro.def.json" -l "C:\Users\pht12\Downloads\dad prints\Wrench_organizer_9-19_5475962\files\Wrench-organizer_9-19.stl" -s min_wall_line_width=3 -s roofing_layer_count=2 -s roofing_monotonic=1
-
-    //THIS WORKS!!!!!!!!!!!!!!
-    //./prusa-slicer --center 112,112 --ensure-on-bed --support-material  --support-material-auto  --support-material-style organic --load ./resources/profiles/Neptune4-Config-JayoPETG-0.3Height.ini -s ./stl/*.stl --info
 
     resolve(1)
 
