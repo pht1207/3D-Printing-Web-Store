@@ -31,6 +31,7 @@ function Folder(id, file, isParsed, index, paid, cost){
 }
 
 
+//Used in accepting the stl file and storing it for the client
 app.post('/upload/stl', upload.single('file'), async function (req, res, next) {
     console.log("filename: "+req.file.originalname)
   
@@ -40,7 +41,7 @@ app.post('/upload/stl', upload.single('file'), async function (req, res, next) {
     let isParsed = false;
     let foldersIndex = folders.length;
     let paid = false;
-    let cost = 0;
+    let cost = 1;
     const newFolder = new Folder(id, fileName, isParsed, foldersIndex, paid, cost)
     folders.push(newFolder) //Adds this new object to the stack
 
@@ -60,29 +61,27 @@ app.post('/upload/stl', upload.single('file'), async function (req, res, next) {
       }
       //else, continue program
     })
-
-    //const url = await parseSTL(req.file);
-
-
     //Sends filename to the host after downloading it so it can be displayed in their browser
     res.send(id);
     
 })
 
 
+//Used for parsing the stl file into gcode and determining price from said gcode
 app.post('/gcode', async function(req, res){
   console.log("post /gcode called! \n")
   let id = req.body;
   let folderIndex = findFile(id);
   //let gcodeOptions;
   await parseSTL(id);
+
   await findFilamentUsed(id)
-  //folders[folderIndex].cost = filamentUsed*5;
-  //console.log("USED" + filamentUsed)
+  console.log(folderIndex)
+  console.log(folders[folderIndex].cost)
 
   console.log("sending res...")
 
-  res.send(folders[findFile(id)].isParsed)
+  res.send(folders[findFile(id)])
 
 })
 
@@ -91,7 +90,7 @@ app.post('/gcode', async function(req, res){
 function findFile(id){
   for(let i = 0; i <= folders.length; i++){
     if(folders[i].id === id){
-      return folders[i].index;
+      return i;
     }
   }
   return -1; //if not found
@@ -99,13 +98,13 @@ function findFile(id){
 
 
 
-
+//Finds filament used and sets it to a value of x5 what is found, plus one dollar. Only slightly arbitrary number.
 async function findFilamentUsed(id){
   const filePath = './data/'+id+'/'+id+'.gcode'; // Replace with your file path
   const searchString = 'total filament cost'; // Replace with the keyword or pattern you want to search for
 
   const folderIndex = findFile(id);
-  
+  return new Promise((resolve, reject) => {
   fs.readFile(filePath, 'utf8', (err, data) => {
     if (err) {
       console.error('Error reading file:', err);
@@ -121,26 +120,21 @@ async function findFilamentUsed(id){
         // You can extract information from this line as needed
         const regex = /[\d.]+/g;
         let regtest = lines[i].match(regex);
-        console.log(regtest[0]);
         const cost = parseFloat(regtest[0])
-
-        folders[folderIndex].cost = cost*5;
-
-        console.log(cost)
+        //Sets the cost
+        folders[folderIndex].cost = (cost*5)+1;
         console.log(folders[folderIndex].cost)
-
-        break;//breaks if found
+        resolve();//breaks if found
       }
     }
   });
+})
 }
 
 
 
 //Sets the open directory for file downloads
 const directoryPath = "./data/"
-//Hosts the gcode files to the users (used in the gcodeviewer component)
-//Accessed simply by doing http://localhost:5000/foldername/filename, that's it. It hosts the directory with all the .stls and .gcodes with directoryPath
 app.use(express.static(directoryPath));
 
 
@@ -173,9 +167,9 @@ async function parseSTL(fileID){
     
     childProcess.stderr.on('data', (data) => {
     if(stdoutData.includes("exceeds the maximum build volume height.")){
-      folders[folderIndex].isParsed = "No"
+      folders[folderIndex].isParsed = "This model is too large to print"
     }
-
+      resolve("Bad")
       console.error(`stderr: ${data}`);
     });
     

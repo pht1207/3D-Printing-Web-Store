@@ -15,6 +15,7 @@ function StlInsert() {
     const [hideUpload, setHideUpload] = useState(false);
     const [isUploaded, setIsUploaded] = useState(false);
     const [GCodeParsed, setGCodeParsed] = useState(false);
+    const [GCodeCost, setGCodeCost] = useState();
 
     
 
@@ -86,10 +87,11 @@ function StlInsert() {
         },
       })
       console.log(resolve);
-      if(resolve.body === "Successful"){
+      console.log(resolve.data)
+      if(resolve.data.isParsed === "Successful"){
         console.log("wahdskjhaldkjfhadskljfhalkjdshllkhlhk")
       }
-
+      setGCodeCost(resolve.data.cost);
       
       setGCodeParsed(true); 
     }
@@ -119,7 +121,7 @@ function StlInsert() {
           {isUploaded ? GCodeForm : <></>}
           
           {isUploaded ? <button onClick={parseGCode}>Prepare your file?</button> : <></>}
-          {GCodeParsed ?  <GCodeViewerComponent id={serverFileID}/>: <></>}
+          {GCodeParsed ? <> <GCodeViewerComponent id={serverFileID}/>Price: ${GCodeCost}</>: <></>}
       </div>
     );
   }
