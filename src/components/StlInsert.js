@@ -86,7 +86,7 @@ function StlInsert() {
         },
       })
       console.log(resolve);
-      if(resolve.body === "Finished"){
+      if(resolve.body === "Successful"){
         console.log("wahdskjhaldkjfhadskljfhalkjdshllkhlhk")
       }
 
@@ -118,7 +118,7 @@ function StlInsert() {
           />: <>Placeholder</>}
           {isUploaded ? GCodeForm : <></>}
           
-          {isUploaded ? <button onClick={parseGCode}>Is this the correct STL?</button> : <></>}
+          {isUploaded ? <button onClick={parseGCode}>Prepare your file?</button> : <></>}
           {GCodeParsed ?  <GCodeViewerComponent id={serverFileID}/>: <></>}
       </div>
     );

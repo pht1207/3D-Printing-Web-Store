@@ -21,12 +21,13 @@ app.use(express.json());
 const folders = [];
 
 //Constructor for creating user objects for the users[] array.
-function Folder(id, file, isParsed, index, paid){
+function Folder(id, file, isParsed, index, paid, cost){
   this.id = id;
   this.file = file;
   this.isParsed = isParsed;
   this.index = index;
   this.paid = paid;
+  this.cost = cost;
 }
 
 
@@ -39,7 +40,8 @@ app.post('/upload/stl', upload.single('file'), async function (req, res, next) {
     let isParsed = false;
     let foldersIndex = folders.length;
     let paid = false;
-    const newFolder = new Folder(id, fileName, isParsed, foldersIndex, paid)
+    let cost = 0;
+    const newFolder = new Folder(id, fileName, isParsed, foldersIndex, paid, cost)
     folders.push(newFolder) //Adds this new object to the stack
 
 
@@ -71,12 +73,67 @@ app.post('/upload/stl', upload.single('file'), async function (req, res, next) {
 app.post('/gcode', async function(req, res){
   console.log("post /gcode called! \n")
   let id = req.body;
+  let folderIndex = findFile(id);
   //let gcodeOptions;
   await parseSTL(id);
+  await findFilamentUsed(id)
+  //folders[folderIndex].cost = filamentUsed*5;
+  //console.log("USED" + filamentUsed)
+
   console.log("sending res...")
-  res.send("Finished")
+
+  res.send(folders[findFile(id)].isParsed)
 
 })
+
+
+//Finds the folder index in the folders array
+function findFile(id){
+  for(let i = 0; i <= folders.length; i++){
+    if(folders[i].id === id){
+      return folders[i].index;
+    }
+  }
+  return -1; //if not found
+}
+
+
+
+
+async function findFilamentUsed(id){
+  const filePath = './data/'+id+'/'+id+'.gcode'; // Replace with your file path
+  const searchString = 'total filament cost'; // Replace with the keyword or pattern you want to search for
+
+  const folderIndex = findFile(id);
+  
+  fs.readFile(filePath, 'utf8', (err, data) => {
+    if (err) {
+      console.error('Error reading file:', err);
+      return;
+    }
+  
+    // Split the file content into lines
+    const lines = data.split('\n');
+  
+    // Iterate through each line to find the line containing the keyword
+    for (let i = 0; i < lines.length; i++) {
+      if (lines[i].includes(searchString)) {
+        // You can extract information from this line as needed
+        const regex = /[\d.]+/g;
+        let regtest = lines[i].match(regex);
+        console.log(regtest[0]);
+        const cost = parseFloat(regtest[0])
+
+        folders[folderIndex].cost = cost*5;
+
+        console.log(cost)
+        console.log(folders[folderIndex].cost)
+
+        break;//breaks if found
+      }
+    }
+  });
+}
 
 
 
@@ -92,13 +149,13 @@ app.listen(port, () => {
 })
 
 
-//const { exec } = require('child_process');
 const { spawn } = require('child_process');
-
 //Parses the stl file into a gcode file
-async function parseSTL(multerID){
+async function parseSTL(fileID){
+  let folderIndex = findFile(fileID);
+
   return new Promise((resolve, reject) => {
-  let id = multerID
+  let id = fileID;
   console.log("parseSTL running...")
     let supportType;
     let materialType;
@@ -115,27 +172,18 @@ async function parseSTL(multerID){
     });
     
     childProcess.stderr.on('data', (data) => {
+    if(stdoutData.includes("exceeds the maximum build volume height.")){
+      folders[folderIndex].isParsed = "No"
+    }
+
       console.error(`stderr: ${data}`);
     });
     
     childProcess.on('close', (code) => {
       console.log(`child process exited with code ${code}`);
       console.log(stdoutData);
-      resolve(stdoutData)
+      folders[folderIndex].isParsed = "Successful";
+      resolve(stdoutData);
     });
-/*
-    exec(command, (error, stdout, stderr) => {
-      if (error) {
-        console.error(`Error executing command: ${error}`);
-        return;
-      }
-      console.log(`Command output: ${stdout}`);
-      if(stdout.includes("Slicing results exported to: ")){
-      console.log("SUCCESS!");
-      resolve(1)
-      }
-    });
-    console.log("parsestl reached end!")
-    })
-  */})
+})
 }
