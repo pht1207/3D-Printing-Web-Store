@@ -2,8 +2,19 @@ import {StlViewer} from "react-stl-viewer";
 import React, { useState } from "react";
 import axios from 'axios';
 import GCodeViewerComponent from "./GCodeViewerComponent";
+import './StlInsert.css';
+
+
+
+//https://stripe.com/docs/stripe-js/react
+
+//https://threejs.org/examples/misc_exporter_stl.html
 
 //https://sbcode.net/threejs/loaders-stl/
+
+
+//ThreeJS app for organizing stls?
+//https://threejs.org/editor/
 
 //Eventualy use react-three-fiber to show the stl and maybe gcode too.
 
@@ -26,8 +37,8 @@ function StlInsert() {
     const style = {
       top: 0,
       left: 0,
-      width: '100vw',
-      height: '60vh',
+      width: '60vw',
+      height: '40vh',
   }
 
   function fileInputted(e){
@@ -117,7 +128,7 @@ function StlInsert() {
             style={style}
             orbitControls
             url= {url}
-          />: <>Placeholder</>}
+          />: <></>}
           {isUploaded ? GCodeForm : <></>}
           
           {isUploaded ? <button onClick={parseGCode}>Prepare your file?</button> : <></>}

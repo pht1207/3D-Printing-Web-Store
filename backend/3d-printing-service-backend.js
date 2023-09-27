@@ -18,8 +18,15 @@ app.use(express.json());
 //Used in executing commands on the server
 
 
-const folders = [];
+//Code regarding Stripe:
+const stripe = require('stripe')(sk_test_51NpxjLJfFzW7oP7EXHvOrSGY9PBG6K7zlgWTc0msnf0ycJFBWJalNqmfBwgsSscRvsggUkx1ZwcaUJAOIlQUd8E900cCiribBn);
 
+
+
+
+
+
+const folders = [];
 //Constructor for creating user objects for the users[] array.
 function Folder(id, file, isParsed, index, paid, cost){
   this.id = id;
@@ -69,15 +76,13 @@ app.post('/upload/stl', upload.single('file'), async function (req, res, next) {
 
 //Used for parsing the stl file into gcode and determining price from said gcode
 app.post('/gcode', async function(req, res){
-  console.log("post /gcode called! \n")
   let id = req.body;
   let folderIndex = findFile(id);
   //let gcodeOptions;
   await parseSTL(id);
 
   await findFilamentUsed(id)
-  console.log(folderIndex)
-  console.log(folders[folderIndex].cost)
+  console.log("Cost is: "+folders[folderIndex].cost+"$");
 
   console.log("sending res...")
 
@@ -98,7 +103,7 @@ function findFile(id){
 
 
 
-//Finds filament used and sets it to a value of x5 what is found, plus one dollar. Only slightly arbitrary number.
+//Finds filament used and sets it to a value of x5 what is found, plus one dollar. Only slightly arbitrary number ;).
 async function findFilamentUsed(id){
   const filePath = './data/'+id+'/'+id+'.gcode'; // Replace with your file path
   const searchString = 'total filament cost'; // Replace with the keyword or pattern you want to search for
