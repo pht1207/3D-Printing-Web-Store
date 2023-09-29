@@ -103,6 +103,9 @@ app.post('/gcode', async function(req, res){
         quantity: 1,
       },
     ],
+    automatic_tax: {
+      enabled: true,
+    },
   });
   console.log(paymentLink)
   folders[folderIndex].paymentLink = paymentLink;
