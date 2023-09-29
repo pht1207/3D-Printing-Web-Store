@@ -96,6 +96,7 @@ app.post('/gcode', async function(req, res){
   });
   console.log(price);
 
+  //https://stripe.com/docs/payment-links/api#address-collection
   const paymentLink = await stripe.paymentLinks.create({
     line_items: [
       {
@@ -106,6 +107,19 @@ app.post('/gcode', async function(req, res){
     automatic_tax: {
       enabled: true,
     },
+    billing_address_collection: 'required',
+    shipping_address_collection: {
+      allowed_countries: ['US'],
+    },
+    invoice_creation: {
+      enabled: true,
+      invoice_data: {
+        description: 'Invoice for 3D Print Purchase',
+        metadata: {
+          OrderID: folders[folderIndex].id
+        }
+      }
+    },
   });
   console.log(paymentLink)
   folders[folderIndex].paymentLink = paymentLink;
@@ -114,14 +128,8 @@ app.post('/gcode', async function(req, res){
 })
 
 
-
-
-
-app.post("/create-payment-intent", async (req, res) => {
-
-});
-
-
+//Calculate shipping costs?
+//https://www.easypost.com/usps-node-api
 
 
 
