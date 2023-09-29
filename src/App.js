@@ -2,6 +2,8 @@ import './App.css';
 import React, { useState } from 'react';
 import StlInsert from './components/StlInsert';
 import GCodeViewerComponent from './components/GCodeViewerComponent';
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
 
 
 function App() {  
@@ -13,12 +15,16 @@ const url = "https://storage.googleapis.com/ucloud-v3/6127a7f9aa32f718b8c1ab4f.g
 //const [GCodes, setGCodes] = useState(false);
 
 
+// This is your test publishable API key.
+const stripePromise = loadStripe("pk_test_51NpxjLJfFzW7oP7E7ZgMgbkptO9Wx2PKjwylDyJ3j7HL7za7gyGaOwZB9MN2NUxTdfhCPOMgWW3bsU8VkAZg5k8R00ZbTjfAdr");
 
 
   return (
     <div className="App">
-      <h1>Print App</h1>
-      <StlInsert/>
+      <Elements stripe={stripePromise}>
+        <h1>Print App</h1>
+        <StlInsert/>
+      </Elements>
     </div>
   );
 }

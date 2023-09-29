@@ -18,8 +18,8 @@ app.use(express.json());
 //Used in executing commands on the server
 
 
-//Code regarding Stripe:
-const stripe = require('stripe')(sk_test_51NpxjLJfFzW7oP7EXHvOrSGY9PBG6K7zlgWTc0msnf0ycJFBWJalNqmfBwgsSscRvsggUkx1ZwcaUJAOIlQUd8E900cCiribBn);
+//Stripe test key
+const stripe = require("stripe")('sk_test_51NpxjLJfFzW7oP7EXHvOrSGY9PBG6K7zlgWTc0msnf0ycJFBWJalNqmfBwgsSscRvsggUkx1ZwcaUJAOIlQUd8E900cCiribBn');
 
 
 
@@ -28,13 +28,14 @@ const stripe = require('stripe')(sk_test_51NpxjLJfFzW7oP7EXHvOrSGY9PBG6K7zlgWTc0
 
 const folders = [];
 //Constructor for creating user objects for the users[] array.
-function Folder(id, file, isParsed, index, paid, cost){
+function Folder(id, file, isParsed, index, paid, cost, paymentLink){
   this.id = id;
   this.file = file;
   this.isParsed = isParsed;
   this.index = index;
   this.paid = paid;
   this.cost = cost;
+  this.paymentLink = paymentLink
 }
 
 
@@ -49,7 +50,8 @@ app.post('/upload/stl', upload.single('file'), async function (req, res, next) {
     let foldersIndex = folders.length;
     let paid = false;
     let cost = 1;
-    const newFolder = new Folder(id, fileName, isParsed, foldersIndex, paid, cost)
+    let paymentLink = '';
+    const newFolder = new Folder(id, fileName, isParsed, foldersIndex, paid, cost, paymentLink)
     folders.push(newFolder) //Adds this new object to the stack
 
 
@@ -85,10 +87,42 @@ app.post('/gcode', async function(req, res){
   console.log("Cost is: "+folders[folderIndex].cost+"$");
 
   console.log("sending res...")
+  
+  //Makes a Stripe custom payment amount
+  const price = await stripe.prices.create({
+    product: "prod_OiRHeee3sS2bJu", // Replace with your actual product ID
+    unit_amount: (folders[folderIndex].cost)*100,
+    currency: 'usd',
+  });
+  console.log(price);
 
-  res.send(folders[findFile(id)])
+  const paymentLink = await stripe.paymentLinks.create({
+    line_items: [
+      {
+        price: price.id,
+        quantity: 1,
+      },
+    ],
+  });
+  console.log(paymentLink)
+  folders[folderIndex].paymentLink = paymentLink;
 
+  res.send(folders[folderIndex])
 })
+
+
+
+
+
+app.post("/create-payment-intent", async (req, res) => {
+
+});
+
+
+
+
+
+
 
 
 //Finds the folder index in the folders array

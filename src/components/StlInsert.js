@@ -1,8 +1,12 @@
 import {StlViewer} from "react-stl-viewer";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import GCodeViewerComponent from "./GCodeViewerComponent";
 import './StlInsert.css';
+import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+import { CardElement } from "@stripe/react-stripe-js";
+
 
 
 
@@ -27,6 +31,7 @@ function StlInsert() {
     const [isUploaded, setIsUploaded] = useState(false);
     const [GCodeParsed, setGCodeParsed] = useState(false);
     const [GCodeCost, setGCodeCost] = useState();
+    const [stripePriceID, setStripePriceID] = useState();
 
     
 
@@ -72,10 +77,16 @@ function StlInsert() {
 
   }
 
+
+
+
+
+
+
+
   const GCodeForm = (
     <div className="GCodeForm">
       <form>
-        <h4>Change defualt settings for your print: </h4>
       <select id="dropdown" onChange={handleOptionChange}>
         <option value="">Select an option...</option>
         <option value="option1">Option 1</option>
@@ -103,6 +114,7 @@ function StlInsert() {
         console.log("wahdskjhaldkjfhadskljfhalkjdshllkhlhk")
       }
       setGCodeCost(resolve.data.cost);
+      setStripePriceID(resolve.data.stripePriceID)
       
       setGCodeParsed(true); 
     }
@@ -111,7 +123,7 @@ function StlInsert() {
   
     return (
       <div className="interactionWindow">
-      {!hideUpload ? <div className="uploadField">
+      {!GCodeParsed ? <>{!hideUpload ? <div className="uploadField">
         <p>Enter your .stl file here</p>
         <form onSubmit={uploadFile}>
             <input type="file" onChange={fileInputted} name="file"></input>
@@ -129,10 +141,23 @@ function StlInsert() {
             orbitControls
             url= {url}
           />: <></>}
-          {isUploaded ? GCodeForm : <></>}
+          {isUploaded ?
+           <>
+           <h4>Change defualt settings for your print: </h4>
+            {GCodeForm}
+            </>: <></>}
           
           {isUploaded ? <button onClick={parseGCode}>Prepare your file?</button> : <></>}
-          {GCodeParsed ? <> <GCodeViewerComponent id={serverFileID}/>Price: ${GCodeCost}</>: <></>}
+          </>
+          : <> 
+          <div className="gcodeViewer">
+            <GCodeViewerComponent id={serverFileID}/>
+            <p>Price before tax and shipping: ${GCodeCost}</p>
+          </div>
+          <h4>Change your print:</h4>
+          {GCodeForm}
+          </>
+}
       </div>
     );
   }
