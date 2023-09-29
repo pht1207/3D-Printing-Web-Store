@@ -114,9 +114,15 @@ function StlInsert() {
         console.log("wahdskjhaldkjfhadskljfhalkjdshllkhlhk")
       }
       setGCodeCost(resolve.data.cost);
-      setStripePaymentLink(resolve.data.paymentLink)
+      setStripePaymentLink(resolve.data.paymentLink.url)
       
       setGCodeParsed(true); 
+    }
+
+
+    function paymentLinkButtonClick(){
+
+      //Send data to server that puts a copy of the order in another folder?
     }
 
 
@@ -158,7 +164,7 @@ function StlInsert() {
           {GCodeForm}
           <p>{stripePaymentLink}</p>
           </>
-}
+      }
       </div>
     );
   }
