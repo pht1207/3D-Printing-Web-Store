@@ -102,6 +102,11 @@ app.post('/gcode', async function(req, res){
       {
         price: price.id,
         quantity: 1,
+        adjustable_quantity: {
+          enabled: true,
+          minimum: 1,
+          maximum: 10,
+        },
       },
     ],
     automatic_tax: {
@@ -130,8 +135,11 @@ app.post('/gcode', async function(req, res){
 
 //Calculate shipping costs?
 //https://www.easypost.com/usps-node-api
+//https://stripe.com/docs/api/shipping_rates/object
 
 
+
+//Have some sort of function to display backorder time?
 
 
 
