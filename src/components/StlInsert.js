@@ -31,7 +31,7 @@ function StlInsert() {
     const [isUploaded, setIsUploaded] = useState(false);
     const [GCodeParsed, setGCodeParsed] = useState(false);
     const [GCodeCost, setGCodeCost] = useState();
-    const [stripePriceID, setStripePriceID] = useState();
+    const [stripePaymentLink, setStripePaymentLink] = useState();
 
     
 
@@ -114,7 +114,7 @@ function StlInsert() {
         console.log("wahdskjhaldkjfhadskljfhalkjdshllkhlhk")
       }
       setGCodeCost(resolve.data.cost);
-      setStripePriceID(resolve.data.stripePriceID)
+      setStripePaymentLink(resolve.data.paymentLink)
       
       setGCodeParsed(true); 
     }
@@ -156,6 +156,7 @@ function StlInsert() {
           </div>
           <h4>Change your print:</h4>
           {GCodeForm}
+          <p>{stripePaymentLink}</p>
           </>
 }
       </div>
