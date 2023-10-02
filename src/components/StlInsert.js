@@ -22,7 +22,7 @@ import { CardElement } from "@stripe/react-stripe-js";
 
 //Eventualy use react-three-fiber to show the stl and maybe gcode too.
 
-function StlInsert() {
+function StlInsert(props) {
     //https://www.npmjs.com/package/react-stl-viewer
     const [userFile, setUserFile] = useState();
     const [STLPresent, setSTLPresent] = useState(false);
@@ -32,6 +32,7 @@ function StlInsert() {
     const [GCodeParsed, setGCodeParsed] = useState(false);
     const [GCodeCost, setGCodeCost] = useState();
     const [stripePaymentLink, setStripePaymentLink] = useState();
+
 
     
 
@@ -125,6 +126,12 @@ function StlInsert() {
       //Send data to server that puts a copy of the order in another folder?
     }
 
+    function cartAdder(){
+      const newCart  = [...props.cart, serverFileID]
+      props.setCart(newCart)
+      console.log(newCart);
+    }
+
 
   
     return (
@@ -141,7 +148,8 @@ function StlInsert() {
       }
 
 
-        {serverFileID?<StlViewer
+        {serverFileID?
+        <StlViewer
             modelProps={{color: "rgb(199,255,255)"}}
             style={style}
             orbitControls
@@ -163,6 +171,7 @@ function StlInsert() {
           <h4>Change your print:</h4>
           {GCodeForm}
           <p>{stripePaymentLink}</p>
+          <button onClick={cartAdder}>add to cart</button>
           </>
       }
       </div>

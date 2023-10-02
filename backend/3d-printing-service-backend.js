@@ -155,6 +155,58 @@ function findFile(id){
 }
 
 
+//Make some sort of way to put the payments in an array, put line_items equal to the array and bam, cart
+app.post('/cartMaker', async function(req, res){
+  let cart = req.body;
+
+  let id = req.body;
+  let folderIndex = findFile(id);
+  
+  //Makes a Stripe custom payment amount
+  const price = await stripe.prices.create({
+    product: "prod_OiRHeee3sS2bJu", // Replace with your actual product ID
+    unit_amount: (folders[folderIndex].cost)*100,
+    currency: 'usd',
+  });
+  console.log(price);
+
+  //https://stripe.com/docs/payment-links/api#address-collection
+  const paymentLink = await stripe.paymentLinks.create({
+    line_items: [
+      {
+        price: price.id,
+        quantity: 1,
+        adjustable_quantity: {
+          enabled: true,
+          minimum: 1,
+          maximum: 10,
+        },
+      },
+    ],
+    automatic_tax: {
+      enabled: true,
+    },
+    billing_address_collection: 'required',
+    shipping_address_collection: {
+      allowed_countries: ['US'],
+    },
+    invoice_creation: {
+      enabled: true,
+      invoice_data: {
+        description: 'Invoice for 3D Print Purchase',
+        metadata: {
+          OrderID: folders[folderIndex].id
+        }
+      }
+    },
+  });
+  console.log(paymentLink)
+  folders[folderIndex].paymentLink = paymentLink;
+
+  res.send(folders[folderIndex])
+})
+
+
 
 //Finds filament used and sets it to a value of x5 what is found, plus one dollar. Only slightly arbitrary number ;).
 async function findFilamentUsed(id){
