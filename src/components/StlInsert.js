@@ -128,7 +128,7 @@ function StlInsert(props) {
 
     function cartAdder(){
       const newCart  = [...props.cart, serverFileID]
-      props.setCart(newCart)
+      props.setCart([...props.cart, serverFileID])
       console.log(newCart);
     }
 
@@ -172,6 +172,7 @@ function StlInsert(props) {
           {GCodeForm}
           <p>{stripePaymentLink}</p>
           <button onClick={cartAdder}>add to cart</button>
+          
           </>
       }
       </div>

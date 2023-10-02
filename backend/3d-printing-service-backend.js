@@ -156,23 +156,45 @@ function findFile(id){
 
 
 //Make some sort of way to put the payments in an array, put line_items equal to the array and bam, cart
-app.post('/cartMaker', async function(req, res){
+app.post('/paymentLinkCreator', async function(req, res){
   let cart = req.body;
-
-  let id = req.body;
-  let folderIndex = findFile(id);
+  let metadataID = '';
+  console.log(cart)
+  //Gets all items from the cart id array and matches them to the items on the server file system
+  //Pushes all of them into an items array
+  let items = [];
+  for(let i = 0; i < cart.length; i++){
+    for(let j = 0; j < folders.length; j++){
+      if(cart[i] === folders[j].id)
+      {
+        items.push(folders[j])
+        metadataID += folders[j].id;
+      }
+    }
+  }
+  console.log("items in item array: " + items.length);
   
+
   //Makes a Stripe custom payment amount
+  let paymentLinkItems = [];
+  for(let i = 0; i < items.length; i++){
   const price = await stripe.prices.create({
     product: "prod_OiRHeee3sS2bJu", // Replace with your actual product ID
-    unit_amount: (folders[folderIndex].cost)*100,
+    unit_amount: (items[i].cost)*100,
     currency: 'usd',
   });
-  console.log(price);
-
+  paymentLinkItems.push({price: price, quantity: 1})
+  }
+  console.log(paymentLinkItems);
+  const lineItems = paymentLinkItems.map(item => ({
+    price: item.price.id,
+    quantity: item.quantity,
+  }));
+  console.log(lineItems)
+  
   //https://stripe.com/docs/payment-links/api#address-collection
   const paymentLink = await stripe.paymentLinks.create({
-    line_items: [
+    line_items: lineItems,/*[
       {
         price: price.id,
         quantity: 1,
@@ -182,7 +204,7 @@ app.post('/cartMaker', async function(req, res){
           maximum: 10,
         },
       },
-    ],
+    ],*/
     automatic_tax: {
       enabled: true,
     },
@@ -195,16 +217,20 @@ app.post('/cartMaker', async function(req, res){
       invoice_data: {
         description: 'Invoice for 3D Print Purchase',
         metadata: {
-          OrderID: folders[folderIndex].id
+          OrderID: metadataID
         }
       }
     },
   });
+  
   console.log(paymentLink)
-  folders[folderIndex].paymentLink = paymentLink;
+  //folders[folderIndex].paymentLink = paymentLink;
 
-  res.send(folders[folderIndex])
+  res.send(1)
 })
+
+
+
 
 
 
