@@ -26,7 +26,8 @@ async function buyFunction(){
       'Content-Type': 'application/json', // Set the content type to plain text
     },
   })
-  setStripePaymentLink(resolve.data.paymentLink.url)
+  console.log(resolve)
+  setStripePaymentLink(resolve.data)
 
 }
 

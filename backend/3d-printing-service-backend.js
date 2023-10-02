@@ -214,10 +214,9 @@ app.post('/paymentLinkCreator', async function(req, res){
     },
   });
   
-  console.log(paymentLink)
-  //folders[folderIndex].paymentLink = paymentLink;
+  console.log(paymentLink.url)
 
-  res.send(paymentLink)
+  res.send(paymentLink.url)
 })
 
 
