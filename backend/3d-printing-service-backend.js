@@ -175,7 +175,7 @@ app.post('/paymentLinkCreator', async function(req, res){
   console.log("items in item array: " + items.length);
   
 
-  //Makes a Stripe custom payment amount
+  //Makes a Stripe custom payment amount for each cart item
   let paymentLinkItems = [];
   for(let i = 0; i < items.length; i++){
   const price = await stripe.prices.create({
@@ -183,28 +183,19 @@ app.post('/paymentLinkCreator', async function(req, res){
     unit_amount: (items[i].cost)*100,
     currency: 'usd',
   });
-  paymentLinkItems.push({price: price, quantity: 1})
+  paymentLinkItems.push({price: price, quantity: 1, adjustable_quantity: {enabled: true, minimum: 1, maximum: 10}})
   }
-  console.log(paymentLinkItems);
+  //Maps the array so i can be used inside of stripe.paymentLinks.create
   const lineItems = paymentLinkItems.map(item => ({
     price: item.price.id,
     quantity: item.quantity,
+    adjustable_quantity: item.adjustable_quantity,
   }));
   console.log(lineItems)
   
   //https://stripe.com/docs/payment-links/api#address-collection
   const paymentLink = await stripe.paymentLinks.create({
-    line_items: lineItems,/*[
-      {
-        price: price.id,
-        quantity: 1,
-        adjustable_quantity: {
-          enabled: true,
-          minimum: 1,
-          maximum: 10,
-        },
-      },
-    ],*/
+    line_items: lineItems,
     automatic_tax: {
       enabled: true,
     },
@@ -226,7 +217,7 @@ app.post('/paymentLinkCreator', async function(req, res){
   console.log(paymentLink)
   //folders[folderIndex].paymentLink = paymentLink;
 
-  res.send(1)
+  res.send(paymentLink)
 })
 
 
