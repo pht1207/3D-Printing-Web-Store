@@ -31,7 +31,6 @@ function StlInsert(props) {
     const [isUploaded, setIsUploaded] = useState(false);
     const [GCodeParsed, setGCodeParsed] = useState(false);
     const [GCodeCost, setGCodeCost] = useState();
-    const [stripePaymentLink, setStripePaymentLink] = useState();
 
 
     
@@ -114,17 +113,11 @@ function StlInsert(props) {
       if(resolve.data.isParsed === "Successful"){
         console.log("wahdskjhaldkjfhadskljfhalkjdshllkhlhk")
       }
-      setGCodeCost(resolve.data.cost);
-      setStripePaymentLink(resolve.data.paymentLink.url)
-      
+      setGCodeCost(resolve.data.cost);      
       setGCodeParsed(true); 
     }
 
 
-    function paymentLinkButtonClick(){
-
-      //Send data to server that puts a copy of the order in another folder?
-    }
 
     function cartAdder(){
       const newCart  = [...props.cart, serverFileID]
@@ -170,9 +163,7 @@ function StlInsert(props) {
           </div>
           <h4>Change your print:</h4>
           {GCodeForm}
-          <p>{stripePaymentLink}</p>
           <button onClick={cartAdder}>add to cart</button>
-          
           </>
       }
       </div>

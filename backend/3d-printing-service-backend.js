@@ -80,54 +80,10 @@ app.post('/upload/stl', upload.single('file'), async function (req, res, next) {
 app.post('/gcode', async function(req, res){
   let id = req.body;
   let folderIndex = findFile(id);
-  //let gcodeOptions;
+  //let gcodeOptions; //sent to the parsestl function
   await parseSTL(id);
 
   await findFilamentUsed(id)
-  console.log("Cost is: "+folders[folderIndex].cost+"$");
-
-  console.log("sending res...")
-  
-  //Makes a Stripe custom payment amount
-  const price = await stripe.prices.create({
-    product: "prod_OiRHeee3sS2bJu", // Replace with your actual product ID
-    unit_amount: (folders[folderIndex].cost)*100,
-    currency: 'usd',
-  });
-  console.log(price);
-
-  //https://stripe.com/docs/payment-links/api#address-collection
-  const paymentLink = await stripe.paymentLinks.create({
-    line_items: [
-      {
-        price: price.id,
-        quantity: 1,
-        adjustable_quantity: {
-          enabled: true,
-          minimum: 1,
-          maximum: 10,
-        },
-      },
-    ],
-    automatic_tax: {
-      enabled: true,
-    },
-    billing_address_collection: 'required',
-    shipping_address_collection: {
-      allowed_countries: ['US'],
-    },
-    invoice_creation: {
-      enabled: true,
-      invoice_data: {
-        description: 'Invoice for 3D Print Purchase',
-        metadata: {
-          OrderID: folders[folderIndex].id
-        }
-      }
-    },
-  });
-  console.log(paymentLink)
-  folders[folderIndex].paymentLink = paymentLink;
 
   res.send(folders[folderIndex])
 })
@@ -139,7 +95,7 @@ app.post('/gcode', async function(req, res){
 
 
 
-//Have some sort of function to display backorder time
+//Have some sort of function to track backorder time
 
 
 
