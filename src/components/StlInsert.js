@@ -151,12 +151,17 @@ function StlInsert(props) {
 
 
         {serverFileID?
+        <div className="STLViewerDiv">
         <StlViewer
             modelProps={{color: "rgb(199,255,255)"}}
             style={style}
             orbitControls
             url= {url}
-          />: <></>}
+          />
+        </div>
+        : 
+        <></>
+        }
           {isUploaded ?
            <>
            <h4>Change defualt settings for your print: </h4>

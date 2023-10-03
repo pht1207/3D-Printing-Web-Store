@@ -3,6 +3,7 @@ import React, { useState, createContext } from 'react';
 import StlInsert from './components/StlInsert';
 import GCodeViewerComponent from './components/GCodeViewerComponent';
 import NavigationBar from './components/NavigationBar';
+import Cart from './components/Cart';
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
 import axios from 'axios';
@@ -32,8 +33,11 @@ const stripePromise = loadStripe("pk_test_51NpxjLJfFzW7oP7E7ZgMgbkptO9Wx2PKjwylD
     <div className="App">
       <NavigationBar cart={cart} setCart={setCart} pseudoCart={pseudoCart} setPseudoCart={setPseudoCart}/>
       <Elements stripe={stripePromise}>
-        <h1>Print App</h1>
+      <h1>Print App</h1>
+        <div className='mainDiv'>
+        <Cart cart={cart} setCart={setCart} pseudoCart={pseudoCart} setPseudoCart={setPseudoCart}/>
         <StlInsert cart={cart} setCart={setCart}/>
+        </div>
       </Elements>
     </div>
   );

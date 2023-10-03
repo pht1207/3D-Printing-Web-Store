@@ -16,6 +16,11 @@
     justify-content: space-around;
   }
 
+.cartDiv{
+  border-style: solid;
+  width: 50%;
+}
+
 .cartItem{
     font-size: .5em;
 }

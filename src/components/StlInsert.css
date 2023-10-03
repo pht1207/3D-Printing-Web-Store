@@ -1,0 +1,17 @@
+.GCodeViewerDiv{
+    height:40vh;
+    border-style: solid;
+    border-color: black;
+    overflow: hidden;
+  }
+  .STLViewerDiv{
+    height:40vh;
+    border-style: solid;
+    border-color: black;
+    overflow: hidden;
+  }
+
+  .interactionWindow{
+    width:50%;
+    border-style: solid;
+  }
