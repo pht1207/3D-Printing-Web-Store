@@ -6,10 +6,14 @@ import axios from 'axios';
 
 function BuyButton(props) {
     const [buyLinkReceived, setBuyLinkReceived] = useState(false);
+    const [stripePaymentLink, setStripePaymentLink] = useState();
 
+
+    //Brings user to the stripe payment page
     useEffect(() => {
-        if(props.stripePaymentLink){
-        window.location.href = props.stripePaymentLink;
+        if(stripePaymentLink){
+        //window.location.href = props.stripePaymentLink;
+        window.open(stripePaymentLink)
         }
         }, [buyLinkReceived]);
 
@@ -20,7 +24,7 @@ function BuyButton(props) {
           },
         })
         console.log(resolve)
-        await props.setStripePaymentLink(resolve.data)
+        await setStripePaymentLink(resolve.data)
         await setBuyLinkReceived(true);
       }
       

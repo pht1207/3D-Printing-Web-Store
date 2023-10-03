@@ -30,6 +30,7 @@ function StlInsert(props) {
     const [hideUpload, setHideUpload] = useState(false);
     const [isUploaded, setIsUploaded] = useState(false);
     const [GCodeParsed, setGCodeParsed] = useState(false);
+    const [returnedGCode, setReturnedGCode] = useState();
     const [GCodeCost, setGCodeCost] = useState();
 
 
@@ -79,11 +80,6 @@ function StlInsert(props) {
 
 
 
-
-
-
-
-
   const GCodeForm = (
     <div className="GCodeForm">
       <form>
@@ -102,8 +98,7 @@ function StlInsert(props) {
 
     async function parseGCode(){
 
-      const myString = serverFileID;
-      const resolve = await axios.post('http://192.168.1.127:5005/gcode', myString, {
+      const resolve = await axios.post('http://192.168.1.127:5005/gcode', serverFileID, {
         headers: {
           'Content-Type': 'text/plain', // Set the content type to plain text
         },
@@ -113,16 +108,23 @@ function StlInsert(props) {
       if(resolve.data.isParsed === "Successful"){
         console.log("wahdskjhaldkjfhadskljfhalkjdshllkhlhk")
       }
-      setGCodeCost(resolve.data.cost);      
+      setGCodeCost(resolve.data.cost);
+      setReturnedGCode(resolve.data)  
       setGCodeParsed(true); 
     }
 
 
 
     function cartAdder(){
-      const newCart  = [...props.cart, serverFileID]
+      //const newCart  = [...props.cart, serverFileID]
+
       props.setCart([...props.cart, serverFileID])
-      console.log(newCart);
+
+      //const cartItem = ({name: returnedGCode.file, price: returnedGCode.price, })
+      //props.setPseudoCart([...props.pseudoCart, cartItem])
+
+      console.log(props.pseudoCart)
+      //console.log(newCart);
     }
 
 

@@ -27,7 +27,7 @@ function Cart(props) {
         }
       },[props.cart])
 
-    
+    //https://fontawesome.com/icons/cart-shopping?f=classic&s=solid&an=flip
       return (
         <div className='cartDiv'>
         <div className='cartButton' onClick={toggleDropdown}><FontAwesomeIcon icon="fa-solid fa-cart-shopping" /> Your Cart</div>
@@ -38,7 +38,7 @@ function Cart(props) {
                 {props.cart.map((item, index) => (
                 <li key={index}>{item}</li>
                 ))}
-            <li><BuyButton cart={props.cart} setCart={props.setCart} stripePaymentLink={props.stripePaymentLink}  setStripePaymentLink={props.setStripePaymentLink}/></li>
+            <li><BuyButton cart={props.cart} setCart={props.setCart}/></li>
         </ul>}
 
         </div>

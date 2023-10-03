@@ -11,6 +11,7 @@ import axios from 'axios';
 
 function App() {
 const [cart, setCart] = useState([]);
+const [pseudoCart, setPseudoCart] = useState([])
 const [stripePaymentLink, setStripePaymentLink] = useState();
 
 
@@ -29,11 +30,10 @@ const stripePromise = loadStripe("pk_test_51NpxjLJfFzW7oP7E7ZgMgbkptO9Wx2PKjwylD
 
   return (
     <div className="App">
-      <NavigationBar cart={cart} setCart={setCart} stripePaymentLink={stripePaymentLink} setStripePaymentLink={setStripePaymentLink}/>
+      <NavigationBar cart={cart} setCart={setCart} pseudoCart={pseudoCart} setPseudoCart={setPseudoCart}/>
       <Elements stripe={stripePromise}>
         <h1>Print App</h1>
         <StlInsert cart={cart} setCart={setCart}/>
-        {stripePaymentLink}
       </Elements>
     </div>
   );
