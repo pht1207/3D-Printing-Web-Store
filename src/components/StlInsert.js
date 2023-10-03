@@ -33,7 +33,6 @@ function StlInsert(props) {
     const [returnedGCode, setReturnedGCode] = useState();
     const [GCodeCost, setGCodeCost] = useState();
 
-
     
 
 
@@ -62,8 +61,6 @@ function StlInsert(props) {
     e.preventDefault();
     setHideUpload(true);
     const formData = new FormData(e.target);
-    //formData.append('file', userFile)
-    //changed to e instead of formData
     const resolve = await axios.post('http://192.168.1.127:5005/upload/stl', formData)
     console.log(resolve);
     console.log(resolve.data);
@@ -83,15 +80,16 @@ function StlInsert(props) {
   const GCodeForm = (
     <div className="GCodeForm">
       <form>
-      <select id="dropdown" onChange={handleOptionChange}>
-        <option value="">Select an option...</option>
-        <option value="option1">Option 1</option>
-        <option value="option2">Option 2</option>
-        <option value="option3">Option 3</option>
-        <option value="option4">Option 4</option>
-      </select>
+        <select id="dropdown" onChange={handleOptionChange}>
+          <option value="">Select an option...</option>
+          <option value="option1">Option 1</option>
+          <option value="option2">Option 2</option>
+          <option value="option3">Option 3</option>
+          <option value="option4">Option 4</option>
+        </select>
 
-      <button type="submit">Submit</button>      </form>
+        <button type="submit">Submit</button>
+      </form>
     </div>
 
     )
@@ -115,9 +113,8 @@ function StlInsert(props) {
 
 
 
-    function cartAdder(){
-      //const newCart  = [...props.cart, serverFileID]
-
+    async function cartAdder(){
+      //Adds the new gcode to the cart
       props.setCart([...props.cart, serverFileID])
 
       //const cartItem = ({name: returnedGCode.file, price: returnedGCode.price, })
@@ -125,6 +122,15 @@ function StlInsert(props) {
 
       console.log(props.pseudoCart)
       //console.log(newCart);
+      setUserFile();
+      setSTLPresent(false);
+      setServerFileID(false);
+      setHideUpload(false);
+      setIsUploaded(false);
+      setGCodeParsed(false);
+      setReturnedGCode();
+      setGCodeCost();
+  
     }
 
 
