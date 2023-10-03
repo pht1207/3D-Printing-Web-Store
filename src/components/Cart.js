@@ -10,12 +10,8 @@ library.add(faShoppingCart);
 
 function Cart(props) {
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-    const [mouseEnter, setMouseEnter] = useState(false);
     const [emptyCart, setEmptyCart] = useState(true);
 
-    function toggleDropdown(){
-        setIsDropdownOpen(!isDropdownOpen);
-      }
 
       //Sets cart empty or not
       useEffect(() => { 
@@ -38,9 +34,9 @@ function Cart(props) {
         </>
          :
          <>
-         <div className='cartButton' onClick={toggleDropdown}><FontAwesomeIcon icon="fa-solid fa-cart-shopping" /> Your Cart</div>
+         <div className='cartButton'><FontAwesomeIcon icon="fa-solid fa-cart-shopping" /> Your Cart</div>
  
-          <ul className='dropdownList'>
+          <ul className='cartList'>
              {props.cart.map((item, index) => (
              <li key={index} className='cartItem'>{index+1}: File Name: {item} Price: {"test"}</li>
              ))

@@ -10,7 +10,7 @@
     color:black;
   }
 
-.dropdownList {
+.cartList {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
