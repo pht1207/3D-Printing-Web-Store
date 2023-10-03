@@ -6,9 +6,12 @@ nav ul {
     border-style: solid;
     justify-content: space-around;
     list-style: none;
+    background-color: rgb(81, 177, 255);
     }
 
 nav ul li {
     align-self: center;
     font-size: x-large;
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    color: white
 }

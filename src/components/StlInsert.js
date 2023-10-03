@@ -122,6 +122,7 @@ function StlInsert(props) {
 
       console.log(props.pseudoCart)
       //console.log(newCart);
+      //Resets the whole component
       setUserFile();
       setSTLPresent(false);
       setServerFileID(false);

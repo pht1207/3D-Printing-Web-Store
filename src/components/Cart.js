@@ -36,7 +36,7 @@ function Cart(props) {
         {emptyCart ? <>Your cart is empty!</> :
          <ul className='dropdownList'>
                 {props.cart.map((item, index) => (
-                <li key={index}>{item}</li>
+                <li key={index} className='cartItem'>{item}</li>
                 ))}
             <li><BuyButton cart={props.cart} setCart={props.setCart}/></li>
         </ul>}
