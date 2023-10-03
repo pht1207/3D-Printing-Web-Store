@@ -33,7 +33,7 @@ function Cart(props) {
         {emptyCart ? 
         <>
         <div>
-          <p>Click the uplaod file button or drag your file to the right side of the window</p>
+          <p>Click the upload file button or drag your .stl file to the right side of the window</p>
         </div>
         </>
          :
