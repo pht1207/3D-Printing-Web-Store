@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.4.2",
+    "@fortawesome/free-solid-svg-icons": "^6.4.2",
+    "@fortawesome/react-fontawesome": "^0.2.0",
     "@react-three/drei": "^9.84.2",
     "@stripe/react-stripe-js": "^2.3.0",
     "@stripe/stripe-js": "^2.1.6",
@@ -19,6 +22,7 @@
     "react": "^18.2.0",
     "react-3d-viewer": "^1.0.12",
     "react-dom": "^18.2.0",
+    "react-fontawesome": "^1.7.1",
     "react-gcode-viewer": "^2.2.4",
     "react-scripts": "5.0.1",
     "react-stl-viewer": "^2.2.5",
