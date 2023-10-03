@@ -31,18 +31,15 @@ function Cart(props) {
       return (
         <div className='cartDiv'>
         <div className='cartButton' onClick={toggleDropdown}><FontAwesomeIcon icon="fa-solid fa-cart-shopping" /> Your Cart</div>
-        {isDropdownOpen && (
-        <div className="dropdown">
-        {emptyCart ? <>Your cart is empty!</> :
-         <ul className='dropdownList'>
-                {props.cart.map((item, index) => (
-                <li key={index} className='cartItem'>{item}</li>
-                ))}
-            <li><BuyButton cart={props.cart} setCart={props.setCart}/></li>
-        </ul>}
 
-        </div>
-      )}
+
+         <ul className='dropdownList'>
+            {props.cart.map((item, index) => (
+            <li key={index} className='cartItem'>{item}</li>
+            ))
+            }
+          <li><BuyButton cart={props.cart} setCart={props.setCart}/></li>
+        </ul>
         </div>
       );
     }
