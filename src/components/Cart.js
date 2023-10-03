@@ -30,17 +30,26 @@ function Cart(props) {
     //https://fontawesome.com/icons/cart-shopping?f=classic&s=solid&an=flip
       return (
         <div className='cartDiv'>
-        <div className='cartButton' onClick={toggleDropdown}><FontAwesomeIcon icon="fa-solid fa-cart-shopping" /> Your Cart</div>
-
-
-         <ul className='dropdownList'>
-            {props.cart.map((item, index) => (
-            <li key={index} className='cartItem'>{item}</li>
-            ))
-            }
-          <li><BuyButton cart={props.cart} setCart={props.setCart}/></li>
-        </ul>
+        {emptyCart ? 
+        <>
+        <div>
+          <p>Click the uplaod file button or drag your file to the right side of the window</p>
         </div>
+        </>
+         :
+         <>
+         <div className='cartButton' onClick={toggleDropdown}><FontAwesomeIcon icon="fa-solid fa-cart-shopping" /> Your Cart</div>
+ 
+          <ul className='dropdownList'>
+             {props.cart.map((item, index) => (
+             <li key={index} className='cartItem'>{index+1}: File Name: {item} Price: {"test"}</li>
+             ))
+             }
+           <li><BuyButton cart={props.cart} setCart={props.setCart}/></li>
+         </ul>
+         </>            
+          }
+          </div>
       );
     }
     
