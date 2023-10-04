@@ -40,10 +40,8 @@ function StlInsert(props) {
     const url = "http://192.168.1.127:5005/"+serverFileID+"/"+serverFileID+".stl";
     
     const style = {
-      top: 0,
-      left: 0,
-      width: '60vw',
-      height: '40vh',
+
+      height: "100%",
   }
 
   function fileInputted(e){
@@ -79,20 +77,23 @@ function StlInsert(props) {
 
   const GCodeForm = (
     <div className="GCodeForm">
-      <form>
+      <form onSubmit={parseGCodeWithOption}>
         <select id="dropdown" onChange={handleOptionChange}>
-          <option value="">Select an option...</option>
-          <option value="option1">Option 1</option>
-          <option value="option2">Option 2</option>
-          <option value="option3">Option 3</option>
-          <option value="option4">Option 4</option>
+=          <option value="option1" >Very High Quality (.12mm Layer Height)</option>
+          <option value="option2" selected>High Quality (.20mm Layer Height)</option>
+          <option value="option3">Medium Quality (.28mm Layer Height)</option>
         </select>
 
         <button type="submit">Submit</button>
       </form>
     </div>
-
     )
+
+
+    async function parseGCodeWithOption(){
+      
+    }
+
 
     async function parseGCode(){
 
