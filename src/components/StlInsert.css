@@ -14,4 +14,12 @@
   .interactionWindow{
     width:50%;
     border-style: solid;
+    min-height: 60vh;
+    font-size: x-large;
+    padding: 2em;
+  }
+
+
+  .printNotice{
+    font-size: small;
   }

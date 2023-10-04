@@ -29,7 +29,6 @@ const stripePromise = loadStripe("pk_test_51NpxjLJfFzW7oP7E7ZgMgbkptO9Wx2PKjwylD
     <div className="App">
       <NavigationBar cart={cart} setCart={setCart} pseudoCart={pseudoCart} setPseudoCart={setPseudoCart}/>
       <Elements stripe={stripePromise}>
-      <h1>Print App</h1>
         <div className='mainDiv'>
         <Cart cart={cart} setCart={setCart} pseudoCart={pseudoCart} setPseudoCart={setPseudoCart}/>
         <StlInsert cart={cart} setCart={setCart}/>

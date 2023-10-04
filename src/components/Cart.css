@@ -19,6 +19,9 @@
 .cartDiv{
   border-style: solid;
   width: 50%;
+  font-size: x-large;
+  padding: 2em;
+
 }
 
 .cartItem{

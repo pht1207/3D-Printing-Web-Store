@@ -175,6 +175,8 @@ function StlInsert(props) {
           : <> 
           <div className="gcodeViewer">
             <GCodeViewerComponent id={serverFileID}/>
+            <p className="printNotice">*This is a representation of how your print will look, it will be manually adjusted to a better orientation if possible</p>
+            <br></br>
             <p>Price before tax and shipping: ${GCodeCost}</p>
           </div>
           <h4>Change your print:</h4>
