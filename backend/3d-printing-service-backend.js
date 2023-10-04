@@ -40,7 +40,7 @@ function Folder(id, file, isParsed, index, paid, cost, paymentLink){
 
 
 //Used in accepting the stl file and storing it for the client
-app.post('/upload/stl', upload.single('file'), async function (req, res, next) {
+app.post('/upload/stl', upload.single('file'), async function (req, res) {
     console.log("filename: "+req.file.originalname)
   
     //Creates a user object when stls are sent
@@ -55,11 +55,11 @@ app.post('/upload/stl', upload.single('file'), async function (req, res, next) {
     folders.push(newFolder) //Adds this new object to the stack
 
 
-    fs.mkdir('./data/'+newFolder.id, (err) => {
-      if(err) {
-        console.error("Error creating folder: ${err}");
-      }
-    })
+    fs.mkdir('./data/' + newFolder.id, (err) => {
+    if (err) {
+      console.error("Error creating folder: ${err}");
+    }
+  })
 
     //changes the file extension of what was uploaded to a .stl
     const currentPath = './data/stl/'+id;

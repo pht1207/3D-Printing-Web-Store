@@ -59,13 +59,13 @@ function StlInsert(props) {
 
   async function uploadFile(e){
     e.preventDefault();
-    setHideUpload(true);
+    await setHideUpload(true);
     const formData = new FormData(e.target);
     const resolve = await axios.post('http://192.168.1.127:5005/upload/stl', formData)
     console.log(resolve);
     console.log(resolve.data);
     await setServerFileID(resolve.data);
-    setIsUploaded(true);
+    await setIsUploaded(true);
 
     //This is where we send data to the server telling it to turn the .stl into gcode. Some sort of form with parameters regarding quality, node server will pick somehow, probably just have a bunch of if statements for simplicity.
     
@@ -135,6 +135,8 @@ function StlInsert(props) {
     }
 
 
+
+    //If I ever want to let them drag and drop, I need an 'onDrop' attribute added to one of the HTML elements
   
     return (
       <div className="interactionWindow">
