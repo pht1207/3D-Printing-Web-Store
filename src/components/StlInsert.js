@@ -40,7 +40,6 @@ function StlInsert(props) {
     const url = "http://192.168.1.127:5005/"+serverFileID+"/"+serverFileID+".stl";
     
     const style = {
-
       height: "100%",
   }
 
