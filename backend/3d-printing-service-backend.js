@@ -94,12 +94,13 @@ app.post('/gcodeWithOptions', async function(req, res){
   console.log(req.body.serverFileID);
   console.log(req.body.selectedQuality);
   
-  let id = req.body;
+  let id = req.body.serverFileID;
+  let quality = req.body.selectedQuality;
   let folderIndex = findFile(id);
   //let gcodeOptions; //sent to the parsestl function
-  await parseSTL(id);
+  await parseSTLWithOptions(id, quality);
 
-  await findFilamentUsed(id)
+  await findFilamentUsedWithOptions(id)
 
   res.send(folders[folderIndex])
 })
@@ -240,6 +241,41 @@ async function findFilamentUsed(id){
 }
 
 
+async function findFilamentUsedWithOptions(id, quality){
+  const filePath = './data/'+id+'/'+id+'.gcode'; // Replace with your file path
+  const searchString = 'total filament cost'; // Replace with the keyword or pattern you want to search for
+
+  const folderIndex = findFile(id);
+  return new Promise((resolve, reject) => {
+  fs.readFile(filePath, 'utf8', (err, data) => {
+    if (err) {
+      console.error('Error reading file:', err);
+      return;
+    }
+  
+    // Split the file content into lines
+    const lines = data.split('\n');
+  
+    // Iterate through each line to find the line containing the keyword
+    for (let i = 0; i < lines.length; i++) {
+      if (lines[i].includes(searchString)) {
+        // You can extract information from this line as needed
+        const regex = /[\d.]+/g;
+        let regtest = lines[i].match(regex);
+        const cost = parseFloat(regtest[0])
+        //Sets the cost
+        folders[folderIndex].cost = (cost*5)+1;
+        console.log(folders[folderIndex].cost)
+        resolve();//breaks if found
+      }
+    }
+  });
+})
+}
+
+
+
+
 
 //Sets the open directory for file downloads
 const directoryPath = "./data/"
@@ -249,6 +285,70 @@ app.use(express.static(directoryPath));
 app.listen(port, () => {
   console.log(`App listening on port ${port}`)
 })
+
+
+
+
+async function parseSTLWithOptions(fileID, quality){
+  let folderIndex = findFile(fileID);
+  const printProfile = quality
+  
+
+  return new Promise((resolve, reject) => {
+  const id = fileID;
+  console.log("parseSTL running...")
+    let supportType;
+    let materialType;
+    //if(materialType === 'PETG'){--load ./resources/profiles/Neptune4-Config-JayoPETG-0.3Height.ini}
+    const command = './prusaslicer/prusa-slicer --center 112,112 --ensure-on-bed --support-material  --support-material-auto  --support-material-style organic --load ./prusaslicer/resources/profiles/Neptune4-Config-JayoPETG-0.3Height.ini -s ./data/'+id+'/'+id+'.stl --info --output ./data/'+id;
+
+    const childProcess = spawn(command, {shell: true})
+    let stdoutData = ''; // Variable to accumulate stdout data
+
+    childProcess.stdout.on('data', (data) => {
+      const chunk = data.toString();
+      stdoutData += chunk;
+      console.log(`stdout: ${data}`);
+    });
+    
+    childProcess.stderr.on('data', (data) => {
+    if(stdoutData.includes("exceeds the maximum build volume height.")){
+      folders[folderIndex].isParsed = "This model is too large to print"
+    }
+      resolve("Bad")
+      console.error(`stderr: ${data}`);
+    });
+    
+    childProcess.on('close', (code) => {
+      console.log(`child process exited with code ${code}`);
+      console.log(stdoutData);
+      folders[folderIndex].isParsed = "Successful";
+      resolve(stdoutData);
+    });
+})
+
+
+function findQuality(quality){
+  let profileLocation;
+  if(quality === "VHQ"){
+    profileLocation = './prusaslicer/resources/profiles/Neptune4-Config-JayoPETG-0.3Height.ini'
+
+  }
+  else if(quality === "MQ"){
+    profileLocation = './prusaslicer/resources/profiles/Neptune4-Config-JayoPETG-0.3Height.ini'
+
+  }
+  else{ //Use high quality
+    profileLocation = './prusaslicer/resources/profiles/Neptune4-Config-JayoPETG-0.3Height.ini'
+  }
+  return profileLocation;
+}
+
+}
+
+
+
+
 
 
 const { spawn } = require('child_process');
@@ -289,3 +389,5 @@ async function parseSTL(fileID){
     });
 })
 }
+
+

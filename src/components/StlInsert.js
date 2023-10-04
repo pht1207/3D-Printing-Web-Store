@@ -78,7 +78,7 @@ function StlInsert(props) {
 
   const GCodeForm = (
     <div className="GCodeForm" onSubmit={parseGCodeWithOptions}>
-      Change the quality of your print (gcodewithoptions):
+      Change the quality of your print:
       <form onSubmit={parseGCode}>
         <select id="dropdown" onChange={handleOptionChange}>
 =          <option value="VHQ" >Very High Quality (.12mm Layer Height)</option>
