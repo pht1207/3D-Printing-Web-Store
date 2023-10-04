@@ -32,6 +32,7 @@ function StlInsert(props) {
     const [GCodeParsed, setGCodeParsed] = useState(false);
     const [returnedGCode, setReturnedGCode] = useState();
     const [GCodeCost, setGCodeCost] = useState();
+    const [selectedQuality, setSelectedQuality] = useState("HQ");
 
     
 
@@ -68,33 +69,75 @@ function StlInsert(props) {
     
   }
 
-  function handleOptionChange(){
-
+  function handleOptionChange(e){
+    console.log(e.target.value)
+    setSelectedQuality(e.target.value)
   }
 
 
 
   const GCodeForm = (
-    <div className="GCodeForm">
-      <form onSubmit={parseGCodeWithOption}>
+    <div className="GCodeForm" onSubmit={parseGCodeWithOptions}>
+      Change the quality of your print (gcodewithoptions):
+      <form onSubmit={parseGCode}>
         <select id="dropdown" onChange={handleOptionChange}>
-=          <option value="option1" >Very High Quality (.12mm Layer Height)</option>
-          <option value="option2" selected>High Quality (.20mm Layer Height)</option>
-          <option value="option3">Medium Quality (.28mm Layer Height)</option>
+=          <option value="VHQ" >Very High Quality (.12mm Layer Height)</option>
+          <option value="HQ" selected>High Quality (.20mm Layer Height)</option>
+          <option value="MQ">Medium Quality (.28mm Layer Height)</option>
         </select>
-
-        <button type="submit">Submit</button>
+        <br/>
+        <button type="submit">Prepare your file to be printed (gcodeform, not working yet)</button> {/* Make this work at some point */}
       </form>
     </div>
     )
 
 
-    async function parseGCodeWithOption(){
-      
+    async function parseGCodeWithOptions(e){
+      console.log(e);
+      const sentData ={ serverFileID: serverFileID, selectedQuality: selectedQuality}
+      e.preventDefault();
+      const resolve = await axios.post('http://192.168.1.127:5005/gcodeWithOptions', sentData, {
+        headers: {
+          'Content-Type': 'application/json', // Set the content type to plain text
+        },
+      })
+      console.log(resolve);
+      console.log(resolve.data)
+      if(resolve.data.isParsed === "Successful"){
+        console.log("wahdskjhaldkjfhadskljfhalkjdshllkhlhk")
+      }
+      setGCodeCost(resolve.data.cost);
+      setReturnedGCode(resolve.data)  
+      setGCodeParsed(true); 
     }
 
 
+
+    async function cartAdder(){
+      //Adds the new gcode to the cart
+      props.setCart([...props.cart, serverFileID])
+
+      //const cartItem = ({name: returnedGCode.file, price: returnedGCode.price, })
+      //props.setPseudoCart([...props.pseudoCart, cartItem])
+
+      console.log(props.pseudoCart)
+      //console.log(newCart);
+      //Resets the whole component
+      setUserFile();
+      setSTLPresent(false);
+      setServerFileID(false);
+      setHideUpload(false);
+      setIsUploaded(false);
+      setGCodeParsed(false);
+      setReturnedGCode();
+      setGCodeCost();
+  
+    }
+
+
+    
     async function parseGCode(){
+      
 
       const resolve = await axios.post('http://192.168.1.127:5005/gcode', serverFileID, {
         headers: {
@@ -144,7 +187,7 @@ function StlInsert(props) {
         <p>Enter your .stl file here</p>
         <form onSubmit={uploadFile}>
             <input type="file" onChange={fileInputted} name="file"></input>
-            <br/>{STLPresent ? <label><button type="submit"></button>Submit this file</label> : <p>click the button above to select an stl file</p>}
+            <br/>{STLPresent ? <label><button type="submit"></button>Submit this file</label> : <p>Click the button above to select an stl file</p>}
         </form> 
         </div>
         :
@@ -166,7 +209,6 @@ function StlInsert(props) {
         }
           {isUploaded ?
            <>
-           <h4>Change defualt settings for your print: </h4>
             {GCodeForm}
             </>: <></>}
           

@@ -89,6 +89,32 @@ app.post('/gcode', async function(req, res){
 })
 
 
+//Parses the stl into gcode from form given by the user
+app.post('/gcodeWithOptions', async function(req, res){
+  console.log(req.body.serverFileID);
+  console.log(req.body.selectedQuality);
+  
+  let id = req.body;
+  let folderIndex = findFile(id);
+  //let gcodeOptions; //sent to the parsestl function
+  await parseSTL(id);
+
+  await findFilamentUsed(id)
+
+  res.send(folders[folderIndex])
+})
+
+
+
+
+
+
+
+
+
+
+
+
 //Calculate shipping costs?
 //https://www.easypost.com/usps-node-api
 //https://stripe.com/docs/api/shipping_rates/object
