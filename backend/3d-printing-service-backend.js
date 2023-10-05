@@ -337,11 +337,11 @@ function findQualityProfile(quality){
 
   }
   else if(quality === "MQ"){
-    profileLocation = './prusaslicer/resources/profiles/Neptune4-Config-JayoPETG-0.20Height.ini'
+    profileLocation = './prusaslicer/resources/profiles/Neptune4-Config-JayoPETG-0.28Height.ini'
 
   }
-  else{ //Use high quality
-    profileLocation = './prusaslicer/resources/profiles/Neptune4-Config-JayoPETG-0.28Height.ini'
+  else if(quality === "HQ"){ //Use high quality
+    profileLocation = './prusaslicer/resources/profiles/Neptune4-Config-JayoPETG-0.20Height.ini'
   }
   return profileLocation;
 }
@@ -354,6 +354,7 @@ function findQualityProfile(quality){
 
 
 const { spawn } = require('child_process');
+/*
 //Parses the stl file into a gcode file
 async function parseSTL(fileID){
   let folderIndex = findFile(fileID);
@@ -391,5 +392,5 @@ async function parseSTL(fileID){
     });
 })
 }
-
+*/
 

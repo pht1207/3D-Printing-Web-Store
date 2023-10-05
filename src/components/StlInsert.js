@@ -79,14 +79,14 @@ function StlInsert(props) {
   const GCodeForm = (
     <div className="GCodeForm" onSubmit={parseGCodeWithOptions}>
       Change the quality of your print:
-      <form onSubmit={parseGCode}>
+      <form onSubmit={parseGCodeWithOptions}>
         <select id="dropdown" onChange={handleOptionChange}>
 =          <option value="VHQ" >Very High Quality (.12mm Layer Height)</option>
           <option value="HQ" selected>High Quality (.20mm Layer Height)</option>
           <option value="MQ">Medium Quality (.28mm Layer Height)</option>
         </select>
         <br/>
-        <button type="submit">Prepare your file to be printed (gcodeform, not working yet)</button> {/* Make this work at some point */}
+        <button type="submit">Prepare your file to be printed</button> {/* Make this work at some point */}
       </form>
     </div>
     )
@@ -135,7 +135,7 @@ function StlInsert(props) {
     }
 
 
-    
+    /*
     async function parseGCode(){
       
 
@@ -153,6 +153,7 @@ function StlInsert(props) {
       setReturnedGCode(resolve.data)  
       setGCodeParsed(true); 
     }
+    */
 
 
 
@@ -212,7 +213,7 @@ function StlInsert(props) {
             {GCodeForm}
             </>: <></>}
           
-          {isUploaded ? <button onClick={parseGCode}>Prepare your file?</button> : <></>}
+          {/*{isUploaded ? <button onClick={parseGCode}>Prepare your file?</button> : <></>}*/}
           </>
           : <> 
           <div className="gcodeViewer">
