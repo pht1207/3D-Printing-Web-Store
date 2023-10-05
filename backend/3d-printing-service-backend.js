@@ -295,12 +295,13 @@ async function parseSTLWithOptions(fileID, quality){
   
 
   return new Promise((resolve, reject) => {
+  let profileLocation = findQualityProfile(printProfile);
   const id = fileID;
   console.log("parseSTL running...")
     let supportType;
     let materialType;
     //if(materialType === 'PETG'){--load ./resources/profiles/Neptune4-Config-JayoPETG-0.3Height.ini}
-    const command = './prusaslicer/prusa-slicer --center 112,112 --ensure-on-bed --support-material  --support-material-auto  --support-material-style organic --load ./prusaslicer/resources/profiles/Neptune4-Config-JayoPETG-0.3Height.ini -s ./data/'+id+'/'+id+'.stl --info --output ./data/'+id;
+    const command = './prusaslicer/prusa-slicer --center 112,112 --ensure-on-bed --support-material  --support-material-auto  --support-material-style organic --load '+profileLocation+' -s ./data/'+id+'/'+id+'.stl --info --output ./data/'+id;
 
     const childProcess = spawn(command, {shell: true})
     let stdoutData = ''; // Variable to accumulate stdout data
@@ -328,18 +329,19 @@ async function parseSTLWithOptions(fileID, quality){
 })
 
 
-function findQuality(quality){
+//Gets the quality profile selected by the frontend user
+function findQualityProfile(quality){
   let profileLocation;
   if(quality === "VHQ"){
-    profileLocation = './prusaslicer/resources/profiles/Neptune4-Config-JayoPETG-0.3Height.ini'
+    profileLocation = './prusaslicer/resources/profiles/Neptune4-Config-JayoPETG-0.12Height.ini'
 
   }
   else if(quality === "MQ"){
-    profileLocation = './prusaslicer/resources/profiles/Neptune4-Config-JayoPETG-0.3Height.ini'
+    profileLocation = './prusaslicer/resources/profiles/Neptune4-Config-JayoPETG-0.20Height.ini'
 
   }
   else{ //Use high quality
-    profileLocation = './prusaslicer/resources/profiles/Neptune4-Config-JayoPETG-0.3Height.ini'
+    profileLocation = './prusaslicer/resources/profiles/Neptune4-Config-JayoPETG-0.28Height.ini'
   }
   return profileLocation;
 }
