@@ -76,18 +76,6 @@ app.post('/upload/stl', upload.single('file'), async function (req, res) {
 })
 
 
-//Used for parsing the stl file into gcode and determining price from said gcode
-app.post('/gcode', async function(req, res){
-  let id = req.body;
-  let folderIndex = findFile(id);
-  //let gcodeOptions; //sent to the parsestl function
-  await parseSTL(id);
-
-  await findFilamentUsed(id)
-
-  res.send(folders[folderIndex])
-})
-
 
 //Parses the stl into gcode from form given by the user
 app.post('/gcodeWithOptions', async function(req, res){
