@@ -188,48 +188,14 @@ app.post('/paymentLinkCreator', async function(req, res){
   console.log(paymentLink.url)
 
   res.send(paymentLink.url)
+  //Find if there is a way to keep this process open and test for when they pay or leave page?
 })
 
 
 
 
 
-
-//Finds filament used and sets it to a value of x5 what is found, plus one dollar. Only slightly arbitrary number ;).
-async function findFilamentUsed(id){
-  const filePath = './data/'+id+'/'+id+'.gcode'; // Replace with your file path
-  const searchString = 'total filament cost'; // Replace with the keyword or pattern you want to search for
-
-  const folderIndex = findFile(id);
-  return new Promise((resolve, reject) => {
-  fs.readFile(filePath, 'utf8', (err, data) => {
-    if (err) {
-      console.error('Error reading file:', err);
-      return;
-    }
-  
-    // Split the file content into lines
-    const lines = data.split('\n');
-  
-    // Iterate through each line to find the line containing the keyword
-    for (let i = 0; i < lines.length; i++) {
-      if (lines[i].includes(searchString)) {
-        // You can extract information from this line as needed
-        const regex = /[\d.]+/g;
-        let regtest = lines[i].match(regex);
-        const cost = parseFloat(regtest[0])
-        //Sets the cost
-        folders[folderIndex].cost = (cost*5)+1;
-        console.log(folders[folderIndex].cost)
-        resolve();//breaks if found
-      }
-    }
-  });
-})
-}
-
-
-async function findFilamentUsedWithOptions(id, quality){
+async function findFilamentUsedWithOptions(id){
   const filePath = './data/'+id+'/'+id+'.gcode'; // Replace with your file path
   const searchString = 'total filament cost'; // Replace with the keyword or pattern you want to search for
 
@@ -277,17 +243,17 @@ app.listen(port, () => {
 
 
 
+
+
+const { spawn } = require('child_process');
 async function parseSTLWithOptions(fileID, quality){
   let folderIndex = findFile(fileID);
-  const printProfile = quality
-  
+  const printProfile = quality  
 
   return new Promise((resolve, reject) => {
   let profileLocation = findQualityProfile(printProfile);
   const id = fileID;
   console.log("parseSTL running...")
-    let supportType;
-    let materialType;
     //if(materialType === 'PETG'){--load ./resources/profiles/Neptune4-Config-JayoPETG-0.3Height.ini}
     const command = './prusaslicer/prusa-slicer --center 112,112 --ensure-on-bed --support-material  --support-material-auto  --support-material-style organic --load '+profileLocation+' -s ./data/'+id+'/'+id+'.stl --info --output ./data/'+id;
 
@@ -298,26 +264,26 @@ async function parseSTLWithOptions(fileID, quality){
       const chunk = data.toString();
       stdoutData += chunk;
       console.log(`stdout: ${data}`);
+      folders[folderIndex].isParsed = "Successful";
     });
     
     childProcess.stderr.on('data', (data) => {
       const error = data
       console.log("Error is: "+error)
-    if(error.includes("exceeds the maximum build volume height")){
+      if(error.includes("exceeds the maximum build volume height")){
       //Too large for build volume
       folders[folderIndex].isParsed = "TooLarge";
     }
-    //Add more else if statements here for more errors
-    else{
-      folders[folderIndex].isParsed = "ErrorOccured"
-    }
-      resolve("Bad")
+      //Add more else if statements here for more errors
+      else{
+        folders[folderIndex].isParsed = "ErrorOccured"
+      }
+      resolve(error)
     });
     
     childProcess.on('close', (code) => {
       console.log(`child process exited with code ${code}`);
       console.log(stdoutData);
-      folders[folderIndex].isParsed = "Successful";
       resolve(stdoutData);
     });
 })
@@ -341,50 +307,3 @@ function findQualityProfile(quality){
 }
 
 }
-
-
-
-
-
-
-const { spawn } = require('child_process');
-/*
-//Parses the stl file into a gcode file
-async function parseSTL(fileID){
-  let folderIndex = findFile(fileID);
-
-  return new Promise((resolve, reject) => {
-  let id = fileID;
-  console.log("parseSTL running...")
-    let supportType;
-    let materialType;
-    //if(materialType === 'PETG'){--load ./resources/profiles/Neptune4-Config-JayoPETG-0.3Height.ini}
-    const command = './prusaslicer/prusa-slicer --center 112,112 --ensure-on-bed --support-material  --support-material-auto  --support-material-style organic --load ./prusaslicer/resources/profiles/Neptune4-Config-JayoPETG-0.3Height.ini -s ./data/'+id+'/'+id+'.stl --info --output ./data/'+id;
-
-    const childProcess = spawn(command, {shell: true})
-    let stdoutData = ''; // Variable to accumulate stdout data
-
-    childProcess.stdout.on('data', (data) => {
-      const chunk = data.toString();
-      stdoutData += chunk;
-      console.log(`stdout: ${data}`);
-    });
-    
-    childProcess.stderr.on('data', (data) => {
-    if(stdoutData.includes("exceeds the maximum build volume height.")){
-      folders[folderIndex].isParsed = "This model is too large to print"
-    }
-      resolve("Bad")
-      console.error(`stderr: ${data}`);
-    });
-    
-    childProcess.on('close', (code) => {
-      console.log(`child process exited with code ${code}`);
-      console.log(stdoutData);
-      folders[folderIndex].isParsed = "Successful";
-      resolve(stdoutData);
-    });
-})
-}
-*/
-

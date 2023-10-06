@@ -34,6 +34,8 @@ function StlInsert(props) {
     const [GCodeCost, setGCodeCost] = useState();
     const [selectedQuality, setSelectedQuality] = useState("HQ");
 
+    const [errorCode, setErrorCode] = useState(false);
+
     
 
 
@@ -104,11 +106,20 @@ function StlInsert(props) {
       console.log(resolve);
       console.log(resolve.data)
       if(resolve.data.isParsed === "Successful"){
+        setGCodeCost(resolve.data.cost);
+        setReturnedGCode(resolve.data)  
+        setGCodeParsed(true); 
+      }
+      else{
+        setErrorCode(resolve.data.isParsed)
+        setServerFileID(false);
         console.log("wahdskjhaldkjfhadskljfhalkjdshllkhlhk")
       }
+      console.log("isParsed: "+resolve.data.isParsed)
+      /*
       setGCodeCost(resolve.data.cost);
       setReturnedGCode(resolve.data)  
-      setGCodeParsed(true); 
+      setGCodeParsed(true); */
     }
 
 
@@ -184,6 +195,7 @@ function StlInsert(props) {
   
     return (
       <div className="interactionWindow">
+      {/*This section is for showing the file input for the .stl*/}
       {!GCodeParsed ? <>{!hideUpload ? <div className="uploadField">
         <p>Enter your .stl file here</p>
         <form onSubmit={uploadFile}>
@@ -196,19 +208,22 @@ function StlInsert(props) {
       }
 
 
-        {serverFileID?
-        <div className="STLViewerDiv">
-        <StlViewer
-            modelProps={{color: "rgb(199,255,255)"}}
-            style={style}
-            orbitControls
-            url= {url}
-          />
-        </div>
-        : 
-        <></>
-        }
-          {isUploaded ?
+
+      {/*This section is for showing the stlviewer component or hiding it*/}
+      {serverFileID?
+      <div className="STLViewerDiv">
+      <StlViewer
+          modelProps={{color: "rgb(199,255,255)"}}
+          style={style}
+          orbitControls
+          url= {url}
+        />
+      </div>
+      : 
+      <>{errorCode}</>
+      }
+          {/*isUploaded? Show gcode form, or show the gcode viewer and gcodeform*/}
+          {isUploaded ? 
            <>
             {GCodeForm}
             </>: <></>}
