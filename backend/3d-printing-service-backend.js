@@ -315,12 +315,15 @@ async function parseSTLWithOptions(fileID, quality){
     childProcess.stderr.on('data', (data) => {
       const error = data
       console.log("Error is: "+error)
-    if(error.includes("exceeds the maximum build volume height")){//Too large for build volume
+    if(error.includes("exceeds the maximum build volume height")){
+      //Too large for build volume
       folders[folderIndex].isParsed = "TooLarge";
     }
-    //console.log("BAD!!!!!!!!!!!!"+stdoutData)
+    //Add more else if statements here for more errors
+    else{
+      folders[folderIndex].isParsed = "ErrorOccured"
+    }
       resolve("Bad")
-      //console.error(`stderr: ${data}`);
     });
     
     childProcess.on('close', (code) => {
