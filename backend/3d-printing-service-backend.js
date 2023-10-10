@@ -86,10 +86,17 @@ app.post('/gcodeWithOptions', async function(req, res){
   let quality = req.body.selectedQuality;
   let folderIndex = findFile(id);
   //let gcodeOptions; //sent to the parsestl function
+  console.log("parseSTLWithOptions running........................")
   await parseSTLWithOptions(id, quality);
 
-  await findFilamentUsedWithOptions(id)
+  console.log("isParsed is: "+folders[folderIndex].isParsed)
 
+  if(folders[folderIndex].isParsed === "Successful"){
+    console.log("findFilamentUsedWithOptions running........................")
+    await findFilamentUsedWithOptions(id)
+  }
+
+  console.log("res.send running.........................")
   res.send(folders[folderIndex])
 })
 
@@ -268,25 +275,28 @@ async function parseSTLWithOptions(fileID, quality){
     });
     
     childProcess.stderr.on('data', (data) => {
-      const error = data
+      
+      const error = data;
       console.log("Error is: "+error)
       if(error.includes("exceeds the maximum build volume height")){
       //Too large for build volume
       folders[folderIndex].isParsed = "TooLarge";
     }
       //Add more else if statements here for more errors
-      else{
+      /*else{
         folders[folderIndex].isParsed = "ErrorOccured"
-      }
-      resolve(error)
+      }*/
     });
     
     childProcess.on('close', (code) => {
       console.log(`child process exited with code ${code}`);
       console.log(stdoutData);
-      resolve(stdoutData);
+      console.log("RESOLVING!!!!!!!!!!!!!!!!!!!!!!!")
+      resolve("ok");
     });
 })
+
+
 
 
 //Gets the quality profile selected by the frontend user

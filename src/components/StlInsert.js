@@ -34,7 +34,8 @@ function StlInsert(props) {
     const [GCodeCost, setGCodeCost] = useState();
     const [selectedQuality, setSelectedQuality] = useState("HQ");
 
-    const [errorCode, setErrorCode] = useState(false);
+    const [errorCode, setErrorCode] = useState("");
+    const [errorEncountered, setErrorEncountered] = useState(false);
 
     
 
@@ -47,6 +48,8 @@ function StlInsert(props) {
   }
 
   function fileInputted(e){
+    setErrorCode("")
+    setErrorEncountered(false);
     const file = e.target.files[0];
     if(file) {
       setSTLPresent(true)
@@ -103,16 +106,32 @@ function StlInsert(props) {
           'Content-Type': 'application/json', // Set the content type to plain text
         },
       })
-      console.log(resolve);
+      const code = resolve.data.isParsed
+      console.log(code + " THIS IS THE CODE .ISPARSED")
+      console.log("resolve: "+resolve);
       console.log(resolve.data)
       if(resolve.data.isParsed === "Successful"){
+        console.log("Successful parsing of gcode file")
         setGCodeCost(resolve.data.cost);
         setReturnedGCode(resolve.data)  
         setGCodeParsed(true); 
       }
       else{
+        console.log("Error encountered while parsing of gcode file")
+
+        setErrorEncountered(true);
         setErrorCode(resolve.data.isParsed)
+
+        //resets the interaction window
+        setUserFile();
+        setSTLPresent(false);
         setServerFileID(false);
+        setHideUpload(false);
+        setIsUploaded(false);
+        setGCodeParsed(false);
+        setReturnedGCode();
+        setGCodeCost();
+
         console.log("wahdskjhaldkjfhadskljfhalkjdshllkhlhk")
       }
       console.log("isParsed: "+resolve.data.isParsed)
@@ -146,58 +165,13 @@ function StlInsert(props) {
     }
 
 
-    /*
-    async function parseGCode(){
-      
-
-      const resolve = await axios.post('http://192.168.1.127:5005/gcode', serverFileID, {
-        headers: {
-          'Content-Type': 'text/plain', // Set the content type to plain text
-        },
-      })
-      console.log(resolve);
-      console.log(resolve.data)
-      if(resolve.data.isParsed === "Successful"){
-        console.log("wahdskjhaldkjfhadskljfhalkjdshllkhlhk")
-      }
-      setGCodeCost(resolve.data.cost);
-      setReturnedGCode(resolve.data)  
-      setGCodeParsed(true); 
-    }
-    */
-
-
-
-    async function cartAdder(){
-      //Adds the new gcode to the cart
-      props.setCart([...props.cart, serverFileID])
-
-      //const cartItem = ({name: returnedGCode.file, price: returnedGCode.price, })
-      //props.setPseudoCart([...props.pseudoCart, cartItem])
-
-      console.log(props.pseudoCart)
-      //console.log(newCart);
-      //Resets the whole component
-      setUserFile();
-      setSTLPresent(false);
-      setServerFileID(false);
-      setHideUpload(false);
-      setIsUploaded(false);
-      setGCodeParsed(false);
-      setReturnedGCode();
-      setGCodeCost();
-  
-    }
-
-
-
     //If I ever want to let them drag and drop, I need an 'onDrop' attribute added to one of the HTML elements
   
     return (
       <div className="interactionWindow">
       {/*This section is for showing the file input for the .stl*/}
       {!GCodeParsed ? <>{!hideUpload ? <div className="uploadField">
-        <p>Enter your .stl file here</p>
+        {errorEncountered ? <>There was an error processing your file. Error message: {errorCode}</> : <><p>Enter your .stl file here</p></>}
         <form onSubmit={uploadFile}>
             <input type="file" onChange={fileInputted} name="file"></input>
             <br/>{STLPresent ? <label><button type="submit"></button>Submit this file</label> : <p>Click the button above to select an stl file</p>}
@@ -210,7 +184,7 @@ function StlInsert(props) {
 
 
       {/*This section is for showing the stlviewer component or hiding it*/}
-      {serverFileID?
+      {serverFileID ?
       <div className="STLViewerDiv">
       <StlViewer
           modelProps={{color: "rgb(199,255,255)"}}
@@ -233,7 +207,7 @@ function StlInsert(props) {
           : <> 
           <div className="gcodeViewer">
             <GCodeViewerComponent id={serverFileID}/>
-            <p className="printNotice">*This is a representation of how your print will look, it will be manually adjusted to a better orientation if possible</p>
+            <p className="printNotice">*This is a representation of how your print will look, it will likely be manually adjusted to a better orientation if possible</p>
             <br></br>
             <p>Price before tax and shipping: ${GCodeCost}</p>
           </div>
