@@ -349,61 +349,10 @@ app.post('/webhook', express.raw({type: 'application/json'}), (request, response
 
   // Handle the event
   switch (event.type) {
-    case 'charge.succeeded':
-      const chargeSucceeded = event.data.object;
-      // Then define and call a function to handle the event charge.succeeded
-      break;
-    case 'invoice.created':
-      const invoiceCreated = event.data.object;
-      // Then define and call a function to handle the event invoice.created
-      break;
-    case 'invoice.deleted':
-      const invoiceDeleted = event.data.object;
-      // Then define and call a function to handle the event invoice.deleted
-      break;
-    case 'invoice.finalization_failed':
-      const invoiceFinalizationFailed = event.data.object;
-      // Then define and call a function to handle the event invoice.finalization_failed
-      break;
-    case 'invoice.finalized':
-      const invoiceFinalized = event.data.object;
-      // Then define and call a function to handle the event invoice.finalized
-      break;
-    case 'invoice.marked_uncollectible':
-      const invoiceMarkedUncollectible = event.data.object;
-      // Then define and call a function to handle the event invoice.marked_uncollectible
-      break;
-    case 'invoice.paid':
-      const invoicePaid = event.data.object;
-      // Then define and call a function to handle the event invoice.paid
-      break;
-    case 'invoice.payment_action_required':
-      const invoicePaymentActionRequired = event.data.object;
-      // Then define and call a function to handle the event invoice.payment_action_required
-      break;
-    case 'invoice.payment_failed':
-      const invoicePaymentFailed = event.data.object;
-      // Then define and call a function to handle the event invoice.payment_failed
-      break;
+    
     case 'invoice.payment_succeeded':
       const invoicePaymentSucceeded = event.data.object;
       invoicePaymentSucceededFunction(invoicePaymentSucceeded);
-      break;
-    case 'invoice.sent':
-      const invoiceSent = event.data.object;
-      // Then define and call a function to handle the event invoice.sent
-      break;
-    case 'invoice.upcoming':
-      const invoiceUpcoming = event.data.object;
-      // Then define and call a function to handle the event invoice.upcoming
-      break;
-    case 'invoice.updated':
-      const invoiceUpdated = event.data.object;
-      // Then define and call a function to handle the event invoice.updated
-      break;
-    case 'invoice.voided':
-      const invoiceVoided = event.data.object;
-      // Then define and call a function to handle the event invoice.voided
       break;
     // ... handle other event types
     default:
@@ -449,6 +398,7 @@ app.post('/webhook', express.raw({type: 'application/json'}), (request, response
             })
         }
         //Once loop is complete, create a text document that has some order info on it
+        //fs.mkfile
       }
     })
   }
