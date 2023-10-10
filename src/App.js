@@ -33,7 +33,17 @@ const stripePromise = loadStripe("pk_test_51NpxjLJfFzW7oP7E7ZgMgbkptO9Wx2PKjwylD
         <Cart cart={cart} setCart={setCart} pseudoCart={pseudoCart} setPseudoCart={setPseudoCart}/>
         <StlInsert cart={cart} setCart={setCart}/>
         </div>
-        <h4>How long it will be until your order can be started (Back-order time): </h4>
+        <div className='FAQ'>
+        <h4>Things to note about this service:</h4>
+        <br/>
+        <ul>
+          <li>There is no post-processing performed on any these parts, you will be responsible for removing support material, sanding, painting, etc.</li>
+          <br/>
+          <li>The representation provided above is only an example of what your finished product will look like, your item will be placed in the best orientation seen by the print operator, so if it is automatically placed upside-down or something, don't worry.</li>
+          <br/>
+          <li>When selecting PETG filament, there will be inevitable strings that appear on the model. The increased strength to heat and durability come at the expense of this stringing. They can easily be removed by sanding them off.</li>
+        </ul>
+        </div>
       </Elements>
     </div>
   );
