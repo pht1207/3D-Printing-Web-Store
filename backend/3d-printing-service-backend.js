@@ -12,7 +12,7 @@ app.use(bodyParser.text());
 
 
 let cors = require('cors');
-const { parse } = require('path');
+const { parse, format } = require('path');
 app.use(cors());
 app.use(express.json());
 //Used in executing commands on the server
@@ -93,7 +93,7 @@ app.post('/gcodeWithOptions', async function(req, res){
   await parseSTLWithOptions(id, quality);
 
   if(folders[folderIndex].isParsed === "Successful"){
-    await findFilamentUsedWithOptions(id)
+    await findFilamentCostWithOptions(id)
   }
 
   res.send(folders[folderIndex])
@@ -201,7 +201,7 @@ app.post('/paymentLinkCreator', async function(req, res){
 
 
 
-async function findFilamentUsedWithOptions(id){
+async function findFilamentCostWithOptions(id){
   const filePath = './data/'+id+'/'+id+'.gcode'; // Replace with your file path
   const searchString = 'total filament cost'; // Replace with the keyword or pattern you want to search for
 
@@ -223,8 +223,12 @@ async function findFilamentUsedWithOptions(id){
         const regex = /[\d.]+/g;
         let regtest = lines[i].match(regex);
         const cost = parseFloat(regtest[0])
+        const formattedCost = cost.toFixed(2);
+        console.log("COST MADE: "+formattedCost)        
         //Sets the cost
-        folders[folderIndex].cost = (cost*5)+1;
+        const result = (formattedCost * 5) + 1;
+        folders[folderIndex].cost = Math.round(result * 100) / 100;
+                
         console.log(folders[folderIndex].cost)
         resolve();//breaks if found
       }
