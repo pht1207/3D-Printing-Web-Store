@@ -55,21 +55,25 @@ app.post('/upload/stl', upload.single('file'), async function (req, res) {
     folders.push(newFolder) //Adds this new object to the stack
 
 
+
+    const currentPath = './data/stl/'+id;
+    const newPath = './data/'+newFolder.id+"/"+id+".stl";    
     fs.mkdir('./data/' + newFolder.id, (err) => {
     if (err) {
       console.error("Error creating folder: ${err}");
     }
-  })
-
+    else{
     //changes the file extension of what was uploaded to a .stl
-    const currentPath = './data/stl/'+id;
-    const newPath = './data/'+newFolder.id+"/"+id+".stl";    
     fs.rename(currentPath, newPath, err =>{
       if(err){
         console.error("error converting file extension")
       }
       //else, continue program
     })
+    }
+  })
+
+
     //Sends filename to the host after downloading it so it can be displayed in their browser
     res.send(id);
     

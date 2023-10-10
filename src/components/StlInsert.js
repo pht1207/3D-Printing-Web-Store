@@ -171,10 +171,10 @@ function StlInsert(props) {
       <div className="interactionWindow">
       {/*This section is for showing the file input for the .stl*/}
       {!GCodeParsed ? <>{!hideUpload ? <div className="uploadField">
-        {errorEncountered ? <>There was an error processing your file. Error message: {errorCode}</> : <><p>Enter your .stl file here</p></>}
+        <p>Enter your .stl file here</p>
         <form onSubmit={uploadFile}>
             <input type="file" onChange={fileInputted} name="file"></input>
-            <br/>{STLPresent ? <label><button type="submit"></button>Submit this file</label> : <p>Click the button above to select an stl file</p>}
+            <br/>{STLPresent ? <label><button type="submit"></button>Submit this file</label> : <>{errorEncountered ? <> There was an error processing your file, re-submit it. Error message: {errorCode} </> : <p>Click the button above to select an stl file</p>} </>}
         </form> 
         </div>
         :
@@ -194,7 +194,7 @@ function StlInsert(props) {
         />
       </div>
       : 
-      <>{errorCode}</>
+      <></>
       }
           {/*isUploaded? Show gcode form, or show the gcode viewer and gcodeform*/}
           {isUploaded ? 
