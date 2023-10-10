@@ -13,7 +13,6 @@ import axios from 'axios';
 function App() {
 const [cart, setCart] = useState([]);
 const [pseudoCart, setPseudoCart] = useState([])
-const [stripePaymentLink, setStripePaymentLink] = useState();
 
 
 //https://craftcloud3d.com/
