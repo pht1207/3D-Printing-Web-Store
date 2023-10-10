@@ -9,7 +9,6 @@ library.add(faShoppingCart);
 
 
 function Cart(props) {
-    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [emptyCart, setEmptyCart] = useState(true);
 
 
@@ -42,7 +41,7 @@ function Cart(props) {
  
           <ul className='cartList'>
              {props.cart.map((item, index) => (
-             <li key={index} className='cartItem'>{index+1}: File Name: {item} Price: {"test"}</li>
+             <li key={index} className='cartItem'>{index+1}: File Name: {item.file} Price: ${item.cost}</li>
              ))
              }
            <li><BuyButton cart={props.cart} setCart={props.setCart}/></li>

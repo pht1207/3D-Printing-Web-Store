@@ -89,18 +89,13 @@ app.post('/gcodeWithOptions', async function(req, res){
   let id = req.body.serverFileID;
   let quality = req.body.selectedQuality;
   let folderIndex = findFile(id);
-  //let gcodeOptions; //sent to the parsestl function
-  console.log("parseSTLWithOptions running........................")
+
   await parseSTLWithOptions(id, quality);
 
-  console.log("isParsed is: "+folders[folderIndex].isParsed)
-
   if(folders[folderIndex].isParsed === "Successful"){
-    console.log("findFilamentUsedWithOptions running........................")
     await findFilamentUsedWithOptions(id)
   }
 
-  console.log("res.send running.........................")
   res.send(folders[folderIndex])
 })
 

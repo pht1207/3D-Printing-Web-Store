@@ -145,7 +145,7 @@ function StlInsert(props) {
 
     async function cartAdder(){
       //Adds the new gcode to the cart
-      props.setCart([...props.cart, serverFileID])
+      props.setCart([...props.cart, returnedGCode])
 
       //const cartItem = ({name: returnedGCode.file, price: returnedGCode.price, })
       //props.setPseudoCart([...props.pseudoCart, cartItem])
