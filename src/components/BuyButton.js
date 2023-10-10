@@ -18,6 +18,7 @@ function BuyButton(props) {
         }, [buyLinkReceived]);
 
     async function buyFunction(){
+      console.log("this muh cart"+props.cart)
         const resolve = await axios.post('http://192.168.1.127:5005/paymentLinkCreator', props.cart, {
           headers: {
             'Content-Type': 'application/json', // Set the content type to plain text

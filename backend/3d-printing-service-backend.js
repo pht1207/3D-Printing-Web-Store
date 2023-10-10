@@ -135,6 +135,7 @@ function findFile(id){
 //Make some sort of way to put the payments in an array, put line_items equal to the array and bam, cart
 app.post('/paymentLinkCreator', async function(req, res){
   let cart = req.body;
+  console.log(req.body)
   let metadataID = '';
   console.log(cart)
   //Gets all items from the cart id array and matches them to the items on the server file system
@@ -142,7 +143,7 @@ app.post('/paymentLinkCreator', async function(req, res){
   let items = [];
   for(let i = 0; i < cart.length; i++){
     for(let j = 0; j < folders.length; j++){
-      if(cart[i] === folders[j].id)
+      if(cart[i].id === folders[j].id)
       {
         items.push(folders[j])
         metadataID += folders[j].id;
@@ -228,7 +229,6 @@ async function findFilamentCostWithOptions(id){
         //Sets the cost
         const result = (formattedCost * 5) + 1;
         folders[folderIndex].cost = Math.round(result * 100) / 100;
-                
         console.log(folders[folderIndex].cost)
         resolve();//breaks if found
       }
