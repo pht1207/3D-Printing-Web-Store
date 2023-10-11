@@ -331,11 +331,16 @@ function findQualityProfile(quality){
 
 
 
+
+
+
+
 //Everything below this comment is webhooks for data from Stripe regarding payments and charges
 // This is your Stripe CLI webhook secret for testing your endpoint locally.
 const endpointSecret = "whsec_b29e9d1ebc7acd11d829f7f2dac404dd60dc62c3bd16b9a5b2b48f1508cdecef";
 
 app.post('/webhook', express.raw({type: 'application/json'}), (request, response) => {
+  console.log("WEBHOOK CALLED!")
   const sig = request.headers['stripe-signature'];
 
   let event;
@@ -397,7 +402,7 @@ app.post('/webhook', express.raw({type: 'application/json'}), (request, response
               }
             })
         }
-        //Once loop is complete, create a text document that has some order info on it
+        //Once loop is complete, create a text document that has some order info on it. Complete this once I know the above code actually works
         //fs.mkfile
       }
     })

@@ -1,23 +1,5 @@
-// server.js
-//
-// Use this sample code to handle webhook events in your integration.
-//
-// 1) Paste this code into a new file (server.js)
-//
-// 2) Install dependencies
-//   npm install stripe
-//   npm install express
-//
-// 3) Run the server on http://localhost:4242
-//   node server.js
 
-// The library needs to be configured with your account's secret key.
-// Ensure the key is kept out of any version control system you might be using.
-const stripe = require('stripe')('sk_test_...');
-const express = require('express');
-const app = express();
-
-
+//Everything below this comment is webhooks for data from Stripe regarding payments and charges
 // This is your Stripe CLI webhook secret for testing your endpoint locally.
 const endpointSecret = "whsec_b29e9d1ebc7acd11d829f7f2dac404dd60dc62c3bd16b9a5b2b48f1508cdecef";
 
@@ -35,73 +17,67 @@ app.post('/webhook', express.raw({type: 'application/json'}), (request, response
 
   // Handle the event
   switch (event.type) {
-    case 'charge.succeeded':
-      const chargeSucceeded = event.data.object;
-      // Then define and call a function to handle the event charge.succeeded
-      break;
-    case 'invoice.created':
-      const invoiceCreated = event.data.object;
-      // Then define and call a function to handle the event invoice.created
-      break;
-    case 'invoice.deleted':
-      const invoiceDeleted = event.data.object;
-      // Then define and call a function to handle the event invoice.deleted
-      break;
-    case 'invoice.finalization_failed':
-      const invoiceFinalizationFailed = event.data.object;
-      // Then define and call a function to handle the event invoice.finalization_failed
-      break;
-    case 'invoice.finalized':
-      const invoiceFinalized = event.data.object;
-      // Then define and call a function to handle the event invoice.finalized
-      break;
-    case 'invoice.marked_uncollectible':
-      const invoiceMarkedUncollectible = event.data.object;
-      // Then define and call a function to handle the event invoice.marked_uncollectible
-      break;
-    case 'invoice.paid':
-      const invoicePaid = event.data.object;
-      // Then define and call a function to handle the event invoice.paid
-      break;
-    case 'invoice.payment_action_required':
-      const invoicePaymentActionRequired = event.data.object;
-      // Then define and call a function to handle the event invoice.payment_action_required
-      break;
-    case 'invoice.payment_failed':
-      const invoicePaymentFailed = event.data.object;
-      // Then define and call a function to handle the event invoice.payment_failed
-      break;
+    
     case 'invoice.payment_succeeded':
       const invoicePaymentSucceeded = event.data.object;
-      // Then define and call a function to handle the event invoice.payment_succeeded
-      break;
-    case 'invoice.sent':
-      const invoiceSent = event.data.object;
-      // Then define and call a function to handle the event invoice.sent
-      break;
-    case 'invoice.upcoming':
-      const invoiceUpcoming = event.data.object;
-      // Then define and call a function to handle the event invoice.upcoming
-      break;
-    case 'invoice.updated':
-      const invoiceUpdated = event.data.object;
-      // Then define and call a function to handle the event invoice.updated
-      break;
-    case 'invoice.voided':
-      const invoiceVoided = event.data.object;
-      // Then define and call a function to handle the event invoice.voided
+      invoicePaymentSucceededFunction(invoicePaymentSucceeded);
       break;
     // ... handle other event types
     default:
       console.log(`Unhandled event type ${event.type}`);
   }
+  
+  function invoicePaymentSucceededFunction(invoiceObject){
+    const metaData = invoiceObject.data.object.metadata;
+    const paymentIntentID = invoiceObject.data.object.payment_intent;
+    const orderIDs = metaData.split(" "); //Splits the metadata into many strings depending on space between them
+
+    //Make new directory with the paymentIntendID inside of './completedOrders'
+    fs.mkdir('./completedOrders/' + paymentIntentID, (err) => {
+      if (err) {
+        console.error("Error creating folder: ${err}");
+      }
+      else{
+        //Go through all the orders and put them into the completedOrders folder
+        for(let i = 0; i < orderIDs.length; i++){
+          const currentItemID = orderIDs[i]
+          
+            const currentSTLPath = './data/'+currentItemID+'/'+currentItemID+".stl";
+            const newSTLPath = './data/completedOrders'+paymentIntentID+'/'+currentItemID+".stl";     
+            //Moves the .stl and .gcode to the new folder
+
+            fs.rename(currentSTLPath, newSTLPath, err =>{
+              if(err){
+                console.error("error moving .stl file")
+              }
+              else{
+                const currentGCodePath = './data/'+currentItemID+'/'+currentItemID+".gcode";
+                const newGCodePath = './data/completedOrders'+paymentIntentID+'/'+currentItemID+".gcode";     
+    
+                fs.rename(currentGCodePath, newGCodePath, err =>{
+                  if(err){
+                    console.error("error moving .gcode file")
+                  }
+                  else{
+                    console.log(".stl and .gcode moved to completedOrders folder.")
+                  }
+                })
+              }
+            })
+        }
+        //Once loop is complete, create a text document that has some order info on it. Complete this once I know the above code actually works
+        //fs.mkfile
+      }
+    })
+  }
+
+
+         
+              
+
+
+
 
   // Return a 200 response to acknowledge receipt of the event
   response.send();
 });
-
-const port = 4242
-app.listen(port, () => {
-    console.log(`App listening on port ${port}`)
-  })
-  
