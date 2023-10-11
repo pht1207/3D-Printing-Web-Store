@@ -325,6 +325,20 @@ function findQualityProfile(quality){
 
 
 
+const https = require('https')
+/* Uncomment if you want to use https, then comment out the 'app.listen' below
+https
+        .createServer({
+          cert:fs.readFileSync('/etc/letsencrypt/live/{your websites directory}/fullchain.pem'),
+          key:fs.readFileSync('/etc/letsencrypt/live/{your websites directory}/privkey.pem'),
+          ca:fs.readFileSync('/etc/letsencrypt/live/{your websites directory}/chain.pem'),
+			},app)
+        .listen(port, () => {
+                console.log('server is running on port'+port)
+        });
+*/
+
+
 
 
 
