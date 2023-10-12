@@ -50,12 +50,15 @@ app.post('/webhook', express.raw({type: 'application/json'}), (request, response
       console.log(`Unhandled event type ${event.type}`);
   }
   
-  function invoicePaymentSucceededFunction(invoiceObject){
+  //Called when invoice.payment_succeeded is sent to the post method
+  async function invoicePaymentSucceededFunction(invoiceObject){
+    const invoiceData = invoiceObject;
     console.log("invoicePaymentSucceededFunction called!")
-    console.log(invoiceObject)
+    console.log(invoiceObject.metadata)
     console.log("log succeeded")
-    const metaData = invoiceObject.data.object.metadata;
-    const paymentIntentID = invoiceObject.data.object.payment_intent;
+    //CODE DOES NOT LIKE INVOICEOBJECT.DATA.OBJECT.METADATA, IDK WHY. MAYBE SET A VARIBLE TO INVOICEOBJECT INSTEAD OF USING IT DIRECTLY
+    const metaData = invoiceObject.metadata;
+    const paymentIntentID = invoiceObject.payment_intent;
     const orderIDs = metaData.split(" "); //Splits the metadata into many strings depending on space between them
 
     console.log("About to make directory...")
