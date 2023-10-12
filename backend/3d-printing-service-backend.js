@@ -245,11 +245,11 @@ async function findFilamentCostWithOptions(id){
 const directoryPath = "./data/"
 app.use(express.static(directoryPath));
 
-
+/*
 app.listen(port, () => {
   console.log(`App listening on port ${port}`)
 })
-
+*/
 
 
 
@@ -326,17 +326,17 @@ function findQualityProfile(quality){
 
 
 const https = require('https')
-/* Uncomment if you want to use https, then comment out the 'app.listen' below
+/* Uncomment if you want to use https, then comment out the 'app.listen' below */
 https
         .createServer({
-          cert:fs.readFileSync('/etc/letsencrypt/live/{your websites directory}/fullchain.pem'),
-          key:fs.readFileSync('/etc/letsencrypt/live/{your websites directory}/privkey.pem'),
-          ca:fs.readFileSync('/etc/letsencrypt/live/{your websites directory}/chain.pem'),
+          cert:fs.readFileSync('/etc/letsencrypt/live/print.parkert.dev/fullchain.pem'),
+          key:fs.readFileSync('/etc/letsencrypt/live/print.parkert.dev/privkey.pem'),
+          ca:fs.readFileSync('/etc/letsencrypt/live/print.parkert.dev/chain.pem'),
 			},app)
         .listen(port, () => {
                 console.log('server is running on port'+port)
         });
-*/
+
 
 
 
@@ -361,15 +361,23 @@ app.post('/webhook', express.raw({type: 'application/json'}), (request, response
 
   try {
     event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
+    console.log(event)
+    console.log(event.type)
   } catch (err) {
     response.status(400).send(`Webhook Error: ${err.message}`);
     return;
   }
+  console.log(event)
+  console.log(event.type)
+
+
+
 
   // Handle the event
   switch (event.type) {
     
     case 'invoice.payment_succeeded':
+      console.log("invoice.payment_succeeded case found!")
       const invoicePaymentSucceeded = event.data.object;
       invoicePaymentSucceededFunction(invoicePaymentSucceeded);
       break;
@@ -379,6 +387,7 @@ app.post('/webhook', express.raw({type: 'application/json'}), (request, response
   }
   
   function invoicePaymentSucceededFunction(invoiceObject){
+    console.log("invoicePaymentSucceededFunction called!")
     const metaData = invoiceObject.data.object.metadata;
     const paymentIntentID = invoiceObject.data.object.payment_intent;
     const orderIDs = metaData.split(" "); //Splits the metadata into many strings depending on space between them

@@ -19,7 +19,7 @@ function BuyButton(props) {
         }, [buyLinkReceived]);
 
     async function buyFunction(){
-        const resolve = await axios.post('http://192.168.1.127:5005/paymentLinkCreator', props.cart, {
+        const resolve = await axios.post('https://print.parkert.dev:5005/paymentLinkCreator', props.cart, {
           headers: {
             'Content-Type': 'application/json', // Set the content type to plain text
           },
