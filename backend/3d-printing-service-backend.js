@@ -27,7 +27,6 @@ app.post('/webhook', express.raw({type: 'application/json'}), (request, response
   const sig = request.headers['stripe-signature'];
 
   let event;
-  console.log(endpointSecret)
 
   try {
     event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
@@ -36,9 +35,6 @@ app.post('/webhook', express.raw({type: 'application/json'}), (request, response
     response.status(400).send(`Webhook Error: ${err.message}`);
     return;
   }
-  console.log(event)
-  console.log(event.type)
-
 
 
 
@@ -46,7 +42,6 @@ app.post('/webhook', express.raw({type: 'application/json'}), (request, response
   switch (event.type) {
     
     case 'invoice.payment_succeeded':
-      console.log("invoice.payment_succeeded case found!")
       const invoicePaymentSucceeded = event.data.object;
       invoicePaymentSucceededFunction(invoicePaymentSucceeded);
       break;
@@ -57,10 +52,13 @@ app.post('/webhook', express.raw({type: 'application/json'}), (request, response
   
   function invoicePaymentSucceededFunction(invoiceObject){
     console.log("invoicePaymentSucceededFunction called!")
+    console.log(invoiceObject)
+    console.log("log succeeded")
     const metaData = invoiceObject.data.object.metadata;
     const paymentIntentID = invoiceObject.data.object.payment_intent;
     const orderIDs = metaData.split(" "); //Splits the metadata into many strings depending on space between them
 
+    console.log("About to make directory...")
     //Make new directory with the paymentIntendID inside of './completedOrders'
     fs.mkdir('./completedOrders/' + paymentIntentID, (err) => {
       if (err) {
