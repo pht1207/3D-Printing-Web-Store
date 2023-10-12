@@ -63,7 +63,7 @@ app.post('/webhook', express.raw({type: 'application/json'}), (request, response
     const newDirectory = ('./completedOrders/' + paymentIntentID);
     //Make new directory with the paymentIntendID inside of './completedOrders'
     if(!fs.existsSync(newDirectory)){
-    fs.mkdirSync(newDirectory)
+      fs.mkdirSync(newDirectory)
 
         //Go through all the orders and put them into the completedOrders folder
         for(let i = 1; i < orderIDs.length; i++){
@@ -92,27 +92,29 @@ app.post('/webhook', express.raw({type: 'application/json'}), (request, response
                   }
                   else{
                     console.log(".stl and .gcode moved to completedOrders folder.")
+                    const textFilePath = ('./completedOrders/'+paymentIntentID+'/invoice.txt');
+                    const invoiceObjectString = JSON.stringify(invoiceObject, null, 2);
+                    fs.writeFile(textFilePath, invoiceObjectString, (err) => {
+                      if(err){
+                        console.error("Error writing data file: ", err)
+                      }
+                      else{
+                        console.log("Data file written");
+                      }
+                    })
                   }
                 })
               }
             })
         }
+          //Once loop is complete, create a text document that has some order info on it. Complete this once I know the above code actually works
+
       }
       else{
         console.error("CompletedOrders "+paymentIntentID+" folder already exists")
       }
 
-        //Once loop is complete, create a text document that has some order info on it. Complete this once I know the above code actually works
-        const textFilePath = ('./completedOrders/'+paymentIntentID);
-        const invoiceObjectString = JSON.stringify(invoiceObject, null, 2);
-        fs.writeFile(textFilePath, invoiceObjectString, (err) => {
-          if(err){
-            console.error("Error writing data file: ", err)
-          }
-          else{
-            console.log("Data file written");
-          }
-        })
+
       
   }
 
@@ -432,7 +434,6 @@ function findQualityProfile(quality){
 
 
 const https = require('https')
-/* Uncomment if you want to use https, then comment out the 'app.listen' below */
 https
         .createServer({
           cert:fs.readFileSync('/etc/letsencrypt/live/print.parkert.dev/fullchain.pem'),
