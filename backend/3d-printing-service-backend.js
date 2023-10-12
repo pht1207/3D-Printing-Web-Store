@@ -52,7 +52,6 @@ app.post('/webhook', express.raw({type: 'application/json'}), (request, response
   
   //Called when invoice.payment_succeeded is sent to the post method
   async function invoicePaymentSucceededFunction(invoiceObject){
-    const invoiceData = invoiceObject;
     console.log("invoicePaymentSucceededFunction called!")
     const metaData = invoiceObject.metadata.OrderID;
     const paymentIntentID = invoiceObject.payment_intent;
@@ -61,19 +60,22 @@ app.post('/webhook', express.raw({type: 'application/json'}), (request, response
     const orderIDs = metaData.split(" "); //Splits the metadata into many strings depending on space between them
 
     console.log("About to make directory...")
+    const newDirectory = ('./completedOrders/' + paymentIntentID);
     //Make new directory with the paymentIntendID inside of './completedOrders'
-    fs.mkdir('./completedOrders/' + paymentIntentID, (err) => {
-      if (err) {
-        console.error("Error creating folder: ${err}");
-      }
-      else{
+    if(!fs.existsSync(newDirectory)){
+    fs.mkdirSync(newDirectory)
+
         //Go through all the orders and put them into the completedOrders folder
-        for(let i = 0; i < orderIDs.length; i++){
+        for(let i = 1; i < orderIDs.length; i++){
           console.log("working on orderID: "+orderIDs[i])
           const currentItemID = orderIDs[i]
           
-            const currentSTLPath = './data/'+currentItemID+'/'+currentItemID+".stl";
-            const newSTLPath = './data/completedOrders'+paymentIntentID+'/'+currentItemID+".stl";     
+            const currentSTLPath = './data/'+currentItemID+'/'+currentItemID+'.stl';
+            console.log("current stl path: "+currentSTLPath)
+            const newSTLPath = './completedOrders/'+paymentIntentID+'/'+currentItemID+'.stl';
+            console.log("new stl path: "+newSTLPath)
+            console.log("\n")
+  
             //Moves the .stl and .gcode to the new folder
 
             fs.rename(currentSTLPath, newSTLPath, err =>{
@@ -82,7 +84,7 @@ app.post('/webhook', express.raw({type: 'application/json'}), (request, response
               }
               else{
                 const currentGCodePath = './data/'+currentItemID+'/'+currentItemID+".gcode";
-                const newGCodePath = './data/completedOrders'+paymentIntentID+'/'+currentItemID+".gcode";     
+                const newGCodePath = './completedOrders/'+paymentIntentID+'/'+currentItemID+".gcode";     
     
                 fs.rename(currentGCodePath, newGCodePath, err =>{
                   if(err){
@@ -95,18 +97,24 @@ app.post('/webhook', express.raw({type: 'application/json'}), (request, response
               }
             })
         }
-        //Once loop is complete, create a text document that has some order info on it. Complete this once I know the above code actually works
-        //fs.mkfile
       }
-    })
+      else{
+        console.error("CompletedOrders "+paymentIntentID+" folder already exists")
+      }
+
+        //Once loop is complete, create a text document that has some order info on it. Complete this once I know the above code actually works
+        const textFilePath = ('./completedOrders/'+paymentIntentID);
+        const invoiceObjectString = JSON.stringify(invoiceObject, null, 2);
+        fs.writeFile(textFilePath, invoiceObjectString, (err) => {
+          if(err){
+            console.error("Error writing data file: ", err)
+          }
+          else{
+            console.log("Data file written");
+          }
+        })
+      
   }
-
-
-         
-              
-
-
-
 
   // Return a 200 response to acknowledge receipt of the event
   response.send();
