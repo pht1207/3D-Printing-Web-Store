@@ -10,6 +10,7 @@
 /backend/data/*
 /backend/data
 /backend/prusaslicer
+/backend/completedOrders
 
 # testing
 /coverage
