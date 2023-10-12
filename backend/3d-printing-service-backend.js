@@ -54,11 +54,10 @@ app.post('/webhook', express.raw({type: 'application/json'}), (request, response
   async function invoicePaymentSucceededFunction(invoiceObject){
     const invoiceData = invoiceObject;
     console.log("invoicePaymentSucceededFunction called!")
-    console.log(invoiceObject.metadata)
-    console.log("log succeeded")
-    //CODE DOES NOT LIKE INVOICEOBJECT.DATA.OBJECT.METADATA, IDK WHY. MAYBE SET A VARIBLE TO INVOICEOBJECT INSTEAD OF USING IT DIRECTLY
-    const metaData = invoiceObject.metadata;
+    const metaData = invoiceObject.metadata.OrderID;
     const paymentIntentID = invoiceObject.payment_intent;
+    console.log(metaData)
+    console.log(paymentIntentID)
     const orderIDs = metaData.split(" "); //Splits the metadata into many strings depending on space between them
 
     console.log("About to make directory...")
@@ -70,6 +69,7 @@ app.post('/webhook', express.raw({type: 'application/json'}), (request, response
       else{
         //Go through all the orders and put them into the completedOrders folder
         for(let i = 0; i < orderIDs.length; i++){
+          console.log("working on orderID: "+orderIDs[i])
           const currentItemID = orderIDs[i]
           
             const currentSTLPath = './data/'+currentItemID+'/'+currentItemID+".stl";
