@@ -381,8 +381,10 @@ async function parseSTLWithOptions(fileID, quality){
     childProcess.stdout.on('data', (data) => {
       const chunk = data.toString();
       stdoutData += chunk;
+      console.log("This is the stdout data from stdout.on:")
       console.log(`stdout: ${data}`);
       folders[folderIndex].isParsed = "Successful";
+
     });
     
     childProcess.stderr.on('data', (data) => {
@@ -402,10 +404,46 @@ async function parseSTLWithOptions(fileID, quality){
     childProcess.on('close', (code) => {
       console.log(`child process exited with code ${code}`);
       console.log(stdoutData);
+      checkBuildSizeConstraints(stdoutData, folderIndex);
+
+      //Run this to check build constraints
+
       console.log("RESOLVING!!!!!!!!!!!!!!!!!!!!!!!")
       resolve("ok");
     });
 })
+
+//Sets the isParsed variable of the current folderIndex to the appropriate code
+async function checkBuildSizeConstraints(stdoutData, folderIndex){
+  const stdoutDataLines = stdoutData.split("\n");
+  const printerxMax = 235, printeryMax = 235, printerzMax = 265;
+  let gcodex, gcodey, gcodez;
+  console.log("this is the lines:")
+  console.log(stdoutData)
+
+  for(let i = 0; i < stdoutDataLines; i++){
+    console.log(stdoutDataLines[i]);
+    if(stdoutDataLines[i].includes("size_x")){
+      gcodex = parseFloat(inputString.match(/\d+\.\d+/)[0]);
+      if(gcodex >= printerxMax){
+        folders[folderIndex].isParsed = "The print is too wide"
+      }
+    }
+    else if(stdoutDataLines[i].includes("size_y")){
+      gcodey = parseFloat(inputString.match(/\d+\.\d+/)[0]);
+      if(gcodex >= printeryMax){
+        folders[folderIndex].isParsed = "The print is too long"
+
+      }
+    }
+    else if(stdoutDataLines[i].includes("size_z")){
+      gcodez = parseFloat(inputString.match(/\d+\.\d+/)[0]);
+      if(gcodex >= printerzMax){
+        folders[folderIndex].isParsed = "The print is too tall"
+      }
+    }
+  }
+}
 
 
 
