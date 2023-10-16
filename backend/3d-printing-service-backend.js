@@ -71,16 +71,12 @@ app.post('/webhook', express.raw({type: 'application/json'}), (request, response
           const currentItemID = orderIDs[i]
           
             const currentSTLPath = './data/'+currentItemID+'/'+currentItemID+'.stl';
-            console.log("current stl path: "+currentSTLPath)
             const newSTLPath = './completedOrders/'+paymentIntentID+'/'+currentItemID+'.stl';
-            console.log("new stl path: "+newSTLPath)
-            console.log("\n")
   
             //Moves the .stl and .gcode to the new folder
-
             fs.rename(currentSTLPath, newSTLPath, err =>{
               if(err){
-                console.error("error moving .stl file")
+                console.error("error moving .stl and .gcode file")
               }
               else{
                 const currentGCodePath = './data/'+currentItemID+'/'+currentItemID+".gcode";
@@ -99,7 +95,7 @@ app.post('/webhook', express.raw({type: 'application/json'}), (request, response
                         console.error("Error writing data file: ", err)
                       }
                       else{
-                        console.log("Data file written");
+                        console.log("Order information moved to completedOrders successfully");
                       }
                     })
                   }
@@ -397,12 +393,9 @@ async function parseSTLWithOptions(fileID, quality){
       console.log(`child process exited with code ${code}`);
       console.log(stdoutData.toString());
       if(code === 0){
+        //Run this to check build constraints
         checkBuildSizeConstraints(stdoutData, folderIndex);
       }
-
-      //Run this to check build constraints
-
-      console.log("RESOLVING!!!!!!!!!!!!!!!!!!!!!!!")
       resolve("ok");
     });
 })
@@ -449,11 +442,9 @@ function findQualityProfile(quality){
   let profileLocation;
   if(quality === "VHQ"){
     profileLocation = './prusaslicer/resources/profiles/Neptune4-Config-JayoPETG-0.12Height.ini'
-
   }
   else if(quality === "MQ"){
     profileLocation = './prusaslicer/resources/profiles/Neptune4-Config-JayoPETG-0.28Height.ini'
-
   }
   else if(quality === "HQ"){ //Use high quality
     profileLocation = './prusaslicer/resources/profiles/Neptune4-Config-JayoPETG-0.20Height.ini'
@@ -466,7 +457,7 @@ function findQualityProfile(quality){
 
 
 
-/*
+/* No longer needed with the reverse proxying done by apache
 const https = require('https')
 https
         .createServer({
@@ -481,7 +472,7 @@ https
 */
 
 app.listen(port, () => {
-  console.log("port running on"+port)
+  console.log("port running on "+port)
 })
 
 
