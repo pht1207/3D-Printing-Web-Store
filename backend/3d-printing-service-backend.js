@@ -385,7 +385,7 @@ async function parseSTLWithOptions(fileID, quality){
       console.log("Error is: "+error)
       if(error.includes("exceeds the maximum build volume height")){
       //Too large for build volume
-      folders[folderIndex].isParsed = "TooLarge";
+      folders[folderIndex].isParsed = "The file is too tall to print";
     }
       //Add more else if statements here for more errors
       /*else{
@@ -414,37 +414,31 @@ async function checkBuildSizeConstraints(stdoutData, folderIndex){
   const printerxMax = 235, printeryMax = 235, printerzMax = 265;
   let gcodex, gcodey, gcodez;
   const stdoutDataLines = stdoutData.split("\n");
-  console.log("lines in the stdoutData: "+stdoutDataLines.length)
-  console.log("this is the lines:")
 
   for(let i = 0; i < stdoutDataLines.length; i++){
     if(stdoutDataLines[i].includes("size_x")){
-      console.log("x found")
       gcodex = parseFloat(stdoutDataLines[i].match(/\d+\.\d+/)[0]);
       if(gcodex >= printerxMax){
-        console.log("too wide")
-        folders[folderIndex].isParsed = "The print is too wide"
+        console.log("print too wide")
+        folders[folderIndex].isParsed = "The file is too wide to print"
       }
     }
     else if(stdoutDataLines[i].includes("size_y")){
-      console.log("y found")
       gcodey = parseFloat(stdoutDataLines[i].match(/\d+\.\d+/)[0]);
       if(gcodey >= printeryMax){
-        console.log("too long")
-        folders[folderIndex].isParsed = "The print is too long"
+        console.log("print too long")
+        folders[folderIndex].isParsed = "The file is too long to print"
 
       }
     }
     else if(stdoutDataLines[i].includes("size_z")){
-      console.log("z found")
       gcodez = parseFloat(stdoutDataLines[i].match(/\d+\.\d+/)[0]);
       if(gcodez >= printerzMax){
-        console.log("too tall")
-        folders[folderIndex].isParsed = "The print is too tall"
+        console.log("print too tall")
+        folders[folderIndex].isParsed = "The file is too tall to print"
       }
     }
   }
-  console.log("for loop is over")
 }
 
 
