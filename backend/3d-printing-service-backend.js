@@ -353,12 +353,6 @@ async function findFilamentCostWithOptions(id){
 const directoryPath = "./data/"
 app.use(express.static(directoryPath));
 
-/*
-app.listen(port, () => {
-  console.log(`App listening on port ${port}`)
-})
-*/
-
 
 
 
@@ -381,8 +375,6 @@ async function parseSTLWithOptions(fileID, quality){
     childProcess.stdout.on('data', (data) => {
       const chunk = data.toString();
       stdoutData += chunk;
-      console.log("This is the stdout data from stdout.on:")
-      console.log(`stdout: ${data}`);
       folders[folderIndex].isParsed = "Successful";
 
     });
@@ -403,8 +395,10 @@ async function parseSTLWithOptions(fileID, quality){
     
     childProcess.on('close', (code) => {
       console.log(`child process exited with code ${code}`);
-      console.log(stdoutData);
-      checkBuildSizeConstraints(stdoutData, folderIndex);
+      console.log(stdoutData.toString());
+      if(code === 0){
+        checkBuildSizeConstraints(stdoutData, folderIndex);
+      }
 
       //Run this to check build constraints
 
@@ -413,36 +407,44 @@ async function parseSTLWithOptions(fileID, quality){
     });
 })
 
+
+
 //Sets the isParsed variable of the current folderIndex to the appropriate code
 async function checkBuildSizeConstraints(stdoutData, folderIndex){
-  const stdoutDataLines = stdoutData.split("\n");
   const printerxMax = 235, printeryMax = 235, printerzMax = 265;
   let gcodex, gcodey, gcodez;
+  const stdoutDataLines = stdoutData.split("\n");
+  console.log("lines in the stdoutData: "+stdoutDataLines.length)
   console.log("this is the lines:")
-  console.log(stdoutData)
 
-  for(let i = 0; i < stdoutDataLines; i++){
-    console.log(stdoutDataLines[i]);
+  for(let i = 0; i < stdoutDataLines.length; i++){
     if(stdoutDataLines[i].includes("size_x")){
-      gcodex = parseFloat(inputString.match(/\d+\.\d+/)[0]);
+      console.log("x found")
+      gcodex = parseFloat(stdoutDataLines[i].match(/\d+\.\d+/)[0]);
       if(gcodex >= printerxMax){
+        console.log("too wide")
         folders[folderIndex].isParsed = "The print is too wide"
       }
     }
     else if(stdoutDataLines[i].includes("size_y")){
-      gcodey = parseFloat(inputString.match(/\d+\.\d+/)[0]);
-      if(gcodex >= printeryMax){
+      console.log("y found")
+      gcodey = parseFloat(stdoutDataLines[i].match(/\d+\.\d+/)[0]);
+      if(gcodey >= printeryMax){
+        console.log("too long")
         folders[folderIndex].isParsed = "The print is too long"
 
       }
     }
     else if(stdoutDataLines[i].includes("size_z")){
-      gcodez = parseFloat(inputString.match(/\d+\.\d+/)[0]);
-      if(gcodex >= printerzMax){
+      console.log("z found")
+      gcodez = parseFloat(stdoutDataLines[i].match(/\d+\.\d+/)[0]);
+      if(gcodez >= printerzMax){
+        console.log("too tall")
         folders[folderIndex].isParsed = "The print is too tall"
       }
     }
   }
+  console.log("for loop is over")
 }
 
 
@@ -470,7 +472,7 @@ function findQualityProfile(quality){
 
 
 
-
+/*
 const https = require('https')
 https
         .createServer({
@@ -482,7 +484,11 @@ https
                 console.log('server is running on port'+port)
         });
 
+*/
 
+app.listen(port, () => {
+  console.log("port running on"+port)
+})
 
 
 

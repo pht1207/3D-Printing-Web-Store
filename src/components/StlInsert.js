@@ -41,7 +41,7 @@ function StlInsert(props) {
 
 
 
-    const url = "https://print.parkert.dev:5005/"+serverFileID+"/"+serverFileID+".stl";
+    const url = "https://print.parkert.dev/backend/"+serverFileID+"/"+serverFileID+".stl";
     
     const style = {
       height: "100%",
@@ -64,7 +64,7 @@ function StlInsert(props) {
     e.preventDefault();
     await setHideUpload(true);
     const formData = new FormData(e.target);
-    const resolve = await axios.post('https://print.parkert.dev:5005/upload/stl', formData)
+    const resolve = await axios.post('https://print.parkert.dev/backend/upload/stl', formData)
     console.log(resolve);
     console.log(resolve.data);
     await setServerFileID(resolve.data);
@@ -101,7 +101,7 @@ function StlInsert(props) {
       console.log(e);
       const sentData ={ serverFileID: serverFileID, selectedQuality: selectedQuality}
       e.preventDefault();
-      const resolve = await axios.post('https://print.parkert.dev:5005/gcodeWithOptions', sentData, {
+      const resolve = await axios.post('https://print.parkert.dev/backend/gcodeWithOptions', sentData, {
         headers: {
           'Content-Type': 'application/json', // Set the content type to plain text
         },
