@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import "./NavigationBar.css"
-import Cart from './Cart';
 
 function NavigationBar(props) {
 

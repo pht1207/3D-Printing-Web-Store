@@ -12,8 +12,6 @@ import axios from 'axios';
 
 function App() {
 const [cart, setCart] = useState([]);
-const [pseudoCart, setPseudoCart] = useState([])
-
 
 //https://craftcloud3d.com/
 //https://www.npmjs.com/package/react-gcode-viewer
@@ -26,10 +24,10 @@ const stripePromise = loadStripe("pk_test_51NpxjLJfFzW7oP7E7ZgMgbkptO9Wx2PKjwylD
 
   return (
     <div className="App">
-      <NavigationBar cart={cart} setCart={setCart} pseudoCart={pseudoCart} setPseudoCart={setPseudoCart}/>
+      <NavigationBar/>
       <Elements stripe={stripePromise}>
         <div className='mainDiv'>
-        <Cart cart={cart} setCart={setCart} pseudoCart={pseudoCart} setPseudoCart={setPseudoCart}/>
+        <Cart cart={cart} setCart={setCart}/>
         <StlInsert cart={cart} setCart={setCart}/>
         </div>
         <div className='FAQ'>
