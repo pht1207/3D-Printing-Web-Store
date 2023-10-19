@@ -43,6 +43,7 @@ function GCodeViewerComponent(props) {
           {isLoaded? slider : <></>}
           <GCodeViewer
                 orbitControls={true}
+                className="GCodeViewerComponent"
                 showAxes={true}
                 url={url}
                 layerColor= {"rgb(0, 128, 255)"}

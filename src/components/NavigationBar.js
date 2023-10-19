@@ -7,7 +7,7 @@ function NavigationBar(props) {
       return (
         <nav>
             <ul>
-                <li>Parker's Prints</li>
+                <li className='businessTitle'>Parker's Prints</li>
                 <li>About Us</li>
                 <li>Contact Us</li>
                 <li>FAQ</li>

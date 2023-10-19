@@ -86,7 +86,7 @@ function StlInsert(props) {
       Change the quality of your print:
       <form onSubmit={parseGCodeWithOptions}>
         <select id="dropdown" onChange={handleOptionChange}>
-=          <option value="VHQ" >Very High Quality (.12mm Layer Height)</option>
+=         <option value="VHQ" >Very High Quality (.12mm Layer Height)</option>
           <option value="HQ" selected>High Quality (.20mm Layer Height)</option>
           <option value="MQ">Medium Quality (.28mm Layer Height)</option>
         </select>
@@ -168,7 +168,7 @@ function StlInsert(props) {
         <p>Enter your .stl file here</p>
         <form onSubmit={uploadFile}>
             <input type="file" onChange={fileInputted} name="file"></input>
-            <br/>{STLPresent ? <label><button type="submit"></button>Submit this file</label> : <>{errorEncountered ? <> There was an error processing your file, re-submit it. Error message: {errorCode} </> : <p>Click the button above to select an stl file</p>} </>}
+            <br/>{STLPresent ? <button type="submit">Submit this file</button> : <>{errorEncountered ? <> There was an error processing your file, re-submit it. Error message: {errorCode} </> : <p>Click the button above to select an stl file</p>} </>}
         </form> 
         </div>
         :
@@ -199,15 +199,17 @@ function StlInsert(props) {
           {/*{isUploaded ? <button onClick={parseGCode}>Prepare your file?</button> : <></>}*/}
           </>
           : <> 
-          <div className="gcodeViewer">
+          <div className="GCodeSection">
             <GCodeViewerComponent id={serverFileID}/>
             <p className="printNotice">*This is a representation of how your print will look, it will likely be manually adjusted to a better orientation if possible</p>
             <br></br>
-            <p>Price before tax and shipping: ${GCodeCost}</p>
+            <p>Price: ${GCodeCost}</p>
           </div>
-          <h4>Change your print:</h4>
-          {GCodeForm}
-          <button onClick={cartAdder}>add to cart</button>
+          <div className="ChangePrint">
+            <h4>Change your print:</h4>
+            {GCodeForm}
+            <button onClick={cartAdder}>add to cart</button>
+          </div>
           </>
       }
       </div>
