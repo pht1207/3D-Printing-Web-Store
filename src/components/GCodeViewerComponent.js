@@ -6,6 +6,8 @@ function GCodeViewerComponent(props) {
   const [sliderValue, setSliderValue] = useState(100);
   const [visiblePercentage, setVisiblePercentage] = useState(1);
 
+  const [layerNumber, setLayerNumber] = useState();
+
   //https://craftcloud3d.com/
   //https://www.npmjs.com/package/react-gcode-viewer
 
@@ -13,14 +15,12 @@ function GCodeViewerComponent(props) {
 
   function GCodeLoadedFunction(){
     setIsLoaded(true);
-    console.log('hamood');
   }
   
   const handleSliderChange = (event) => {
     const newValue = parseInt(event.target.value, 10);
     setSliderValue(newValue);
-    setVisiblePercentage(newValue/100)
-    console.log(sliderValue)
+    setVisiblePercentage(newValue/100);
   };
   
   const slider = (
@@ -33,7 +33,7 @@ function GCodeViewerComponent(props) {
     max={100}
     value={sliderValue}
     onChange={handleSliderChange}
-  />
+    />
   </>
   )
     
