@@ -1,5 +1,5 @@
 import {StlViewer} from "react-stl-viewer";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from 'axios';
 import GCodeViewerComponent from "./GCodeViewerComponent";
 import './StlInsert.css';
@@ -37,9 +37,9 @@ function StlInsert(props) {
     const [errorCode, setErrorCode] = useState("");
     const [errorEncountered, setErrorEncountered] = useState(false);
 
-    
 
-
+    const fileInputRef = useRef(null);
+    const fileSubmitRef = useRef(null)
 
     const url = "https://print.parkert.dev/backend/"+serverFileID+"/"+serverFileID+".stl";
     
@@ -51,13 +51,30 @@ function StlInsert(props) {
     setErrorCode("")
     setErrorEncountered(false);
     const file = e.target.files[0];
-    if(file) {
+    //Checks if the file is a .stl file
+    const fileExtension = getFileExtension(file.name)
+    if(fileExtension === "stl") {
       setSTLPresent(true)
+      setUserFile(e.target.files[0].value);
+    //Dispatches a submit event so that the onSubmit function can be executed
+      const event = new Event('submit', {
+        bubbles: true,
+        cancelable: true
+      });
+      fileSubmitRef.current.dispatchEvent(event);
     }
-    console.log('result' + e.target.result)
-    console.log(e.target.files[0]);
-    setUserFile(e.target.files[0].value);
-    console.log(userFile);
+    else{
+      setSTLPresent(false);
+      setErrorEncountered(true);
+      setErrorCode("Ensure you select a .stl file")
+    }
+
+    //Gets the file extension and checks it on the client side
+    function getFileExtension(fileName){
+      const fileExtension = fileName.split('.').pop().toLowerCase();
+      return fileExtension;
+    }
+
   }
 
   async function uploadFile(e){
@@ -81,22 +98,6 @@ function StlInsert(props) {
 
 
 
-  const GCodeForm = (
-    <div className="GCodeForm" onSubmit={parseGCodeWithOptions}>
-      Change the quality of your print:
-      <form onSubmit={parseGCodeWithOptions}>
-        <select id="dropdown" onChange={handleOptionChange}>
-=         <option value="VHQ" >Very High Quality (.12mm Layer Height)</option>
-          <option value="HQ" selected>High Quality (.20mm Layer Height)</option>
-          <option value="MQ">Medium Quality (.28mm Layer Height)</option>
-        </select>
-        <br/>
-        <button type="submit">Prepare your file to be printed</button> {/* Make this work at some point */}
-      </form>
-    </div>
-    )
-
-
     async function parseGCodeWithOptions(e){
       console.log(e);
       const sentData ={ serverFileID: serverFileID, selectedQuality: selectedQuality}
@@ -107,11 +108,7 @@ function StlInsert(props) {
         },
       })
       const code = resolve.data.isParsed
-      console.log(code + " THIS IS THE CODE .ISPARSED")
-      console.log("resolve: "+resolve);
-      console.log(resolve.data)
       if(resolve.data.isParsed === "Successful"){
-        console.log("Successful parsing of gcode file")
         setGCodeCost(resolve.data.cost);
         setReturnedGCode(resolve.data)  
         setGCodeParsed(true); 
@@ -131,8 +128,6 @@ function StlInsert(props) {
         setGCodeParsed(false);
         setReturnedGCode();
         setGCodeCost();
-
-        console.log("wahdskjhaldkjfhadskljfhalkjdshllkhlhk")
       }
       console.log("isParsed: "+resolve.data.isParsed)
       /*
@@ -159,20 +154,45 @@ function StlInsert(props) {
     }
 
 
+    const handleSelectFileClick = () => {
+      fileInputRef.current.click();
+  };
+
+
+
+
+const GCodeForm = (
+  <div className="GCodeForm" onSubmit={parseGCodeWithOptions}>
+    Change the quality of your print:
+    <form onSubmit={parseGCodeWithOptions}>
+      <select id="dropdown" onChange={handleOptionChange}>
+=         <option value="VHQ" >Very High Quality (.12mm Layer Height)</option>
+        <option value="HQ" selected>High Quality (.20mm Layer Height)</option>
+        <option value="MQ">Medium Quality (.28mm Layer Height)</option>
+      </select>
+      <br/>
+      <button type="submit">Prepare your file to be printed</button>
+    </form>
+  </div>
+  )
+
+
+
+
     //If I ever want to let them drag and drop, I need an 'onDrop' attribute added to one of the HTML elements
   
     return (
       <div className="interactionWindow">
       {/*This section is for showing the file input for the .stl*/}
       {!GCodeParsed ? <>{!hideUpload ? <div className="uploadField">
+        <form onSubmit={uploadFile} onClick={handleSelectFileClick} ref={fileSubmitRef}>
         <p>Enter your .stl file here</p>
-        <form onSubmit={uploadFile}>
-            <input type="file" onChange={fileInputted} name="file"></input>
-            <br/>{STLPresent ? <button type="submit">Submit this file</button> : <>{errorEncountered ? <> There was an error processing your file, re-submit it. Error message: {errorCode} </> : <p>Click the button above to select an stl file</p>} </>}
+            <input type="file" onChange={fileInputted} name="file" style={{ display: 'none' }} ref={fileInputRef}></input>
+            {STLPresent ? <button type="submit"/> : <>{errorEncountered ? <> There was an error processing your file, re-submit it. Error message: {errorCode} </> : <></>} </>}
         </form> 
         </div>
         :
-        <div className="uploadField"></div>
+        <></>
       }
 
 
