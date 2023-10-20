@@ -35,8 +35,12 @@ function Cart(props) {
           <p>Click on the "Choose File" button on the right side to upload your .stl file</p>
         </div>
         </>
+
+
          :
-         <>{/* This is the cart that will show if the cart is not empty*/}
+
+
+         <div className='cartWindow'>{/* This is the cart that will show if the cart is not empty*/}
          <div className='cartButton'><FontAwesomeIcon icon="fa-solid fa-cart-shopping" /> Your Cart</div>
  
           <ul className='cartList'>
@@ -44,9 +48,9 @@ function Cart(props) {
              <li key={index} className='cartItem'>{index+1}: File Name: {item.file} Price: ${item.cost}</li>
              ))
              }
-           <li><BuyButton cart={props.cart} setCart={props.setCart}/></li>
+           <li className='BuyButton'><BuyButton cart={props.cart} setCart={props.setCart}/></li>
          </ul>
-         </>            
+         </div>            
           }
           </div>
       );
