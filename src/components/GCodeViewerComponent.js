@@ -6,8 +6,6 @@ function GCodeViewerComponent(props) {
   const [sliderValue, setSliderValue] = useState(100);
   const [visiblePercentage, setVisiblePercentage] = useState(1);
 
-  const [layerNumber, setLayerNumber] = useState();
-
   //https://craftcloud3d.com/
   //https://www.npmjs.com/package/react-gcode-viewer
 
