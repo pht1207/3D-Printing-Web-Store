@@ -28,3 +28,8 @@ button{
   margin:.5em;
   box-shadow: 4px 3px 3px rgb(180, 180, 180);
 }
+
+
+ul{
+  list-style: none;
+}
