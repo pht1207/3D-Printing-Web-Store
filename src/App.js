@@ -24,12 +24,20 @@ const stripePromise = loadStripe("pk_test_51NpxjLJfFzW7oP7E7ZgMgbkptO9Wx2PKjwylD
 
   return (
     <div className="App">
+
       <NavigationBar/>
+
       <Elements stripe={stripePromise}>
+
         <div className='mainDiv'>
         <Cart cart={cart} setCart={setCart}/>
+        
         <StlInsert cart={cart} setCart={setCart}/>
         </div>
+
+
+
+
         <div className='FAQ'>
           <h4>Things to note about this service:</h4>
           <br/>

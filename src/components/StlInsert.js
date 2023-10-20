@@ -172,6 +172,7 @@ const GCodeForm = (
       </select>
       <br/>
       <button type="submit">Prepare your file to be printed</button>
+      {GCodeParsed ?  <button onClick={cartAdder}>add to cart</button> : <></>}
     </form>
   </div>
   )
@@ -223,12 +224,11 @@ const GCodeForm = (
             <GCodeViewerComponent id={serverFileID}/>
             <p className="printNotice">*This is a representation of how your print will look, it will likely be manually adjusted to a better orientation if possible</p>
             <br></br>
-            <p>Price: ${GCodeCost}</p>
+            <p className="priceListed">Price: ${GCodeCost}</p>
           </div>
           <div className="ChangePrint">
             <h4>Change your print:</h4>
             {GCodeForm}
-            <button onClick={cartAdder}>add to cart</button>
           </div>
           </>
       }
