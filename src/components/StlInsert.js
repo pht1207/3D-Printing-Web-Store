@@ -228,7 +228,9 @@ const GCodeForm = (
             {GCodeForm}
           </div>
 
+          <br/>
           <div className='FAQ'>
+          
           <h4>Things to note about this service:</h4>
           <br/>
           <ul>

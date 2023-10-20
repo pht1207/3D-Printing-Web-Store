@@ -3,6 +3,7 @@ import "./Cart.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Example using Font Awesome
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import BuyButton from './BuyButton';
 library.add(faShoppingCart);
 
@@ -45,7 +46,10 @@ function Cart(props) {
  
           <ul className='cartList'>
              {props.cart.map((item, index) => (
-             <li key={index} className='cartItem'>{index+1}: File Name: {item.file} Price: ${item.cost}</li>
+             <li key={index} className='cartItem'>{/*index+1 Taking this out for right now, no point in having them numbered: Item: */}
+              {item.file} &nbsp;&nbsp; Price: ${item.cost}
+              {/*Make some trashcan icon to remove items, I tried w/ fontawesome but couldnt get it to appear, could not say why*/}
+             </li>
              ))
              }
            <li className='BuyButton'><BuyButton cart={props.cart} setCart={props.setCart}/></li>
