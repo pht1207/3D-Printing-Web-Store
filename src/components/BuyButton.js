@@ -8,6 +8,9 @@ function BuyButton(props) {
     const [buyLinkReceived, setBuyLinkReceived] = useState(false);
     const [stripePaymentLink, setStripePaymentLink] = useState();
 
+    const style = {
+      borderStyle: 'hidden',
+    }
 
     //Brings user to the stripe payment page
     useEffect(() => {
@@ -30,7 +33,7 @@ function BuyButton(props) {
       
 
       return (
-            <button onClick={buyFunction}>Buy Here</button>
+            <button onClick={buyFunction} style={style}>Buy Here</button>
       );
     }
     
