@@ -18,6 +18,11 @@
   }
   }
 
+.cartDiv p{
+  font-size: medium;
+  padding: 0;
+}
+
 .cartDiv ul{
     display: flex;
     flex-direction: column;
@@ -25,7 +30,6 @@
     list-style: none;
     width: 100%;
   }
-
 
 
 .cartItem{
