@@ -42,11 +42,11 @@ function Cart(props) {
 
 
          <div className='cartWindow'>{/* This is the cart that will show if the cart is not empty*/}
-         <div className='cartButton'><FontAwesomeIcon icon="fa-solid fa-cart-shopping" /> Your Cart</div>
+          <div className='cartTitle'><FontAwesomeIcon icon="fa-solid fa-cart-shopping" /> Your Cart</div>
  
           <ul className='cartList'>
              {props.cart.map((item, index) => (
-             <li key={index} className='cartItem'>{/*index+1 Taking this out for right now, no point in having them numbered: Item: */}
+             <li key={index} className='cartItem'> {/*index+1 Taking this out for right now, no point in having them numbered: Item: */}
               {item.file} &nbsp;&nbsp; Price: ${item.cost}
               {/*Make some trashcan icon to remove items, I tried w/ fontawesome but couldnt get it to appear, could not say why*/}
              </li>
