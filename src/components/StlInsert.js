@@ -230,18 +230,6 @@ const GCodeForm = (
           </div>
 
           <br/>
-          <div className='FAQ'>
-          
-          <h4>Things to note about this service:</h4>
-          <br/>
-          <ul>
-            <li>There is no post-processing performed on any these parts, you will be responsible for removing support material, sanding, painting, etc.</li>
-            <br/>
-            <li>The representation provided above is only an example of what your finished product will look like, your item will be placed in the best orientation seen by the print operator, so if it is automatically placed upside-down or something, don't worry.</li>
-            <br/>
-            <li>When selecting PETG filament, there will be inevitable strings that appear on the model. The increased strength to heat and durability come at the expense of this stringing. They can easily be removed by sanding them off.</li>
-          </ul>
-        </div>
           </>
       }
       </div>

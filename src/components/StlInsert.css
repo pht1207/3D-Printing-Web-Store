@@ -72,13 +72,6 @@
   width: 80%;
 }
 
-.FAQ{
-  font-size: small;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 50%
-}
 
 .GCodeForm button{
   border-style:hidden;
