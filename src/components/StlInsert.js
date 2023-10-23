@@ -185,9 +185,10 @@ const GCodeForm = (
     return (
       <div className="interactionWindow">
       {/*This section is for showing the file input for the .stl*/}
-      {!GCodeParsed ? <>{!hideUpload ? <div className="uploadField">
-        <form onSubmit={uploadFile} onClick={handleSelectFileClick} ref={fileSubmitRef}>
-        <p>Enter your .stl file here</p>
+      {!GCodeParsed ? <>{!hideUpload ? 
+      <div className="uploadField" onClick={handleSelectFileClick}>
+        <button onClick={(e) => e.preventDefault()}>Enter your .stl file here</button>
+        <form onSubmit={uploadFile}  ref={fileSubmitRef}>
             <input type="file" onChange={fileInputted} name="file" style={{ display: 'none' }} ref={fileInputRef}></input>
             {STLPresent ? <button type="submit"/> : <>{errorEncountered ? <> There was an error processing your file, re-submit it. Error message: {errorCode} </> : <></>} </>}
         </form> 

@@ -5,8 +5,19 @@
   font-size: x-large;
   padding: 2em;
   width: 20%;
-
 }
+
+@media (max-width: 48em) {
+  .cartDiv{
+    color: rgb(51, 51, 51);
+    border-right-style: solid;
+    border-width: .01em;
+    font-size: x-large;
+    padding: 2em;
+    width: 50%;
+    background-color: red;
+  }
+  }
 
 .cartDiv ul{
     display: flex;
@@ -27,7 +38,6 @@
     justify-content: space-around;
     align-items: center;
     width: 100%;
-
 }
 
 .cartWindow{
@@ -36,7 +46,6 @@
   box-shadow: 4px 3px 3px rgb(180, 180, 180);
   border-width: .01em;
   width: 100%;
-
 }
 
 .BuyButton{
