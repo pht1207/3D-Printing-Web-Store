@@ -1,12 +1,13 @@
 
 .interactionWindow{
-  width:80%;
+  width:100%;
   min-height: 100vh;
   font-size: x-large;
-  padding: 2em;
   display: flex;
   flex-direction: column;
   align-items: center;
+
+  margin-top: 2em;
 }
 
 @media (max-width: 48em) {
@@ -14,7 +15,6 @@
     width:100%;
     min-height: 100vh;
     font-size: x-large;
-    padding: 2em;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -44,7 +44,7 @@
     border-width: .01em;
     border-color: gray;
     box-shadow: 4px 3px 3px rgb(180, 180, 180);
-    width: 100%;
+    width: 80%;
   }
 
 
