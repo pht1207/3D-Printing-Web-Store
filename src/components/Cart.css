@@ -70,6 +70,7 @@
 
 .FAQ{
   border-top-style: solid;
+  padding-top: 3em;
   border-width: .01em;
   font-size: small;
   display: flex;
