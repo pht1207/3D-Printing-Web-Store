@@ -12,7 +12,7 @@
 
 @media (max-width: 48em) {
   .interactionWindow{
-    width:100%;
+    width:60%;
     min-height: 100vh;
     font-size: x-large;
     display: flex;

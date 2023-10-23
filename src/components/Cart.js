@@ -27,7 +27,7 @@ function Cart(props) {
       return (
         <div className='cartDiv'>
         {emptyCart ? 
-        <>{/* This is the instructions that will show if the cart is empty*/}
+        <div className='InstructionsDiv'>{/* This is the instructions that will show if the cart is empty*/}
           <h2>Get an instant quote</h2>
           <br/>
           <p>Upload your .stl file and get a quote for pricing</p>
@@ -35,7 +35,7 @@ function Cart(props) {
           <p>Click on the "Enter your .stl file here" button on the right side to upload your .stl file</p>
           <br/>
           <p>Select your desired quality, then prepare it to be printed!</p>
-        </>
+        </div>
 
 
          :

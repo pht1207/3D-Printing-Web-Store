@@ -5,6 +5,10 @@
   font-size: x-large;
   padding: 1em;
   width: 30%;
+  overflow: hidden;
+  max-width: 20vw;
+
+
 }
 
 @media (max-width: 48em) {
@@ -12,10 +16,17 @@
     color: rgb(51, 51, 51);
     border-right-style: solid;
     border-width: .01em;
-    font-size: x-large;
+    font-size: medium;
     padding: 1em;
-    width: 50%;
+    width: 40%;
+    max-width: 50%;
+
   }
+  .FAQ *{
+    max-width: 50%;
+  
+  }
+
   }
 
 .cartDiv p{
@@ -67,6 +78,8 @@
   margin-top: .5em
 }
 
+.InstructionsDiv{
+}
 
 .FAQ{
   border-top-style: solid;
@@ -76,5 +89,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%
+  width: 100%;
+}
+
+.FAQ *{
+  max-width: 20vw;
+
 }
