@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Example usi
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import DeleteIcon from '@mui/icons-material/Delete';
 import BuyButton from './BuyButton';
 library.add(faShoppingCart);
 
@@ -25,8 +26,6 @@ function Cart(props) {
 
 
       function removeFromCart(e){
-        //Figure out how to get index from e
-        console.log("Attempted remove");
         const removedIndex = e.target.value
         console.log(e.target.value)
         let newCart = [];
@@ -59,7 +58,9 @@ function Cart(props) {
 
          <div className='cartWindow'>{/* This is the cart that will show if the cart is not empty*/}
           <div className='cartTitle'><FontAwesomeIcon icon="fa-solid fa-cart-shopping" /> Your Cart</div>
- 
+          trash below
+            <DeleteIcon/>
+          trash above
           <ul className='cartList'>
              {props.cart.map((item, index) => (
              <li key={index} className='cartItem'> {/*index+1 Taking this out for right now, no point in having them numbered: Item: */}
