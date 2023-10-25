@@ -56,7 +56,7 @@
 
 .cartWindow{
   border-style: solid;
-  border-radius: 1em;
+  border-radius: .5em;
   box-shadow: 4px 3px 3px rgb(180, 180, 180);
   border-width: .01em;
   width: 100%;

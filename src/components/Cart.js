@@ -23,6 +23,13 @@ function Cart(props) {
         }
       },[props.cart])
 
+
+      function removeFromCart(e){
+        console.log("Attempted remove")
+      }
+
+
+
     //https://fontawesome.com/icons/cart-shopping?f=classic&s=solid&an=flip
       return (
         <div className='cartDiv'>
@@ -47,7 +54,7 @@ function Cart(props) {
           <ul className='cartList'>
              {props.cart.map((item, index) => (
              <li key={index} className='cartItem'> {/*index+1 Taking this out for right now, no point in having them numbered: Item: */}
-              {item.file} &nbsp;&nbsp; Price: ${item.cost}
+              {item.file} &nbsp;&nbsp; Price: ${item.cost} <button onClick={removeFromCart}>Remove</button>
               {/*Make some trashcan icon to remove items, I tried w/ fontawesome but couldnt get it to appear, could not say why*/}
              </li>
              ))
