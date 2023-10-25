@@ -65,6 +65,8 @@ function Cart(props) {
              {props.cart.map((item, index) => (
              <li key={index} className='cartItem'> {/*index+1 Taking this out for right now, no point in having them numbered: Item: */}
               {item.file} &nbsp;&nbsp; Price: ${item.cost} <button value={index} onClick={removeFromCart}>Remove</button>
+              <DeleteIcon onClick={removeFromCart} value={index}/>
+
               {/*Make some trashcan icon to remove items, I tried w/ fontawesome but couldnt get it to appear, could not say why*/}
              </li>
              ))
