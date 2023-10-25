@@ -58,9 +58,6 @@ function Cart(props) {
 
          <div className='cartWindow'>{/* This is the cart that will show if the cart is not empty*/}
           <div className='cartTitle'><FontAwesomeIcon icon="fa-solid fa-cart-shopping" /> Your Cart</div>
-          trash below
-            <DeleteIcon/>
-          trash above
           <ul className='cartList'>
              {props.cart.map((item, index) => (
              <li key={index} className='cartItem'> {/*index+1 Taking this out for right now, no point in having them numbered: Item: */}
