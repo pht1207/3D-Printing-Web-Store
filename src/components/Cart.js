@@ -25,7 +25,16 @@ function Cart(props) {
 
 
       function removeFromCart(e){
-        console.log("Attempted remove")
+        //Figure out how to get index from e
+        console.log("Attempted remove");
+        const removedIndex = e.target.value
+        console.log(e.target.value)
+        let newCart = [];
+        for(let i = 0; i < props.cart.length; i++){
+          if(props.cart[i] !== props.cart[removedIndex])
+          newCart.push(props.cart[i]);
+        }
+        props.setCart(newCart);
       }
 
 
@@ -54,7 +63,7 @@ function Cart(props) {
           <ul className='cartList'>
              {props.cart.map((item, index) => (
              <li key={index} className='cartItem'> {/*index+1 Taking this out for right now, no point in having them numbered: Item: */}
-              {item.file} &nbsp;&nbsp; Price: ${item.cost} <button onClick={removeFromCart}>Remove</button>
+              {item.file} &nbsp;&nbsp; Price: ${item.cost} <button value={index} onClick={removeFromCart}>Remove</button>
               {/*Make some trashcan icon to remove items, I tried w/ fontawesome but couldnt get it to appear, could not say why*/}
              </li>
              ))
