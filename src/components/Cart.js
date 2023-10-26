@@ -12,8 +12,6 @@ library.add(faShoppingCart);
 
 function Cart(props) {
     const [emptyCart, setEmptyCart] = useState(true);
-    const removeButtonRef = useRef(null);
-
 
       //Sets cart empty or not
       useEffect(() => { 
@@ -27,20 +25,18 @@ function Cart(props) {
 
 
       function removeFromCart(e){
-        const removedIndex = e.target.value
+        console.log(e)
+        const removedIndex = e
+        console.log(removedIndex)
         let newCart = [];
         for(let i = 0; i < props.cart.length; i++){
-          if(props.cart[i] !== props.cart[removedIndex])
-          newCart.push(props.cart[i]);
+          if(props.cart[i] !== props.cart[removedIndex]){
+            newCart.push(props.cart[i]);
+          }
         }
         props.setCart(newCart);
       }
 
-
-      //Used to click the hidden button that removes the item from the cart
-      const handleTrashIconClick = () => {
-        removeButtonRef.current.click();
-    };
 
 
 
@@ -67,11 +63,9 @@ function Cart(props) {
           <div className='cartTitle'><FontAwesomeIcon icon="fa-solid fa-cart-shopping" /> Your Cart</div>
           <ul className='cartList'>
              {props.cart.map((item, index) => (
-             <li key={index} className='cartItem'> {/*index+1 Taking this out for right now, no point in having them numbered: Item: */}
-              {item.file} &nbsp;&nbsp; Price: ${item.cost} <button value={index} onClick={removeFromCart} ref={removeButtonRef} style={{display:"none"}}></button>
-              <DeleteIcon onClick={handleTrashIconClick} value={index}/>
-
-              {/*Make some trashcan icon to remove items, I tried w/ fontawesome but couldnt get it to appear, could not say why*/}
+             <li key={index} className='cartItem'>
+                {item.file} &nbsp;&nbsp; Price: ${item.cost} 
+                <DeleteIcon value={index} onClick={() => removeFromCart(index)}/>
              </li>
              ))
              }
