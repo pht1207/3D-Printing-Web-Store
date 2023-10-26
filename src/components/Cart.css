@@ -1,4 +1,7 @@
 .cartDiv{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   color: rgb(51, 51, 51);
   border-right-style: solid;
   border-width: .01em;
@@ -6,35 +9,24 @@
   padding: 1em;
   width: 30%;
   overflow: hidden;
-  max-width: 20vw;
+  max-width: 100%;
 
 
 }
 
-@media (max-width: 48em) {
-  .cartDiv{
-    color: rgb(51, 51, 51);
-    border-right-style: solid;
+
+
+  .cartWindow{
+    border-style: solid;
+    border-radius: .5em;
+    border-color: rgb(180, 180, 180);
+    box-shadow: 4px 3px 3px rgb(180, 180, 180);
     border-width: .01em;
-    font-size: medium;
-    padding: 1em;
-    width: 40%;
-    max-width: 50%;
-
-  }
-  .FAQ *{
-    max-width: 50%;
-  
+    width: 60%;
   }
 
-  }
 
-.cartDiv p{
-  font-size: medium;
-  padding: 0;
-}
-
-.cartDiv ul{
+.cartList{
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -59,14 +51,7 @@
     padding-right: 1em;
 }
 
-.cartWindow{
-  border-style: solid;
-  border-radius: .5em;
-  border-color: rgb(180, 180, 180);
-  box-shadow: 4px 3px 3px rgb(180, 180, 180);
-  border-width: .01em;
-  width: 100%;
-}
+
 
 .BuyButton{
   border-top-style: solid;
@@ -79,8 +64,6 @@
   margin-top: .5em
 }
 
-.InstructionsDiv{
-}
 
 .FAQ{
   border-top-style: solid;
@@ -104,3 +87,30 @@
   flex-direction: column;
   align-items: start;
 }
+.cartItemInfo *{
+  overflow: hidden;
+  text-overflow:ellipsis;
+
+}
+
+
+
+
+
+
+@media (max-width: 64em) {
+  .cartDiv{
+    color: rgb(51, 51, 51);
+    border-right-style: solid;
+    border-width: .01em;
+    font-size: medium;
+    padding: 1em;
+    width: 40%;
+    max-width: 50%;
+
+  }
+  .cartWindow{
+    width: 100%;
+  }
+
+  }

@@ -30,9 +30,9 @@ const stripePromise = loadStripe("pk_test_51NpxjLJfFzW7oP7E7ZgMgbkptO9Wx2PKjwylD
       <Elements stripe={stripePromise}>
 
         <div className='mainDiv'>
-        <Cart cart={cart} setCart={setCart}/>
+        <Cart cart={cart} setCart={setCart} className="CartComponent"/>
         
-        <StlInsert cart={cart} setCart={setCart}/>
+        <StlInsert cart={cart} setCart={setCart} className="StlInsertComponent"/>
         </div>
 
 

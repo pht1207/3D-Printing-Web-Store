@@ -26,6 +26,9 @@ button{
   border-radius: .25em;
   margin:.5em;
   box-shadow: 4px 3px 3px rgb(180, 180, 180);
+  border-style: solid;
+  border-color: rgb(180, 180, 180);
+
 }
 
 
