@@ -38,8 +38,8 @@ function Cart(props) {
       }
 
       function fileNameDisplayer(fileName){
-        if(fileName.length >= 8){
-          return("File: " + fileName.substring(0,8)+"...stl")
+        if(fileName.length >= 12){
+          return("File: " + fileName.substring(0,12)+"...stl")
         }
         else{
           return ("File: " + fileName);
@@ -73,7 +73,10 @@ function Cart(props) {
           <ul className='cartList'>
              {props.cart.map((item, index) => (
              <li key={index} className='cartItem'>
-                <div className='cartItemInfo'>{fileNameDisplayer(item.file)} <br/>&nbsp;&nbsp; Price: ${item.cost}</div>
+                <div className='cartItemInfo'>
+                  <p>{fileNameDisplayer(item.file)} </p>
+                  <p>Price: ${item.cost}</p>
+                </div>
                 <DeleteIcon value={index} onClick={() => removeFromCart(index)}/>
              </li>
              ))
