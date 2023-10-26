@@ -27,9 +27,7 @@ function Cart(props) {
 
 
       function removeFromCart(e){
-        console.log(e.target)
         const removedIndex = e.target.value
-        console.log(e.target.value)
         let newCart = [];
         for(let i = 0; i < props.cart.length; i++){
           if(props.cart[i] !== props.cart[removedIndex])
@@ -39,6 +37,7 @@ function Cart(props) {
       }
 
 
+      //Used to click the hidden button that removes the item from the cart
       const handleTrashIconClick = () => {
         removeButtonRef.current.click();
     };
