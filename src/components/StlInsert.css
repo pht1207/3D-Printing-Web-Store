@@ -32,6 +32,8 @@
     overflow: hidden;
     border-bottom-style: solid;
     border-width: .01em;
+    border-color: rgb(180, 180, 180);
+
   }
 
 
@@ -39,10 +41,11 @@
   .STLViewerDiv{
     height:40vh;
     border-style: solid;
+    border-color: rgb(180, 180, 180);
     overflow: hidden;
     border-radius: 1em;
     border-width: .01em;
-    border-color: gray;
+    border-color: rgb(180, 180, 180);
     box-shadow: 4px 3px 3px rgb(180, 180, 180);
     width: 60%;
   }
@@ -60,7 +63,7 @@
 
   .GCodeSection{
     border-style: solid;
-    border-color: black;
+    border-color: rgb(180, 180, 180);
     box-shadow: 4px 3px 3px rgb(180, 180, 180);
     border-radius: 1em;
     border-width: .01em;
