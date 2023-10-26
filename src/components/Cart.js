@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import "./Cart.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; // Example using Font Awesome
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -12,6 +12,7 @@ library.add(faShoppingCart);
 
 function Cart(props) {
     const [emptyCart, setEmptyCart] = useState(true);
+    const removeButtonRef = useRef(null);
 
 
       //Sets cart empty or not
@@ -26,6 +27,7 @@ function Cart(props) {
 
 
       function removeFromCart(e){
+        console.log(e.target)
         const removedIndex = e.target.value
         console.log(e.target.value)
         let newCart = [];
@@ -35,6 +37,12 @@ function Cart(props) {
         }
         props.setCart(newCart);
       }
+
+
+      const handleTrashIconClick = () => {
+        removeButtonRef.current.click();
+    };
+
 
 
 
@@ -61,8 +69,8 @@ function Cart(props) {
           <ul className='cartList'>
              {props.cart.map((item, index) => (
              <li key={index} className='cartItem'> {/*index+1 Taking this out for right now, no point in having them numbered: Item: */}
-              {item.file} &nbsp;&nbsp; Price: ${item.cost} <button value={index} onClick={removeFromCart}>Remove</button>
-              <DeleteIcon onClick={removeFromCart} value={index}/>
+              {item.file} &nbsp;&nbsp; Price: ${item.cost} <button value={index} onClick={removeFromCart} ref={removeButtonRef} style={{display:"none"}}></button>
+              <DeleteIcon onClick={handleTrashIconClick} value={index}/>
 
               {/*Make some trashcan icon to remove items, I tried w/ fontawesome but couldnt get it to appear, could not say why*/}
              </li>
