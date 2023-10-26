@@ -52,6 +52,11 @@
     justify-content: space-around;
     align-items: center;
     width: 100%;
+    width: 100%;
+    overflow: auto;
+    font-size: medium;
+    padding-left: 1em;
+    padding-right: 1em;
 }
 
 .cartWindow{
@@ -70,11 +75,7 @@
   border-width: .01em;
 }
 .cartList li{
-  width: 100%;
-  overflow: auto;
-  font-size: medium;
-  padding-left: 1em;
-  padding-right: 1em;
+
 }
 
 .cartTitle{
@@ -100,10 +101,8 @@
 
 }
 
-.deleteButton{
-  background-color: transparent;
-  border: none;
-  padding: 1em;
-  cursor: pointer;
-  z-index: 100;
+
+.cartItemInfo{
+  display: flex;
+  flex-direction: column;
 }
