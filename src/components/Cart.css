@@ -57,6 +57,7 @@
 .cartWindow{
   border-style: solid;
   border-radius: .5em;
+  border-color: rgb(180, 180, 180);
   box-shadow: 4px 3px 3px rgb(180, 180, 180);
   border-width: .01em;
   width: 100%;
@@ -64,6 +65,8 @@
 
 .BuyButton{
   border-top-style: solid;
+  border-color: rgb(180, 180, 180);
+
   border-width: .01em;
 }
 .cartList li{
