@@ -188,6 +188,7 @@ app.post('/upload/stl', upload.single('file'), async function (req, res) {
 //Parses the stl into gcode from form given by the user
 app.post('/gcodeWithOptions', async function(req, res){
   if(req.body.serverFileID){
+    try{
     console.log(req.body.serverFileID);
     console.log(req.body.selectedQuality);
     
@@ -202,6 +203,10 @@ app.post('/gcodeWithOptions', async function(req, res){
     }
 
     res.send(folders[folderIndex])
+  }
+  catch(error){
+    console.error("Error parsing gcode, error message: " + error)
+  }
   }
 })
 
