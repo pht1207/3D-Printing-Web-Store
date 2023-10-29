@@ -46,11 +46,8 @@ app.post('/webhook', express.raw({type: 'application/json'}), (request, response
   //Called when invoice.payment_succeeded is sent to the post method
   async function invoicePaymentSucceededFunction(invoiceObject){
     try{
-    console.log("invoicePaymentSucceededFunction called!")
     const metaData = invoiceObject.metadata.OrderID;
     const paymentIntentID = invoiceObject.payment_intent;
-    console.log(metaData)
-    console.log(paymentIntentID)
     const orderIDs = metaData.split(" "); //Splits the metadata into many strings depending on space between them
 
     console.log("About to make directory...")
@@ -170,9 +167,8 @@ app.post('/upload/stl', upload.single('file'), async function (req, res) {
       })
       }
     })
-
     
-      //Sends filename to the host after downloading it so it can be displayed in their browser
+    //Sends filename to the host after downloading it so it can be displayed in their browser
     res.send(id);
   }  
   catch(error){
@@ -186,20 +182,20 @@ app.post('/upload/stl', upload.single('file'), async function (req, res) {
 //Parses the stl into gcode from form given by the user
 app.post('/gcodeWithOptions', async function(req, res){
     try{
-    console.log(req.body.serverFileID);
-    console.log(req.body.selectedQuality);
-    
-    let id = req.body.serverFileID;
-    let quality = req.body.selectedQuality;
-    let folderIndex = findFile(id);
+      console.log(req.body.serverFileID);
+      console.log(req.body.selectedQuality);
+      
+      let id = req.body.serverFileID;
+      let quality = req.body.selectedQuality;
+      let folderIndex = findFile(id);
 
-    await parseSTLWithOptions(id, quality);
+      await parseSTLWithOptions(id, quality);
 
-    if(folders[folderIndex].isParsed === "Successful"){
-      await findFilamentCostWithOptions(id)
-    }
+      if(folders[folderIndex].isParsed === "Successful"){
+        await findFilamentCostWithOptions(id)
+      }
 
-    res.send(folders[folderIndex])
+      res.send(folders[folderIndex])
   }
   catch(error){
     console.error("Error parsing gcode, error message: " + error)
@@ -236,9 +232,7 @@ app.post('/paymentLinkCreator', async function(req, res){
   //Check for if this should be ran even
     try{
       let cart = req.body;
-      console.log(req.body)
       let metadataID = '';
-      console.log(cart)
       //Gets all items from the cart id array and matches them to the items on the server file system
       //Pushes all of them into an items array
       let items = [];
@@ -250,9 +244,7 @@ app.post('/paymentLinkCreator', async function(req, res){
             metadataID += (' '+folders[j].id);
           }
         }
-      }
-      console.log("items in item array: " + items.length);
-      
+      }      
 
       //Makes a Stripe custom payment amount for each cart item
       let paymentLinkItems = [];
