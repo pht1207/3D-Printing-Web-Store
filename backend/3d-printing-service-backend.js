@@ -244,7 +244,7 @@ app.post('/paymentLinkCreator', async function(req, res){
             metadataID += (' '+folders[j].id);
           }
         }
-      }      
+      }
 
       //Makes a Stripe custom payment amount for each cart item
       let paymentLinkItems = [];
