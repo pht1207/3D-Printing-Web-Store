@@ -145,8 +145,7 @@ function Folder(id, file, isParsed, index, paid, cost, paymentLink){
 
 //Used in accepting the stl file and storing it for the client
 app.post('/upload/stl', upload.single('file'), async function (req, res) {
-    console.log("filename: "+req.file.originalname)
-  
+  if(req.file.originalname.slice(-4) === ".stl"){  
     //Creates a user object when stls are sent
     let id = req.file.filename
     let fileName = req.file.originalname;
@@ -177,30 +176,32 @@ app.post('/upload/stl', upload.single('file'), async function (req, res) {
     }
   })
 
-
+  
     //Sends filename to the host after downloading it so it can be displayed in their browser
     res.send(id);
-    
+}
 })
 
 
 
 //Parses the stl into gcode from form given by the user
 app.post('/gcodeWithOptions', async function(req, res){
-  console.log(req.body.serverFileID);
-  console.log(req.body.selectedQuality);
-  
-  let id = req.body.serverFileID;
-  let quality = req.body.selectedQuality;
-  let folderIndex = findFile(id);
+  if(req.body.serverFileID){
+    console.log(req.body.serverFileID);
+    console.log(req.body.selectedQuality);
+    
+    let id = req.body.serverFileID;
+    let quality = req.body.selectedQuality;
+    let folderIndex = findFile(id);
 
-  await parseSTLWithOptions(id, quality);
+    await parseSTLWithOptions(id, quality);
 
-  if(folders[folderIndex].isParsed === "Successful"){
-    await findFilamentCostWithOptions(id)
+    if(folders[folderIndex].isParsed === "Successful"){
+      await findFilamentCostWithOptions(id)
+    }
+
+    res.send(folders[folderIndex])
   }
-
-  res.send(folders[folderIndex])
 })
 
 
@@ -238,6 +239,7 @@ function findFile(id){
 
 //Make some sort of way to put the payments in an array, put line_items equal to the array and bam, cart
 app.post('/paymentLinkCreator', async function(req, res){
+  if(req.body[0].id){
   let cart = req.body;
   console.log(req.body)
   let metadataID = '';
@@ -299,6 +301,7 @@ app.post('/paymentLinkCreator', async function(req, res){
   console.log(paymentLink.url)
 
   res.send(paymentLink.url)
+}
   //Find if there is a way to keep this process open and test for when they pay or leave page?
 })
 
