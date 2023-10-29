@@ -249,12 +249,12 @@ app.post('/paymentLinkCreator', async function(req, res){
       //Makes a Stripe custom payment amount for each cart item
       let paymentLinkItems = [];
       for(let i = 0; i < items.length; i++){
-      const price = await stripe.prices.create({
-        product: "prod_OiRHeee3sS2bJu", // Replace with your actual product ID
-        unit_amount: (items[i].cost)*100,
-        currency: 'usd',
-      });
-      paymentLinkItems.push({price: price, quantity: 1, adjustable_quantity: {enabled: true, minimum: 1, maximum: 10}})
+        const price = await stripe.prices.create({
+          product: "prod_OiRHeee3sS2bJu", // Replace with your actual product ID
+          unit_amount: (items[i].cost)*100,
+          currency: 'usd',
+        });
+        paymentLinkItems.push({price: price, quantity: 1, adjustable_quantity: {enabled: true, minimum: 1, maximum: 10}})
       }
       //Maps the array so i can be used inside of stripe.paymentLinks.create
       const lineItems = paymentLinkItems.map(item => ({
@@ -289,7 +289,6 @@ app.post('/paymentLinkCreator', async function(req, res){
   catch(error){
     console.error("Error creating payment link, message: "+error)
   }
-  //Find if there is a way to keep this process open and test for when they pay or leave page?
 })
 
 
