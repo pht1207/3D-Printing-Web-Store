@@ -4,9 +4,6 @@ const app = express()
 const port = 5005;
 const fs = require('fs');
 
-//Used to parse the body of post requests
-
-
 
 let cors = require('cors');
 const { parse, format } = require('path');
@@ -110,8 +107,6 @@ app.post('/webhook', express.raw({type: 'application/json'}), (request, response
         console.error("CompletedOrders "+paymentIntentID+" folder already exists")
       }
 
-
-      
   }
 
   // Return a 200 response to acknowledge receipt of the event
@@ -239,69 +234,70 @@ function findFile(id){
 
 //Make some sort of way to put the payments in an array, put line_items equal to the array and bam, cart
 app.post('/paymentLinkCreator', async function(req, res){
+  //Check for if this should be ran even
   if(req.body[0].id){
-  let cart = req.body;
-  console.log(req.body)
-  let metadataID = '';
-  console.log(cart)
-  //Gets all items from the cart id array and matches them to the items on the server file system
-  //Pushes all of them into an items array
-  let items = [];
-  for(let i = 0; i < cart.length; i++){
-    for(let j = 0; j < folders.length; j++){
-      if(cart[i].id === folders[j].id)
-      {
-        items.push(folders[j])
-        metadataID += (' '+folders[j].id);
-      }
-    }
-  }
-  console.log("items in item array: " + items.length);
-  
-
-  //Makes a Stripe custom payment amount for each cart item
-  let paymentLinkItems = [];
-  for(let i = 0; i < items.length; i++){
-  const price = await stripe.prices.create({
-    product: "prod_OiRHeee3sS2bJu", // Replace with your actual product ID
-    unit_amount: (items[i].cost)*100,
-    currency: 'usd',
-  });
-  paymentLinkItems.push({price: price, quantity: 1, adjustable_quantity: {enabled: true, minimum: 1, maximum: 10}})
-  }
-  //Maps the array so i can be used inside of stripe.paymentLinks.create
-  const lineItems = paymentLinkItems.map(item => ({
-    price: item.price.id,
-    quantity: item.quantity,
-    adjustable_quantity: item.adjustable_quantity,
-  }));
-  console.log(lineItems)
-  
-  //https://stripe.com/docs/payment-links/api#address-collection
-  const paymentLink = await stripe.paymentLinks.create({
-    line_items: lineItems,
-    automatic_tax: {
-      enabled: true,
-    },
-    billing_address_collection: 'required',
-    shipping_address_collection: {
-      allowed_countries: ['US'],
-    },
-    invoice_creation: {
-      enabled: true,
-      invoice_data: {
-        description: 'Invoice for 3D Print Purchase',
-        metadata: {
-          OrderID: metadataID
+    let cart = req.body;
+    console.log(req.body)
+    let metadataID = '';
+    console.log(cart)
+    //Gets all items from the cart id array and matches them to the items on the server file system
+    //Pushes all of them into an items array
+    let items = [];
+    for(let i = 0; i < cart.length; i++){
+      for(let j = 0; j < folders.length; j++){
+        if(cart[i].id === folders[j].id)
+        {
+          items.push(folders[j])
+          metadataID += (' '+folders[j].id);
         }
       }
-    },
-  });
-  
-  console.log(paymentLink.url)
+    }
+    console.log("items in item array: " + items.length);
+    
 
-  res.send(paymentLink.url)
-}
+    //Makes a Stripe custom payment amount for each cart item
+    let paymentLinkItems = [];
+    for(let i = 0; i < items.length; i++){
+    const price = await stripe.prices.create({
+      product: "prod_OiRHeee3sS2bJu", // Replace with your actual product ID
+      unit_amount: (items[i].cost)*100,
+      currency: 'usd',
+    });
+    paymentLinkItems.push({price: price, quantity: 1, adjustable_quantity: {enabled: true, minimum: 1, maximum: 10}})
+    }
+    //Maps the array so i can be used inside of stripe.paymentLinks.create
+    const lineItems = paymentLinkItems.map(item => ({
+      price: item.price.id,
+      quantity: item.quantity,
+      adjustable_quantity: item.adjustable_quantity,
+    }));
+    console.log(lineItems)
+    
+    //https://stripe.com/docs/payment-links/api#address-collection
+    const paymentLink = await stripe.paymentLinks.create({
+      line_items: lineItems,
+      automatic_tax: {
+        enabled: true,
+      },
+      billing_address_collection: 'required',
+      shipping_address_collection: {
+        allowed_countries: ['US'],
+      },
+      invoice_creation: {
+        enabled: true,
+        invoice_data: {
+          description: 'Invoice for 3D Print Purchase',
+          metadata: {
+            OrderID: metadataID
+          }
+        }
+      },
+    });
+    
+    console.log(paymentLink.url)
+
+    res.send(paymentLink.url)
+  }
   //Find if there is a way to keep this process open and test for when they pay or leave page?
 })
 
@@ -356,6 +352,8 @@ app.use(express.static(directoryPath));
 
 
 
+
+//Runs a terminal program to parse the stl into gcode
 const { spawn } = require('child_process');
 async function parseSTLWithOptions(fileID, quality){
   let folderIndex = findFile(fileID);
@@ -405,7 +403,7 @@ async function parseSTLWithOptions(fileID, quality){
 
 
 
-//Sets the isParsed variable of the current folderIndex to the appropriate code
+//Sets the isParsed variable of the current folderIndex to the appropriate error or success code
 async function checkBuildSizeConstraints(stdoutData, folderIndex){
   const printerxMax = 235, printeryMax = 235, printerzMax = 265;
   let gcodex, gcodey, gcodez;
