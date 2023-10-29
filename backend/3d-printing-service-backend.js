@@ -140,54 +140,51 @@ function Folder(id, file, isParsed, index, paid, cost, paymentLink){
 
 //Used in accepting the stl file and storing it for the client
 app.post('/upload/stl', upload.single('file'), async function (req, res) {
-  if(req.file.originalname.slice(-4) === ".stl"){
     try{
-    //Creates a user object when stls are sent
-    let id = req.file.filename
-    let fileName = req.file.originalname;
-    let isParsed = false;
-    let foldersIndex = folders.length;
-    let paid = false;
-    let cost = 1;
-    let paymentLink = '';
-    const newFolder = new Folder(id, fileName, isParsed, foldersIndex, paid, cost, paymentLink)
-    folders.push(newFolder) //Adds this new object to the stack
+      //Creates a user object when stls are sent
+      let id = req.file.filename
+      let fileName = req.file.originalname;
+      let isParsed = false;
+      let foldersIndex = folders.length;
+      let paid = false;
+      let cost = 1;
+      let paymentLink = '';
+      const newFolder = new Folder(id, fileName, isParsed, foldersIndex, paid, cost, paymentLink)
+      folders.push(newFolder) //Adds this new object to the stack
 
 
 
-    const currentPath = './data/stl/'+id;
-    const newPath = './data/'+newFolder.id+"/"+id+".stl";    
-    fs.mkdir('./data/' + newFolder.id, (err) => {
-    if (err) {
-      console.error("Error creating folder: ${err}");
-    }
-    else{
-    //changes the file extension of what was uploaded to a .stl
-    fs.rename(currentPath, newPath, err =>{
-      if(err){
-        console.error("error converting file extension")
+      const currentPath = './data/stl/'+id;
+      const newPath = './data/'+newFolder.id+"/"+id+".stl";    
+      fs.mkdir('./data/' + newFolder.id, (err) => {
+      if (err) {
+        console.error("Error creating folder: ${err}");
       }
-      //else, continue program
+      else{
+      //changes the file extension of what was uploaded to a .stl
+      fs.rename(currentPath, newPath, err =>{
+        if(err){
+          console.error("error converting file extension")
+        }
+        //else, continue program
+      })
+      }
     })
-    }
-  })
 
-  
-    //Sends filename to the host after downloading it so it can be displayed in their browser
+    
+      //Sends filename to the host after downloading it so it can be displayed in their browser
     res.send(id);
   }  
   catch(error){
     console.error("Error uploading stl, error message: " + error);
   }
     
-  }
 })
 
 
 
 //Parses the stl into gcode from form given by the user
 app.post('/gcodeWithOptions', async function(req, res){
-  if(req.body.serverFileID){
     try{
     console.log(req.body.serverFileID);
     console.log(req.body.selectedQuality);
@@ -206,7 +203,6 @@ app.post('/gcodeWithOptions', async function(req, res){
   }
   catch(error){
     console.error("Error parsing gcode, error message: " + error)
-  }
   }
 })
 
@@ -296,11 +292,7 @@ app.post('/paymentLinkCreator', async function(req, res){
           }
         },
       });
-      
-      console.log(paymentLink.url)
-
       res.send(paymentLink.url)
-
   }
   catch(error){
     console.error("Error creating payment link, message: "+error)
