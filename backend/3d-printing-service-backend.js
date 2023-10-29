@@ -181,10 +181,7 @@ app.post('/upload/stl', upload.single('file'), async function (req, res) {
 
 //Parses the stl into gcode from form given by the user
 app.post('/gcodeWithOptions', async function(req, res){
-    try{
-      console.log(req.body.serverFileID);
-      console.log(req.body.selectedQuality);
-      
+    try{      
       let id = req.body.serverFileID;
       let quality = req.body.selectedQuality;
       let folderIndex = findFile(id);
@@ -262,7 +259,6 @@ app.post('/paymentLinkCreator', async function(req, res){
         quantity: item.quantity,
         adjustable_quantity: item.adjustable_quantity,
       }));
-      console.log(lineItems)
       
       //https://stripe.com/docs/payment-links/api#address-collection
       const paymentLink = await stripe.paymentLinks.create({
@@ -296,8 +292,8 @@ app.post('/paymentLinkCreator', async function(req, res){
 
 
 async function findFilamentCostWithOptions(id){
-  const filePath = './data/'+id+'/'+id+'.gcode'; // Replace with your file path
-  const searchString = 'total filament cost'; // Replace with the keyword or pattern you want to search for
+  const filePath = './data/'+id+'/'+id+'.gcode';
+  const searchString = 'total filament cost';
 
   const folderIndex = findFile(id);
   return new Promise((resolve, reject) => {
@@ -318,11 +314,9 @@ async function findFilamentCostWithOptions(id){
         let regtest = lines[i].match(regex);
         const cost = parseFloat(regtest[0])
         const formattedCost = cost.toFixed(2);
-        console.log("COST MADE: "+formattedCost)        
         //Sets the cost
         const result = (formattedCost * 5) + 1;
         folders[folderIndex].cost = Math.round(result * 100) / 100;
-        console.log(folders[folderIndex].cost)
         resolve();//breaks if found
       }
     }
@@ -352,10 +346,7 @@ async function parseSTLWithOptions(fileID, quality){
   return new Promise((resolve, reject) => {
   let profileLocation = findQualityProfile(printProfile);
   const id = fileID;
-  console.log("parseSTL running...")
-    //if(materialType === 'PETG'){--load ./resources/profiles/Neptune4-Config-JayoPETG-0.3Height.ini}
     const command = './prusaslicer/prusa-slicer --center 112,112 --ensure-on-bed --support-material  --support-material-auto  --support-material-style organic --load '+profileLocation+' -s ./data/'+id+'/'+id+'.stl --info --output ./data/'+id;
-
     const childProcess = spawn(command, {shell: true})
     let stdoutData = ''; // Variable to accumulate stdout data
 
@@ -445,22 +436,6 @@ function findQualityProfile(quality){
 
 }
 
-
-
-
-/* No longer needed with the reverse proxying done by apache
-const https = require('https')
-https
-        .createServer({
-          cert:fs.readFileSync('/etc/letsencrypt/live/print.parkert.dev/fullchain.pem'),
-          key:fs.readFileSync('/etc/letsencrypt/live/print.parkert.dev/privkey.pem'),
-          ca:fs.readFileSync('/etc/letsencrypt/live/print.parkert.dev/chain.pem'),
-			},app)
-        .listen(port, () => {
-                console.log('server is running on port'+port)
-        });
-
-*/
 
 app.listen(port, () => {
   console.log("port running on "+port)
