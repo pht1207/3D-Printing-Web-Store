@@ -20,11 +20,8 @@ const stripe = require("stripe")('sk_test_51NpxjLJfFzW7oP7EXHvOrSGY9PBG6K7zlgWTc
 const endpointSecret = "whsec_ufT4nc2StCxTUOcTk33cm9siu7eMNiwe";
 
 app.post('/webhook', express.raw({type: 'application/json'}), (request, response) => {
-  console.log("WEBHOOK CALLED!")
   const sig = request.headers['stripe-signature'];
-
   let event;
-
   try {
     event = stripe.webhooks.constructEvent(request.body, sig, endpointSecret);
   } catch (err) {
@@ -32,7 +29,6 @@ app.post('/webhook', express.raw({type: 'application/json'}), (request, response
     response.status(400).send(`Webhook Error: ${err.message}`);
     return;
   }
-
 
 
   // Handle the event
@@ -44,11 +40,12 @@ app.post('/webhook', express.raw({type: 'application/json'}), (request, response
       break;
     // ... handle other event types
     default:
-      console.log(`Unhandled event type ${event.type}`);
+    console.log(`Unhandled event type ${event.type}`);
   }
   
   //Called when invoice.payment_succeeded is sent to the post method
   async function invoicePaymentSucceededFunction(invoiceObject){
+    try{
     console.log("invoicePaymentSucceededFunction called!")
     const metaData = invoiceObject.metadata.OrderID;
     const paymentIntentID = invoiceObject.payment_intent;
@@ -106,7 +103,10 @@ app.post('/webhook', express.raw({type: 'application/json'}), (request, response
       else{
         console.error("CompletedOrders "+paymentIntentID+" folder already exists")
       }
-
+    }
+    catch(error){
+      console.error("Error creating invoice:" + error)
+    }
   }
 
   // Return a 200 response to acknowledge receipt of the event
