@@ -140,7 +140,8 @@ function Folder(id, file, isParsed, index, paid, cost, paymentLink){
 
 //Used in accepting the stl file and storing it for the client
 app.post('/upload/stl', upload.single('file'), async function (req, res) {
-  if(req.file.originalname.slice(-4) === ".stl"){  
+  if(req.file.originalname.slice(-4) === ".stl"){
+    try{
     //Creates a user object when stls are sent
     let id = req.file.filename
     let fileName = req.file.originalname;
@@ -174,7 +175,12 @@ app.post('/upload/stl', upload.single('file'), async function (req, res) {
   
     //Sends filename to the host after downloading it so it can be displayed in their browser
     res.send(id);
-}
+  }  
+  catch(error){
+    console.error("Error uploading stl, error message: " + error);
+  }
+    
+  }
 })
 
 
