@@ -114,3 +114,19 @@
   }
 
   }
+
+
+
+.ExampleSTLButton{
+    border-top-style: solid;
+    padding-top: 3em;
+    border-width: .01em;
+    font-size: small;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+.ExampleSTLButton button{
+  font-size: x-large;
+}
