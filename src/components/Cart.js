@@ -64,12 +64,11 @@ function Cart(props) {
         {emptyCart ? 
         <div className='InstructionsDiv'>{/* This is the instructions that will show if the cart is empty*/}
           <h2>Get an instant quote</h2>
-          <br/>
-          <p>Upload your .stl file and get a quote for pricing</p>
-          <br/>
-          <p>Click on the "Enter your .stl file here" button on the right side to upload your .stl file</p>
-          <br/>
-          <p>Select your desired quality, then prepare it to be printed!</p>
+          <ul>
+            <li>Upload your STL file and get a quote for pricing.</li>
+            <li>Click on the "Enter your STL file here" button on the right side to upload your STL file.</li>
+            <li>Select your desired quality, then prepare it to be printed!</li>
+          </ul>
         </div>
 
 

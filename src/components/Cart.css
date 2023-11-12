@@ -10,9 +10,16 @@
   width: 30%;
   overflow: hidden;
   max-width: 100%;
-
-
 }
+
+.InstructionsDiv ul{
+  list-style: circle;
+}
+.InstructionsDiv ul li{
+  text-align: left;
+  margin:.5em
+}
+
 
 
 
@@ -83,7 +90,6 @@
   max-width: 20vw;
   text-align: left;
   margin-bottom: 1em;
-
 }
 
 
@@ -95,8 +101,8 @@
 .cartItemInfo *{
   overflow: hidden;
   text-overflow:ellipsis;
-
 }
+
 
 
 

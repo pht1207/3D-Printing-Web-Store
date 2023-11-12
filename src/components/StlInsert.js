@@ -187,7 +187,7 @@ const GCodeForm = (
       {/*This section is for showing the file input for the .stl*/}
       {!GCodeParsed ? <>{!hideUpload ? 
       <div className="uploadField" onClick={handleSelectFileClick}>
-        <button onClick={(e) => e.preventDefault()}>Enter your .stl file here</button>
+        <button onClick={(e) => e.preventDefault()}>Enter your STL file here</button>
         <form onSubmit={uploadFile}  ref={fileSubmitRef}>
             <input type="file" onChange={fileInputted} name="file" style={{ display: 'none' }} ref={fileInputRef}></input>
             {STLPresent ? <button type="submit"/> : <>{errorEncountered ? <> There was an error processing your file, re-submit it. Error message: {errorCode} </> : <></>} </>}
@@ -223,7 +223,7 @@ const GCodeForm = (
           : <> 
           <div className="GCodeSection">
             <GCodeViewerComponent id={serverFileID}/>
-            <p className="printNotice">*This is a representation of how your print will look, it will likely be manually adjusted to a better orientation if possible</p>
+            <p className="printNotice">*This is a representation of how your print will look, it will likely be manually adjusted to a better orientation if possible.</p>
             <br></br>
             <p className="priceListed">Price: ${GCodeCost}</p>
             {GCodeForm}
