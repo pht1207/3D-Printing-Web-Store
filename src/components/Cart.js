@@ -51,6 +51,7 @@ function Cart(props) {
         anchor.href = '/20mm_cube.stl';
         anchor.download = "20mm_cube.stl"
         anchor.click();
+        anchor.remove();
       }
 
 
@@ -105,9 +106,7 @@ function Cart(props) {
           <br/>
           <ul>
             <li>There is no post-processing performed on any these parts, the purchaser is responsible for removing support material, sanding, painting, etc.</li>
-            <br/>
             <li>Models are printed using a consumer grade FDM printer.</li>
-            <br/>
             <li>All models are printed using white PETG filament.</li>
           </ul>
         </div>

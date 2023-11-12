@@ -75,9 +75,14 @@
   align-items: center;
   width: 100%;
 }
+.FAQ ul{
+  list-style: circle;
+}
 
-.FAQ *{
+.FAQ ul li{
   max-width: 20vw;
+  text-align: left;
+  margin-bottom: 1em;
 
 }
 
