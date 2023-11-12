@@ -130,3 +130,6 @@
 .ExampleSTLButton button{
   font-size: x-large;
 }
+.ExampleSTLButton button:hover{
+  cursor: pointer;
+}

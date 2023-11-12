@@ -30,6 +30,10 @@ button{
   border-color: rgb(180, 180, 180);
 
 }
+button:hover{
+  cursor: pointer;
+
+}
 
 
 ul{
