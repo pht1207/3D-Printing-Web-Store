@@ -104,7 +104,7 @@ function Cart(props) {
           <h2>Things to note about this service:</h2>
           <br/>
           <ul>
-            <li>This website is in test mode, payments/orders will not be fullfilled, the website is incomplete, it is more of a concept than a product.</li>
+            <li>This website is in test mode, payments are only in test mode, this is shown in the Stripe.js checkout window. Orders also will not be fullfilled. The website is not fully complete, it is more of a concept than a product.</li>
             <li>The navigation bar is not functional because I have not implemented it yet. I am focusing on other projects, I rather wanted the main idea of this project to be complete, which it is.</li>
             <li>There is no post-processing performed on any these parts, the purchaser is responsible for removing support material, sanding, painting, etc.</li>
             <li>Models are printed using a consumer grade FDM printer.</li>
