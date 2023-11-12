@@ -46,6 +46,13 @@ function Cart(props) {
         }
       }
 
+      function DownloadExampleSTL(){
+        const anchor = document.createElement('a');
+        anchor.href = '/20mm_cube.stl';
+        anchor.download = "20mm_cube.stl"
+        anchor.click();
+      }
+
 
 
 
@@ -89,11 +96,11 @@ function Cart(props) {
           <br/>
             <div className='ExampleSTLButton'>
               <h2>Download an example STL file to try the app:</h2>
-              <button >Example STL File</button>
+              <button onClick={DownloadExampleSTL}>Example STL File</button>
             </div>
           <br/>
+
           <div className='FAQ'>
-          
           <h2>Things to note about this service:</h2>
           <br/>
           <ul>
