@@ -9,12 +9,7 @@
   margin-top: 2em;
 }
 
-.uploadField button{
-  margin:1em;
-  padding:1em;
-  font-size: calc(8px + 1vmin);
 
-}
 
 @media (max-width: 48em) {
   .interactionWindow{
