@@ -93,12 +93,11 @@ function Cart(props) {
          </div>            
           }
 
-          <br/>
             <div className='ExampleSTLButton'>
+
               <h2>Download an example STL file to try the app:</h2>
               <button onClick={DownloadExampleSTL}>Example STL File</button>
             </div>
-          <br/>
 
           <div className='FAQ'>
           <h2>Things to note about this service:</h2>
