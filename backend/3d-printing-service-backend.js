@@ -11,13 +11,16 @@ app.use(cors());
 //Used in executing commands on the server
 
 
-//Stripe test key
-const stripe = require("stripe")('sk_test_51NpxjLJfFzW7oP7EXHvOrSGY9PBG6K7zlgWTc0msnf0ycJFBWJalNqmfBwgsSscRvsggUkx1ZwcaUJAOIlQUd8E900cCiribBn');
 
+require('dotenv').config();
+const apiSecretKey = process.env.API_SECRET_KEY;
+const apiEndpointKey = process.env.ENDPOINT_KEY;
+//Stripe test key
+const stripe = require("stripe")(apiSecretKey);
 
 //Everything below this comment is webhooks for data from Stripe regarding payments and charges
 // This is your Stripe CLI webhook secret for testing your endpoint locally.
-const endpointSecret = "whsec_ufT4nc2StCxTUOcTk33cm9siu7eMNiwe";
+const endpointSecret = apiEndpointKey;
 
 app.post('/webhook', express.raw({type: 'application/json'}), (request, response) => {
   const sig = request.headers['stripe-signature'];
