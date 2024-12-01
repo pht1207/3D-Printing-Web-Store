@@ -341,7 +341,7 @@ app.use(express.static(directoryPath));
 
 
 //Runs a terminal program to parse the stl into gcode
-const { spawn } = require('child_process');
+const { execFile } = require('child_process');
 async function parseSTLWithOptions(fileID, quality){
   let folderIndex = findFile(fileID);
   const printProfile = quality  
@@ -349,8 +349,18 @@ async function parseSTLWithOptions(fileID, quality){
   return new Promise((resolve, reject) => {
   let profileLocation = findQualityProfile(printProfile);
   const id = fileID;
-    const command = './prusaslicer/prusa-slicer --center 112,112 --ensure-on-bed --support-material  --support-material-auto  --support-material-style organic --load '+profileLocation+' -s ./data/'+id+'/'+id+'.stl --info --output ./data/'+id;
-    const childProcess = spawn(command, {shell: true})
+  const slicerArgs = [
+    '--center', '112,112',
+    '--ensure-on-bed',
+    '--support-material',
+    '--support-material-auto',
+    '--support-material-style', 'organic',
+    '--load', profileLocation,
+    '-s', `./data/${id}/${id}.stl`,
+    '--info',
+    '--output', `./data/${id}`
+  ];
+    const childProcess = execFile('./prusaslicer/prusa-slicer', slicerArgs);
     let stdoutData = ''; // Variable to accumulate stdout data
 
     childProcess.stdout.on('data', (data) => {
